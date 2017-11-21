@@ -8,6 +8,6 @@
 
 #import "CCBaseViewController.h"
 
-@interface MailViewController : CCBaseViewController
+@interface MallViewController : CCBaseViewController
 
 @end

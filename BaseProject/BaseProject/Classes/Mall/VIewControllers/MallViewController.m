@@ -6,13 +6,13 @@
 //  Copyright © 2017年 cc. All rights reserved.
 //
 
-#import "MailViewController.h"
+#import "MallViewController.h"
 
-@interface MailViewController ()
+@interface MallViewController ()
 
 @end
 
-@implementation MailViewController
+@implementation MallViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
