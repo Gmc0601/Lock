@@ -5,5 +5,5 @@ pod ‘YYKit’
 pod 'AFNetworking'
 pod 'SDWebImage'
 pod 'MBProgressHUD'
-
+pod 'Masonry'
 end

@@ -10,7 +10,7 @@
 
 
 #import "FirstViewController.h"
-#import "MailViewController.h"
+#import "MallViewController.h"
 #import "FindViewController.h"
 #import "MeViewController.h"
 
@@ -40,7 +40,7 @@
     FirstViewController *newsVc = [[FirstViewController alloc] init];
     [self setChildVC:newsVc title:@"首页" image:@"tab_icon_sy" selectedImage:@"tab_icon_sy_pre"];
     
-    MailViewController *investment = [[MailViewController alloc] init];
+    MallViewController *investment = [[MallViewController alloc] init];
     [self setChildVC:investment title:@"商城" image:@"tab_icon_sc" selectedImage:@"tab_icon_sc_pre"];
     
     FindViewController *myVC = [[FindViewController alloc] init];

@@ -481,6 +481,7 @@
 		42D0D7281FBEB6DB0092CAD1 /* Mall */ = {
 			isa = PBXGroup;
 			children = (
+				6BAE59A21FC7206E00965937 /* Constants */,
 				42D0D7291FBEB6DB0092CAD1 /* ViewModels */,
 				42D0D72A1FBEB6DB0092CAD1 /* Models */,
 				42D0D72B1FBEB6DB0092CAD1 /* VIewControllers */,
@@ -702,6 +703,13 @@
 				42F795D71F00CC3E00A11A69 /* UIScrollView+TBRefresh.m */,
 			);
 			path = MJRefresh;
+			sourceTree = "<group>";
+		};
+		6BAE59A21FC7206E00965937 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		7F5FE81AF3930B1D8AB68F96 /* Frameworks */ = {
