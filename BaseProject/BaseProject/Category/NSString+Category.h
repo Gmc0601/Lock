@@ -20,13 +20,15 @@
 
 //计算文字高度
 - (CGFloat   ) heightWithFontSize:(CGFloat)fontSize width:(CGFloat)width;
+-(CGFloat)widthWithFont:(UIFont *)font height:(CGFloat)height;
 
 /**抹除运费小数末尾的0*/
 - (NSString *) removeUnwantedZero;
 
 //去掉前后空格
 - (NSString *) trimmedString;
-
+-(BOOL) isTelNumber;
+-(BOOL) isIdCardNo;
 @end
 
 

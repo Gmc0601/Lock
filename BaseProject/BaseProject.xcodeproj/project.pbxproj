@@ -68,6 +68,13 @@
 		42F795DA1F00CC3E00A11A69 /* TBRefreshFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F795D31F00CC3E00A11A69 /* TBRefreshFootView.m */; };
 		42F795DB1F00CC3E00A11A69 /* TBRefreshHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F795D51F00CC3E00A11A69 /* TBRefreshHeadView.m */; };
 		42F795DC1F00CC3E00A11A69 /* UIScrollView+TBRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F795D71F00CC3E00A11A69 /* UIScrollView+TBRefresh.m */; };
+		6BDB2F3A1FCC4B6200F60802 /* ConfirmOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F391FCC4B6200F60802 /* ConfirmOrderViewController.m */; };
+		6BDB2F471FCC6A0C00F60802 /* UIView+Frame copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F3C1FCC6A0B00F60802 /* UIView+Frame copy.m */; };
+		6BDB2F481FCC6A0C00F60802 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F3E1FCC6A0B00F60802 /* UIView+Frame.m */; };
+		6BDB2F491FCC6A0C00F60802 /* UIView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F401FCC6A0B00F60802 /* UIView+Utils.m */; };
+		6BDB2F4A1FCC6A0C00F60802 /* UILabel+Width.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F411FCC6A0B00F60802 /* UILabel+Width.m */; };
+		6BDB2F4B1FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F441FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m */; };
+		6BDB2F4C1FCC6A0C00F60802 /* UIButton+YX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F451FCC6A0C00F60802 /* UIButton+YX.m */; };
 		B79A5CFD6299881CB3643ACB /* libPods-BaseProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65EBE4FCE8758654A9B05419 /* libPods-BaseProject.a */; };
 /* End PBXBuildFile section */
 
@@ -214,6 +221,20 @@
 		42F795D61F00CC3E00A11A69 /* UIScrollView+TBRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TBRefresh.h"; sourceTree = "<group>"; };
 		42F795D71F00CC3E00A11A69 /* UIScrollView+TBRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TBRefresh.m"; sourceTree = "<group>"; };
 		65EBE4FCE8758654A9B05419 /* libPods-BaseProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaseProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BDB2F381FCC4B6200F60802 /* ConfirmOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmOrderViewController.h; sourceTree = "<group>"; };
+		6BDB2F391FCC4B6200F60802 /* ConfirmOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmOrderViewController.m; sourceTree = "<group>"; };
+		6BDB2F3B1FCC6A0B00F60802 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
+		6BDB2F3C1FCC6A0B00F60802 /* UIView+Frame copy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame copy.m"; sourceTree = "<group>"; };
+		6BDB2F3D1FCC6A0B00F60802 /* UIButton+YX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+YX.h"; sourceTree = "<group>"; };
+		6BDB2F3E1FCC6A0B00F60802 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
+		6BDB2F3F1FCC6A0B00F60802 /* UIView+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
+		6BDB2F401FCC6A0B00F60802 /* UIView+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utils.m"; sourceTree = "<group>"; };
+		6BDB2F411FCC6A0B00F60802 /* UILabel+Width.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Width.m"; sourceTree = "<group>"; };
+		6BDB2F421FCC6A0B00F60802 /* UIButton+SSEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SSEdgeInsets.h"; sourceTree = "<group>"; };
+		6BDB2F431FCC6A0C00F60802 /* UIView+Frame copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame copy.h"; sourceTree = "<group>"; };
+		6BDB2F441FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SSEdgeInsets.m"; sourceTree = "<group>"; };
+		6BDB2F451FCC6A0C00F60802 /* UIButton+YX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+YX.m"; sourceTree = "<group>"; };
+		6BDB2F461FCC6A0C00F60802 /* UILabel+Width.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Width.h"; sourceTree = "<group>"; };
 		A2BC379B4929E517CCEBBD81 /* Pods-BaseProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaseProject/Pods-BaseProject.release.xcconfig"; sourceTree = "<group>"; };
 		F79BCDCE7109E930EA932FB6 /* Pods-BaseProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaseProject/Pods-BaseProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -315,6 +336,18 @@
 		42C84EA21EF2DB060008189D /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				6BDB2F421FCC6A0B00F60802 /* UIButton+SSEdgeInsets.h */,
+				6BDB2F441FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m */,
+				6BDB2F3D1FCC6A0B00F60802 /* UIButton+YX.h */,
+				6BDB2F451FCC6A0C00F60802 /* UIButton+YX.m */,
+				6BDB2F461FCC6A0C00F60802 /* UILabel+Width.h */,
+				6BDB2F411FCC6A0B00F60802 /* UILabel+Width.m */,
+				6BDB2F431FCC6A0C00F60802 /* UIView+Frame copy.h */,
+				6BDB2F3C1FCC6A0B00F60802 /* UIView+Frame copy.m */,
+				6BDB2F3B1FCC6A0B00F60802 /* UIView+Frame.h */,
+				6BDB2F3E1FCC6A0B00F60802 /* UIView+Frame.m */,
+				6BDB2F3F1FCC6A0B00F60802 /* UIView+Utils.h */,
+				6BDB2F401FCC6A0B00F60802 /* UIView+Utils.m */,
 				42C84ECC1EF2E97D0008189D /* NSArray+Category.h */,
 				42C84ECD1EF2E97D0008189D /* NSArray+Category.m */,
 				42C84ECE1EF2E97D0008189D /* NSAttributedString+Category.h */,
@@ -509,6 +542,8 @@
 			children = (
 				42D0D7451FBEB97E0092CAD1 /* MallViewController.h */,
 				42D0D7461FBEB97E0092CAD1 /* MallViewController.m */,
+				6BDB2F381FCC4B6200F60802 /* ConfirmOrderViewController.h */,
+				6BDB2F391FCC4B6200F60802 /* ConfirmOrderViewController.m */,
 			);
 			path = VIewControllers;
 			sourceTree = "<group>";
@@ -924,6 +959,7 @@
 				42C84F031EF2E97D0008189D /* NSString+DisplayTime.m in Sources */,
 				42C84ECA1EF2DD1A0008189D /* NSDictionary+Smart.m in Sources */,
 				42C84EC81EF2DD1A0008189D /* DIc.m in Sources */,
+				6BDB2F471FCC6A0C00F60802 /* UIView+Frame copy.m in Sources */,
 				42C84F071EF2E97D0008189D /* UIButton+Category.m in Sources */,
 				42C84EFF1EF2E97D0008189D /* NSMutableArray+Category.m in Sources */,
 				42F795BD1F00C8B200A11A69 /* TBNavigationController.m in Sources */,
@@ -936,11 +972,15 @@
 				42C84F041EF2E97D0008189D /* NSString+MD5.m in Sources */,
 				42C84F131EF2EA140008189D /* UITextView+placeholder.m in Sources */,
 				42C84F091EF2E97D0008189D /* UIControl+ResponseTime.m in Sources */,
+				6BDB2F3A1FCC4B6200F60802 /* ConfirmOrderViewController.m in Sources */,
 				42F795DB1F00CC3E00A11A69 /* TBRefreshHeadView.m in Sources */,
+				6BDB2F4C1FCC6A0C00F60802 /* UIButton+YX.m in Sources */,
 				42C84F021EF2E97D0008189D /* NSString+Category.m in Sources */,
+				6BDB2F491FCC6A0C00F60802 /* UIView+Utils.m in Sources */,
 				42F795DC1F00CC3E00A11A69 /* UIScrollView+TBRefresh.m in Sources */,
 				42D0D7471FBEB97E0092CAD1 /* MallViewController.m in Sources */,
 				42C84EFE1EF2E97D0008189D /* NSDictionary+Category.m in Sources */,
+				6BDB2F4A1FCC6A0C00F60802 /* UILabel+Width.m in Sources */,
 				42F795C01F00C8B200A11A69 /* UINavigationBar+Awesome.m in Sources */,
 				42C84EFC1EF2E97D0008189D /* NSData+Category.m in Sources */,
 				42C84EFB1EF2E97D0008189D /* NSAttributedString+Category.m in Sources */,
@@ -952,6 +992,7 @@
 				42C84ECB1EF2DD1A0008189D /* NSString+MD5.m in Sources */,
 				42C84F1C1EF2EB650008189D /* NSObject+SBJSON.m in Sources */,
 				42C84F0D1EF2E97D0008189D /* UITableViewCell+CellAnimation.m in Sources */,
+				6BDB2F4B1FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m in Sources */,
 				42A4443E1EF133E000F90791 /* BaseProject.xcdatamodeld in Sources */,
 				42F795DA1F00CC3E00A11A69 /* TBRefreshFootView.m in Sources */,
 				42D0D7401FBEB8880092CAD1 /* CCWebViewViewController.m in Sources */,
@@ -962,6 +1003,7 @@
 				42C84EC91EF2DD1A0008189D /* DicToString.m in Sources */,
 				42C84EFD1EF2E97D0008189D /* NSData+CommonCryptor.m in Sources */,
 				42C84F0A1EF2E97D0008189D /* UIImage+Category.m in Sources */,
+				6BDB2F481FCC6A0C00F60802 /* UIView+Frame.m in Sources */,
 				42C84EB01EF2DB060008189D /* AppDelegate.m in Sources */,
 				42C84F1E1EF2EB650008189D /* SBJSON.m in Sources */,
 				42D0D7411FBEB8880092CAD1 /* CCBaseViewController.m in Sources */,

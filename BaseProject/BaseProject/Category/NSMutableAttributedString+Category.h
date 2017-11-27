@@ -46,5 +46,11 @@
 + (NSMutableAttributedString *)attributeStringWithSubffixString:(NSString *)subffixString
                                                 prefixImageName:(NSString *)prefixImageName;
 
++ (NSAttributedString *)attributeString:(NSString *)prefixString
+                             prefixFont:(UIFont  *)prefixFont
+                            prefixColor:(UIColor *)prefixColor
+                           suffixString:(NSString *)suffixString
+                             suffixFont:(UIFont  *)suffixFont
+                            suffixColor:(UIColor *)suffixColor;
 
 @end

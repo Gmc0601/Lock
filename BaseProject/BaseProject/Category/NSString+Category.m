@@ -35,6 +35,28 @@
     return  [self boundingRectWithSize:CGSizeMake(width, 0) options:NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attrs context:nil].size.height;
 }
 
+-(CGFloat)heightWithFont:(UIFont *)font width:(CGFloat)width
+{
+    CGSize frameSize = CGSizeMake(width, 10000);
+    
+    CGRect idealFrame = [self boundingRectWithSize:frameSize
+                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                        attributes:@{ NSFontAttributeName:font }
+                                           context:nil];
+    return idealFrame.size.height;
+}
+
+-(CGFloat)widthWithFont:(UIFont *)font height:(CGFloat)height
+{
+    CGSize frameSize = CGSizeMake(100000, height);
+    
+    CGRect idealFrame = [self boundingRectWithSize:frameSize
+                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                        attributes:@{ NSFontAttributeName:font }
+                                           context:nil];
+    return idealFrame.size.width + SizeWidth(1);
+}
+
 /*抹除运费小数末尾的0*/
 - (NSString *)removeUnwantedZero {
     if ([[self substringWithRange:NSMakeRange(self.length- 3, 3)] isEqualToString:@"000"]) {
@@ -156,6 +178,27 @@ static char base64EncodingTable[64] = {
         }
     }     
     return result;
+}
+
+-(BOOL) isTelNumber{
+    if (self.length <= 0) {
+        return NO;
+    }
+    NSString *phoneRegex = @"^1+[3578]+\\d{9}";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
+    
+    return  [phoneTest evaluateWithObject:self];
+}
+
+-(BOOL) isIdCardNo{
+    BOOL flag;
+    if (self.length <= 0) {
+        flag = NO;
+        return flag;
+    }
+    NSString *regex2 = @"(^[0-9]{15}$)|([0-9]{17}([0-9]|X)$)";
+    NSPredicate *identityCardPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex2];
+    return [identityCardPredicate evaluateWithObject:self];
 }
 
 @end

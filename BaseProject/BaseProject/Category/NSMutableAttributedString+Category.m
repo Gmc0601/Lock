@@ -104,5 +104,49 @@
     
 }
 
++ (NSAttributedString *)attributeString:(NSString *)prefixString
+                             prefixFont:(UIFont  *)prefixFont
+                            prefixColor:(UIColor *)prefixColor
+                           suffixString:(NSString *)suffixString
+                             suffixFont:(UIFont  *)suffixFont
+                            suffixColor:(UIColor *)suffixColor{
+    NSInteger prefixLength = prefixString.length;
+    NSInteger suffixLength = suffixString.length;
+    
+    NSString *finalString = [NSString stringWithFormat:@"%@%@", prefixString, suffixString];
+    
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:finalString];
+    
+    if (prefixFont==0 && prefixColor==0) {
+        [attributedString addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHex:0x999999],
+                                          NSFontAttributeName: [UIFont systemFontOfSize:10.0f]
+                                          }
+                                  range:NSMakeRange(0, prefixLength)];
+        
+        
+    }else {
+        [attributedString addAttributes:@{NSForegroundColorAttributeName: prefixColor,
+                                          NSFontAttributeName: prefixFont,NSForegroundColorAttributeName: prefixColor
+                                          }
+                                  range:NSMakeRange(0, prefixLength)];
+    }
+    
+    if (suffixFont==0 && suffixColor==0) {
+        [attributedString addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10.0f],
+                                          NSForegroundColorAttributeName: [UIColor colorWithHex:0xff786e]}
+                                  range:NSMakeRange(prefixLength, suffixLength)];
+    }else {
+        
+        
+        [attributedString addAttributes:@{NSFontAttributeName: suffixFont,
+                                          NSForegroundColorAttributeName: suffixColor}
+                                  range:NSMakeRange(prefixLength, suffixLength)];
+    }
+    
+    
+    return attributedString;
+}
+
 
 @end

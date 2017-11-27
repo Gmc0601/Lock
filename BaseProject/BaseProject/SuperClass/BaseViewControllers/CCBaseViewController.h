@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <Masonry/Masonry.h>
+#import "UIView+Utils.h"
+#import "NSString+Category.h"
 
 @interface CCBaseViewController : UIViewController
 

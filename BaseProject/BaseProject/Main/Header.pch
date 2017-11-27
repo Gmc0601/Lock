@@ -29,7 +29,7 @@
 #define ImageWith image.size.width
 #define ImageHeigh image.size.height
 #define SizeWidth(x) ([UIScreen mainScreen].bounds.size.width)/(375) * (x)
-#define SizeHeigh(x) ([UIScreen mainScreen].bounds.size.height)/(667) * (x)
+#define SizeHeight(x) ([UIScreen mainScreen].bounds.size.height)/(667) * (x)
 
 
 
@@ -69,6 +69,8 @@
 #define Verdana(FONTSIZE)      [UIFont fontWithName:@"Verdana" size:FONTSIZE]
 #define VerdanaBold(FONTSIZE)      [UIFont fontWithName:@"Verdana-Bold" size:FONTSIZE]
 #define PingFangSCMedium(FONTSIZE)      [UIFont fontWithName:@"PingFang-SC-Medium" size:FONTSIZE]
+#define PingFangSC(FONTSIZE)      [UIFont fontWithName:@"PingFang SC" size:FONTSIZE]
+#define PingFangSCBOLD(FONTSIZE)      [UIFont fontWithName:@"PingFang-SC-Bold" size:FONTSIZE]
 /**
  * 颜色（RGB）
  */
