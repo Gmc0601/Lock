@@ -8,6 +8,8 @@
 
 #import "AppDelegate.h"
 #import "TBTabBarController.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
+
 @interface AppDelegate ()
 @property (nonatomic, retain) TBTabBarController *tabbar;
 @end
@@ -23,7 +25,8 @@
     self.window.rootViewController = self.tabbar;
     
     self.window.backgroundColor = [UIColor whiteColor];
-    
+    [IQKeyboardManager sharedManager].enable = YES;
+    [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
     [self.window makeKeyAndVisible];
     
     // 显示小红点
