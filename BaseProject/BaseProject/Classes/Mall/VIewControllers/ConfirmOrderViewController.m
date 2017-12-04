@@ -338,7 +338,7 @@
 -(UIButton *) addRegionButtonTo:(UIView *)superView withLeftView:(UIView *)leftView{
    
     _btnRegion = [UIButton new];
-    [_btnRegion setImage:[UIImage imageNamed:@"fpxq_icon_dw"] forState:UIControlStateNormal];
+    [_btnRegion setImage:[UIImage imageNamed:@"icon_gd"] forState:UIControlStateNormal];
     _btnRegion.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
     [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];

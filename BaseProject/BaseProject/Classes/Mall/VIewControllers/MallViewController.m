@@ -7,7 +7,7 @@
 //
 
 #import "MallViewController.h"
-#import "ConfirmOrderViewController.h"
+#import "MyOrderViewController.h"
 
 @interface MallViewController ()<UIWebViewDelegate>
 @property (retain,atomic) UIScrollView *scrollView;
@@ -99,7 +99,7 @@
 }
 
 -(void) buy{
-    ConfirmOrderViewController *newVC = [ConfirmOrderViewController new];
+    MyOrderViewController *newVC = [MyOrderViewController new];
     [self.navigationController pushViewController:newVC animated:YES];
 }
 

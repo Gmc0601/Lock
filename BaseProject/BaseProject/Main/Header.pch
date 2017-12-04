@@ -63,6 +63,7 @@
 //#define ArialFont(FONTSIZE)          [UIFont fontWithName:@"Arial" size:FONTSIZE]
 #define ArialFont(FONTSIZE)            [UIFont  systemFontOfSize:FONTSIZE]
 #define ArialBoldMTFont(FONTSIZE)      [UIFont fontWithName:@"Arial-BoldMT" size:FONTSIZE]
+#define Helvetica(FONTSIZE)    [UIFont fontWithName:@"Helvetica" size:FONTSIZE]
 #define HelveticaNeueFont(FONTSIZE)    [UIFont fontWithName:@"HelveticaNeue" size:FONTSIZE]
 #define VerdanaItalic(FONTSIZE)      [UIFont fontWithName:@"Verdana-Italic" size:FONTSIZE]
 #define VerdanaBoldItalic(FONTSIZE)      [UIFont fontWithName:@"Verdana-BoldItalic" size:FONTSIZE]
