@@ -5,8 +5,13 @@
 //  Created by LeoGeng on 27/11/2017.
 //  Copyright © 2017 cc. All rights reserved.
 //
-
+#import "SHPlacePickerView.h"
 #import "ConfirmOrderViewController.h"
+#import "KLCPopup.h"
+#import "UIColor+BGHexColor.h"
+#define Share_TAG 100000
+#define CBX_PAY_TAG 2003
+
 
 @interface ConfirmOrderViewController ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>{
     int _numberOfSection;
@@ -23,6 +28,14 @@
 @property(retain,atomic) UIImageView *imgGoods;
 @property(retain,atomic) UILabel *lblGoodsTitle;
 @property(assign,atomic) BOOL needInstall;
+@property(retain,atomic)  SHPlacePickerView *shplacePicker;
+@property(retain,atomic) KLCPopup* sharePopup;
+@property(retain,atomic) KLCPopup* installPopup;
+@property(retain,atomic) KLCPopup* serviceDescPopup;
+@property(retain,atomic) KLCPopup* PayPopup;
+@property(retain,atomic) UIView* alView;
+@property(retain,atomic) UIView* wcView;
+@property(assign,atomic) BOOL isWechatPay;
 @end
 
 @implementation ConfirmOrderViewController
@@ -134,7 +147,7 @@
 }
 
 -(void) tapSubmitButton{
-    
+    [self showPayTypeView];
 }
 
 
@@ -149,10 +162,10 @@
             number = 4;
             break;
         case 1:
-            number = 2;
+            number = 3;
             break;
         case 2:
-            number = 3;
+            number = 4;
             break;
         default:
             break;
@@ -180,7 +193,7 @@
         if (indexPath.row == 0) {
             [self addGoodInfoTo:cell];
         }else{
-            [self addNeedInstall:cell];
+            [self addNeedInstall:cell withIndex:indexPath.row];
         }
     }else if(indexPath.section == 2){
         [self addCostDetail:cell withIndex:indexPath.row];
@@ -197,6 +210,8 @@
         case 1:
             if (indexPath.row == 0) {
                 height = SizeHeight(166/2);
+            }else{
+               height = SizeHeight(130/2);
             }
             break;
             
@@ -327,7 +342,7 @@
     _btnRegion.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
     [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
-    [_btnRegion addTarget:self action:@selector(tapRegionButton) forControlEvents:UIControlEventTouchUpInside];
+    [_btnRegion addTarget:self action:@selector(tapRegionButton:) forControlEvents:UIControlEventTouchUpInside];
     
     
     [superView addSubview:_btnRegion];
@@ -342,7 +357,7 @@
     _btnRegion.imageView.contentMode = UIViewContentModeScaleAspectFit;
     _btnRegion.titleEdgeInsets = UIEdgeInsetsMake(0, SizeWidth(10), 0, 0);
     
-    UIImageView *rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Addicon_gd"]];
+    UIImageView *rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_gd"]];
     [_btnRegion addSubview:rightView];
     
     [rightView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -406,8 +421,17 @@
     [self addBorder:cell];
 }
 
--(void) tapRegionButton{
-    
+-(void) tapRegionButton:(UIButton *) sender{
+    __weak __typeof(self)weakSelf = self;
+
+    if (_shplacePicker == nil) {
+        _shplacePicker = [[SHPlacePickerView alloc] initWithIsRecordLocation:YES SendPlaceArray:^(NSArray *placeArray) {
+            
+            [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
+        }];
+    }
+
+    [self.view addSubview:_shplacePicker];
 }
 
 - (BOOL)textField:(UITextField *) textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -443,24 +467,31 @@
     _lblGoodsTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     [cell addSubview:_lblGoodsTitle];
     [_lblGoodsTitle sizeToFit];
-//    [_lblGoodsTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(cell.mas_top).offset(SizeHeight(5));
-//        make.left.equalTo(_imgGoods.mas_right).offset(-SizeWidth(-31/2));
-//        make.width.equalTo(@(SizeWidth(506/2)));
-//        make.height.equalTo(@(SizeHeight(75)));
-//    }];
+
     [self addBorder:cell];
 }
 
--(void) addNeedInstall:(UITableViewCell *)cell{
+-(void) addNeedInstall:(UITableViewCell *)cell withIndex:(NSInteger) index{
     if (cell.subviews.count >= 4) {
         return;
     }
-    UILabel *lbl = [self addTitleLable:@"需要上门安装" withSuperView:cell];
+    NSString *title = @"需要上门安装";
+    if (index==2) {
+        title = @"增值服务";
+    }else{
+        [self addBorder:cell];
+    }
+    
+    UILabel *lbl = [self addTitleLable:title withSuperView:cell];
     
     UIButton *btnTip = [UIButton new];
     [btnTip setImage:[UIImage imageNamed:@"qrdd_icon_zy"] forState:UIControlStateNormal];
-    [btnTip addTarget:self action:@selector(tapTipsButton) forControlEvents:UIControlEventTouchUpInside];
+    if (index == 2) {
+        [btnTip addTarget:self action:@selector(tapServiceTipsButton) forControlEvents:UIControlEventTouchUpInside];
+    }else{
+        [btnTip addTarget:self action:@selector(tapInstallTipsButton) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     [cell addSubview:btnTip];
     
     [btnTip mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -487,8 +518,43 @@
     _needInstall = sender.on;
 }
 
--(void) tapTipsButton{
+-(void) tapInstallTipsButton{
+    if (_installPopup == nil) {
+        _installPopup = [KLCPopup popupWithContentView:[self getContentForTips]];
+        _installPopup.showType = KLCPopupShowTypeSlideInFromTop;
+        _installPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+    }
     
+    [_installPopup show];
+}
+
+
+-(void) tapServiceTipsButton{
+    if (_serviceDescPopup == nil) {
+       
+        _serviceDescPopup = [KLCPopup popupWithContentView:[self getContentForTips]];
+        _serviceDescPopup.showType = KLCPopupShowTypeSlideInFromTop;
+        _serviceDescPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+    }
+    
+    [_serviceDescPopup show];
+}
+
+-(UIView *) getContentForTips{
+    
+    UIView *content = [self getContentWithSize:CGSizeMake( SizeWidth(686/2), SizeHeight(1082/2))];
+    [self addCancelButtonTo:content];
+
+    return content;
+}
+
+-(UIView *) getContentWithSize:(CGSize ) size{
+    UIView* contentView = [[UIView alloc] init];
+    contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+    contentView.frame = CGRectMake(self.view.centerX, self.view.centerY, size.width, size.height);
+    contentView.layer.cornerRadius = 5;
+    
+    return contentView;
 }
 
 -(void) addCostDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
@@ -502,6 +568,8 @@
         title =@"商品金额";
     }else if(index == 1){
         title =@"安装费";
+    }else if(index == 2){
+        title =@"增值服务";
     }else{
         title =@"分享立减";
     }
@@ -509,5 +577,251 @@
     [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
     
     [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+}
+
+-(void) showShareView{
+    if (_sharePopup == nil) {
+        UIView* contentView = [[UIView alloc] init];
+        contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+        CGFloat width = self.view.frame.size.width;
+        contentView.frame = CGRectMake(self.view.centerX, self.view.centerY, width, SizeHeight(368/2));
+        
+        
+        CGFloat offset = - SizeWidth(88+62+62/2+88/2)/2;
+        [self addButtonToShareView:contentView withImage:@"icon_fx_pyq" withTitle:@"朋友圈" withLeft:offset withIndex:1];
+        offset = -SizeWidth(62/2+88/2)/2;
+        [self addButtonToShareView:contentView withImage:@"icon_fx_wx" withTitle:@"微信好友" withLeft:offset withIndex:2];
+        
+        offset = SizeWidth(62/2+88/2)/2;
+        [self addButtonToShareView:contentView withImage:@"icon_fx_qq" withTitle:@"QQ好友" withLeft:offset withIndex:3];
+        offset = SizeWidth(88+62+62/2+88/2)/2;
+        
+        [self addButtonToShareView:contentView withImage:@"icon_fx_qqkj" withTitle:@"QQ空间" withLeft:offset withIndex:4];
+        
+        _sharePopup = [KLCPopup popupWithContentView:contentView];
+        _sharePopup.showType = KLCPopupShowTypeSlideInFromTop;
+        _sharePopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+    }
+    
+    [_sharePopup show];
+}
+
+-(void) addButtonToShareView:(UIView *) superView withImage:(NSString *) img withTitle:(NSString *) title withLeft:(CGFloat) offset withIndex:(NSInteger) index{
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:img]];
+    imgView.tag = Share_TAG + index;
+    [superView addSubview:imgView];
+    
+    UITapGestureRecognizer *tapGuesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapShareButton:)];
+    [imgView addGestureRecognizer:tapGuesture];
+    
+    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(superView.mas_centerX).offset(offset);
+        make.top.equalTo(superView).offset(SizeHeight(172/2));
+        make.width.equalTo(@(SizeWidth(88/2)));
+        make.height.equalTo(@(SizeHeight(88/2)));
+    }];
+    
+    UILabel *lblTitle = [UILabel new];
+    lblTitle.font = PingFangSCMedium(SizeWidth(13));
+    lblTitle.textColor = RGBColor(51,51,51);
+    lblTitle.textAlignment = NSTextAlignmentLeft;
+    lblTitle.text = title;
+    [superView addSubview:lblTitle];
+    
+    [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(imgView.mas_centerX);
+        make.top.equalTo(imgView.mas_bottom).offset(SizeHeight(48/2));
+        make.width.equalTo(@(SizeWidth(70)));
+        make.height.equalTo(@(SizeHeight(12)));
+    }];
+}
+
+-(void) tapShareButton:(UITapGestureRecognizer *) gesture{
+    
+}
+
+-(void) addCancelButtonTo:(UIView *) sender{
+    UIButton *btnClose = [UIButton new];
+    [btnClose setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
+    btnClose.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
+    btnClose.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [btnClose setTitle:@"我知道了" forState:UIControlStateNormal];
+    [btnClose addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+    [sender addSubview:btnClose];
+    [btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(sender.mas_centerX);
+        make.bottom.equalTo(sender.mas_bottom).offset(-SizeHeight(38/2));
+        make.width.equalTo(@(SizeWidth(150/2)));
+        make.height.equalTo(@(SizeHeight(34/2)));
+    }];
+}
+
+-(void) dismissPopup{
+    [KLCPopup dismissAllPopups];
+}
+
+-(void) showPayTypeView{
+    
+    if (_PayPopup == nil) {
+        UIView *contentView = [self getContentWithSize:CGSizeMake(SizeWidth(686/2), SizeHeight(596/2))];
+        
+        UILabel *lblTitle = [UILabel new];
+        lblTitle.font = PingFangSCBOLD(SizeWidth(15));
+        lblTitle.textColor = RGBColor(51,51,51);
+        lblTitle.textAlignment = NSTextAlignmentLeft;
+        lblTitle.text = @"支付方式";
+        [contentView addSubview:lblTitle];
+        
+        [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(contentView.mas_left).offset(SizeWidth(41/2));
+            make.top.equalTo(contentView.mas_top).offset(SizeHeight(85/2));
+            make.width.equalTo(@(SizeWidth(200)));
+            make.height.equalTo(@(SizeHeight(30/2)));
+        }];
+        
+        _alView = [self addPayWayView:1 withTopView:lblTitle toSuperView:contentView];
+        
+        UIView *border = [UIView new];
+        border.backgroundColor = RGBColorAlpha(224,224,224,1);
+        [contentView addSubview:border];
+        
+        [border mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(_alView.mas_bottom).offset(SizeHeight(25));
+            make.left.equalTo(_alView.mas_left);
+            make.right.equalTo(_alView.mas_right);
+            make.height.equalTo(@(1));
+        }];
+        
+        _wcView = [self addPayWayView:0 withTopView:border toSuperView:contentView];
+        
+        UIButton *btnClose = [UIButton new];
+        [btnClose setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
+        btnClose.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
+        btnClose.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [btnClose setTitle:@"取消" forState:UIControlStateNormal];
+        [btnClose addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+        [contentView addSubview:btnClose];
+        [btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(contentView.mas_left).offset(SizeWidth(136/2));
+            make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(30/2));
+            make.width.equalTo(@(SizeWidth(70/2)));
+            make.height.equalTo(@(SizeHeight(34/2)));
+        }];
+        
+        UIButton *btnPay = [UIButton new];
+        [btnPay setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
+        btnPay.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
+        btnPay.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [btnPay setTitle:@"立即支付" forState:UIControlStateNormal];
+        [btnPay addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+        [contentView addSubview:btnPay];
+        [btnPay mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(btnClose.mas_left).offset(SizeWidth(237/2));
+            make.bottom.equalTo(btnClose.mas_bottom);
+            make.width.equalTo(@(SizeWidth(150/2)));
+            make.height.equalTo(@(SizeHeight(34/2)));
+        }];
+        
+        UIView *border1 = [UIView new];
+        border1.backgroundColor = RGBColorAlpha(224,224,224,1);
+        [contentView addSubview:border1];
+        
+        [border1 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(btnPay.mas_top).offset(-SizeHeight(13/2));
+            make.left.equalTo(contentView.mas_left);
+            make.right.equalTo(contentView.mas_right);
+            make.height.equalTo(@(1));
+        }];
+        
+        _PayPopup = [KLCPopup popupWithContentView:contentView];
+        _PayPopup.showType = KLCPopupShowTypeSlideInFromTop;
+        _PayPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+    }
+    
+    [_PayPopup show];
+}
+
+-(UIView *) addPayWayView:(int) type withTopView:(UIView *) topView toSuperView:(UIView *) superView{
+    UIView *content = [UIView new];
+    content.tag = type;
+    content.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapPayWay:)];
+    [content addGestureRecognizer:tap];
+    
+    [superView addSubview:content];
+    [content mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(topView.mas_bottom).offset(SizeHeight(25));
+        make.left.equalTo(superView.mas_left).offset(SizeWidth(20));
+        make.right.equalTo(superView.mas_right).offset(-SizeWidth(20));
+        make.height.equalTo(@(SizeHeight(25)));
+    }];
+    
+    UIImageView *img = [UIImageView new];
+    NSString *title = @"支付宝支付";
+    if (type == 0) {
+        img.image = [UIImage imageNamed:@"zf_icon_wx"];
+        title = @"微信支付";
+    }else{
+        img.image = [UIImage imageNamed:@"zf_icon_zfb"];
+    }
+    [content addSubview:img];
+    
+    [img mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(content);
+        make.left.equalTo(content);
+        make.width.equalTo(@(SizeWidth(56/2)));
+        make.height.equalTo(@(SizeHeight(46/2)));
+    }];
+    
+    UILabel *lblTitle = [UILabel new];
+    lblTitle.font = PingFangSCMedium(SizeWidth(13));
+    lblTitle.textColor = RGBColor(51,51,51);
+    lblTitle.textAlignment = NSTextAlignmentLeft;
+    lblTitle.text = title;
+    [content addSubview:lblTitle];
+    
+    [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(img.mas_right).offset(SizeWidth(7));
+        make.centerY.equalTo(img.mas_centerY);
+        make.width.equalTo(@(SizeWidth(100)));
+        make.height.equalTo(@(SizeHeight(26)));
+    }];
+    
+    UIImageView *payimg = [UIImageView new];
+    payimg.tag = CBX_PAY_TAG;
+    if (type == 0) {
+        payimg.image = [UIImage imageNamed:@"icon_xz"];
+    }else{
+        payimg.image = [UIImage imageNamed:@"icon_xz_pre"];
+    }
+    
+    [content addSubview:payimg];
+    
+    [payimg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(content);
+        make.right.equalTo(content);
+        make.width.equalTo(@(SizeWidth(32/2)));
+        make.height.equalTo(@(SizeHeight(32/2)));
+    }];
+    
+    return content;
+}
+
+-(void) tapPayWay:(UITapGestureRecognizer *) guesture{
+    UIView *sender = guesture.view;
+    UIImageView *alImgView = (UIImageView *)[_alView viewWithTag:CBX_PAY_TAG];
+    UIImageView *wcImgView = (UIImageView *)[_wcView viewWithTag:CBX_PAY_TAG];
+    
+    if((sender.tag == 0 && _isWechatPay )||(sender.tag == 1 && !_isWechatPay)){
+        return;
+    }else if(sender.tag == 0 && !_isWechatPay){
+        alImgView.image = [UIImage imageNamed:@"icon_xz"];
+        wcImgView.image = [UIImage imageNamed:@"icon_xz_pre"];
+        _isWechatPay = YES;
+    }else{
+        alImgView.image = [UIImage imageNamed:@"icon_xz_pre"];
+        wcImgView.image = [UIImage imageNamed:@"icon_xz"];
+        _isWechatPay = NO;
+    }
 }
 @end

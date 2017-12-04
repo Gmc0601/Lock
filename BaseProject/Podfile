@@ -7,4 +7,6 @@ pod 'SDWebImage'
 pod 'MBProgressHUD'
 pod 'Masonry'
 pod 'IQKeyboardManager'
+pod 'KLCPopup'
+pod 'TNRadioButtonGroup'
 end
