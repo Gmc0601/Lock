@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddDeviceNextViewController">
+            <connections>
+                <outlet property="NextBtn" destination="pey-vZ-ASK" id="aF2-7j-5Tk"/>
+                <outlet property="infoLab" destination="2U7-Yv-Nfa" id="q5F-aB-e3c"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tj_icon_wg" translatesAutoresizingMaskIntoConstraints="NO" id="NHJ-Rx-B6m">
+                    <rect key="frame" x="109" y="134" width="157" height="138"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="138" id="Gwd-xj-O8j"/>
+                        <constraint firstAttribute="width" constant="157" id="LfF-mq-f8M"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2U7-Yv-Nfa">
+                    <rect key="frame" x="16" y="294" width="343" height="129"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="129" id="BG6-TP-f02"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pey-vZ-ASK">
+                    <rect key="frame" x="33" y="472" width="310" height="52"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="下一步"/>
+                    <connections>
+                        <action selector="nextBtnClick:" destination="-1" eventType="touchUpInside" id="ubW-Pc-J3d"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="2U7-Yv-Nfa" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="2Kt-1Q-3TH"/>
+                <constraint firstItem="2U7-Yv-Nfa" firstAttribute="top" secondItem="NHJ-Rx-B6m" secondAttribute="bottom" constant="22" id="2lf-9H-td0"/>
+                <constraint firstItem="2U7-Yv-Nfa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="brX-Yb-Fnw"/>
+                <constraint firstItem="NHJ-Rx-B6m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="134" id="fsf-Bm-yWk"/>
+                <constraint firstItem="NHJ-Rx-B6m" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qvp-y6-fdM"/>
+            </constraints>
+            <point key="canvasLocation" x="-202" y="-183"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="tj_icon_wg" width="158" height="158"/>
+    </resources>
+</document>
