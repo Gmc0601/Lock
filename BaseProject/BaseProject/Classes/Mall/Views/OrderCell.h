@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "OrderModel.h"
-@interface OrderCell : UITableViewCell
 
+@protocol OrderCellDelegate <NSObject>
+    -(void) showConfirmView:(NSString *) orderId;
+@end
+
+@interface OrderCell : UITableViewCell
+@property(retain,nonatomic) OrderModel *model;
+@property(weak,atomic) id<OrderCellDelegate> delegate;
 @end

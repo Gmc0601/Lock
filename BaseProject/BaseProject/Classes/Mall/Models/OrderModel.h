@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 typedef enum {
-    waitingPay,
-    waitingDeliver,
-    waitingReceiving,
-    complete,
-    waitingRefund,
-    RefundComplete
+    OrderStatus_waitingPay,
+    OrderStatus_waitingDeliver,
+    OrderStatus_waitingReceiving,
+    OrderStatus_complete,
+    OrderStatus_waitingRefund,
+    OrderStatus_RefundComplete
     
 } OrderStatus;
 

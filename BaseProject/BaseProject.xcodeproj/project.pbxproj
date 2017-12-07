@@ -81,6 +81,7 @@
 		6B73E7301FD19B9E004C102D /* SHPlacePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B73E72B1FD19B9E004C102D /* SHPlacePickerView.m */; };
 		6B73E7311FD19B9E004C102D /* PlaceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B73E72D1FD19B9E004C102D /* PlaceModel.m */; };
 		6B73E7321FD19B9E004C102D /* Place.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6B73E72F1FD19B9E004C102D /* Place.plist */; };
+		6BCE2F701FD6D18E00864DA5 /* OrderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE2F6F1FD6D18E00864DA5 /* OrderDetailViewController.m */; };
 		6BDB2F3A1FCC4B6200F60802 /* ConfirmOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F391FCC4B6200F60802 /* ConfirmOrderViewController.m */; };
 		6BDB2F471FCC6A0C00F60802 /* UIView+Frame copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F3C1FCC6A0B00F60802 /* UIView+Frame copy.m */; };
 		6BDB2F481FCC6A0C00F60802 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F3E1FCC6A0B00F60802 /* UIView+Frame.m */; };
@@ -258,6 +259,8 @@
 		6B73E72D1FD19B9E004C102D /* PlaceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceModel.m; sourceTree = "<group>"; };
 		6B73E72E1FD19B9E004C102D /* PlaceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceModel.h; sourceTree = "<group>"; };
 		6B73E72F1FD19B9E004C102D /* Place.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Place.plist; sourceTree = "<group>"; };
+		6BCE2F6E1FD6D18E00864DA5 /* OrderDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderDetailViewController.h; sourceTree = "<group>"; };
+		6BCE2F6F1FD6D18E00864DA5 /* OrderDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderDetailViewController.m; sourceTree = "<group>"; };
 		6BDB2F381FCC4B6200F60802 /* ConfirmOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfirmOrderViewController.h; sourceTree = "<group>"; };
 		6BDB2F391FCC4B6200F60802 /* ConfirmOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ConfirmOrderViewController.m; sourceTree = "<group>"; };
 		6BDB2F3B1FCC6A0B00F60802 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
@@ -599,6 +602,8 @@
 				6BDB2F391FCC4B6200F60802 /* ConfirmOrderViewController.m */,
 				6B595E911FD5827C001F3A5E /* MyOrderViewController.h */,
 				6B595E921FD5827C001F3A5E /* MyOrderViewController.m */,
+				6BCE2F6E1FD6D18E00864DA5 /* OrderDetailViewController.h */,
+				6BCE2F6F1FD6D18E00864DA5 /* OrderDetailViewController.m */,
 			);
 			path = VIewControllers;
 			sourceTree = "<group>";
@@ -1078,6 +1083,7 @@
 				42C84F021EF2E97D0008189D /* NSString+Category.m in Sources */,
 				6BDB2F491FCC6A0C00F60802 /* UIView+Utils.m in Sources */,
 				42F795DC1F00CC3E00A11A69 /* UIScrollView+TBRefresh.m in Sources */,
+				6BCE2F701FD6D18E00864DA5 /* OrderDetailViewController.m in Sources */,
 				42D0D7471FBEB97E0092CAD1 /* MallViewController.m in Sources */,
 				42C84EFE1EF2E97D0008189D /* NSDictionary+Category.m in Sources */,
 				42C064BE1FD67CC300CACD76 /* AddDeviceViewController.m in Sources */,
