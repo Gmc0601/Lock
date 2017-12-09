@@ -7,21 +7,28 @@
 //
 
 #import "AddGateWayViewController.h"
-#import "smartlinklib_7x.h"
-#import "HFSmartLink.h"
-#import "HFSmartLinkDeviceInfo.h"
-#import <SystemConfiguration/CaptiveNetwork.h>
+
 
 
 @interface AddGateWayViewController (){
-    HFSmartLink * smtlk;
-    BOOL isconnecting, showPWD;
+    
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *WifiLab;
 @property (weak, nonatomic) IBOutlet UITextField *WIFIText;
 @property (weak, nonatomic) IBOutlet UIButton *pwdBtn;
 @property (weak, nonatomic) IBOutlet UIButton *startBtn;
+
+
+
+#if SIMULATOR_TEST
+@property (nonatomic, strong) HFSmartLink * smtlk;
+
+@property (nonatomic) BOOL isconnecting, showPWD;
+#else
+#endif
+
+
 
 @end
 
@@ -36,14 +43,22 @@
 }
 
 - (void)linkSmart {
-    smtlk = [HFSmartLink shareInstence];
-    smtlk.isConfigOneDevice = NO;
-    smtlk.waitTimers = 30;
-    isconnecting=false;
+#if SIMULATOR_TEST
+   self.smtlk = [HFSmartLink shareInstence];
+    self.smtlk.isConfigOneDevice = NO;
+    self.smtlk.waitTimers = 30;
+    self.isconnecting=false;
+#else
+#endif
+    
+    
+    
 }
 
 - (void)showWifiSsid
 {
+    
+#if SIMULATOR_TEST
     BOOL wifiOK= FALSE;
     NSDictionary *ifs;
     NSString *ssid;
@@ -62,8 +77,13 @@
             self.WifiLab.text = @"手机未连接WIFI";
         }
     }
+#else
+#endif
+    
+    
 }
 - (id)fetchSSIDInfo {
+#if SIMULATOR_TEST
     NSArray *ifs = (__bridge_transfer id)CNCopySupportedInterfaces();
     NSLog(@"Supported interfaces: %@", ifs);
     id info = nil;
@@ -73,6 +93,11 @@
         if (info && [info count]) { break; }
     }
     return info;
+#else
+    return nil;
+#endif
+    
+
 }
 
 - (void)resetFather {
@@ -88,28 +113,29 @@
     NSString * ssidStr= self.WifiLab.text;
     NSString * pswdStr = self.WIFIText.text;
     
+#if SIMULATOR_TEST
     NSLog(@"%@<><><>%@", ssidStr, pswdStr);
     
-    if(!isconnecting){
-        isconnecting = true;
-        [smtlk startWithSSID:ssidStr Key:pswdStr withV3x:true
+    if(!self.isconnecting){
+        self.isconnecting = true;
+        [self.smtlk startWithSSID:ssidStr Key:pswdStr withV3x:true
                 processblock: ^(NSInteger pro) {
-//                    self.progress.progress = (float)(pro)/100.0;
+                    //                    self.progress.progress = (float)(pro)/100.0;
                     NSLog(@"%ld", pro);
                 } successBlock:^(HFSmartLinkDeviceInfo *dev) {
                     [self  showAlertWithMsg:[NSString stringWithFormat:@"%@:%@",dev.mac,dev.ip] title:@"OK"];
                 } failBlock:^(NSString *failmsg) {
                     [self  showAlertWithMsg:failmsg title:@"error"];
                 } endBlock:^(NSDictionary *deviceDic) {
-                    isconnecting  = false;
+                    self.isconnecting  = false;
                     [self.startBtn setTitle:@"connect" forState:UIControlStateNormal];
                     NSLog(@"finish");
                 }];
         [self.startBtn setTitle:@"connecting" forState:UIControlStateNormal];
     }else{
-        [smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
+        [self.smtlk stopWithBlock:^(NSString *stopMsg, BOOL isOk) {
             if(isOk){
-                isconnecting  = false;
+                self.isconnecting  = false;
                 [self.startBtn setTitle:@"1connect" forState:UIControlStateNormal];
                 [self showAlertWithMsg:stopMsg title:@"OK"];
             }else{
@@ -117,6 +143,10 @@
             }
         }];
     }
+#else
+#endif
+    
+   
     
 }
 -(void)showAlertWithMsg:(NSString *)msg

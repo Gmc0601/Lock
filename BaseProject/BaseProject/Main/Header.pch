@@ -12,7 +12,17 @@
 #import "CCUrl.h"
 #import "ConfigModel.h"
 #import "MainApi.h"
-//#import "JumpFactory.h"
+
+#if TARGET_IPHONE_SIMULATOR
+#define SIMULATOR_TEST  0
+#else
+#define SIMULATOR_TEST  1
+#import "smartlinklib_7x.h"
+#import "HFSmartLink.h"
+#import "HFSmartLinkDeviceInfo.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
+#endif
+
 
 #define UIColorFromHex(s)  [UIColor colorWithRed:(((s & 0xFF0000) >> 16))/255.0 green:(((s &0xFF00) >>8))/255.0 blue:((s &0xFF))/255.0 alpha:1.0]
 
