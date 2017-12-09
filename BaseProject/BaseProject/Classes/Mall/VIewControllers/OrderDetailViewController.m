@@ -36,6 +36,12 @@
 @property(assign,atomic) BOOL isWechatPay;
 @property(retain,atomic) UIImageView* imgStatus;
 @property(retain,atomic) UILabel* lblStatus;
+@property(retain,atomic) UILabel* lblNeedInstall;
+@property(retain,atomic) UILabel* lblOrder;
+@property(retain,atomic) UILabel* lblPayWay;
+@property(retain,atomic) UILabel* lblOrderDate;
+@property(retain,atomic) UILabel* lblConfirmReceiveDate;
+@property(retain,atomic) UIButton* btnCancelOrder;
 @end
 
 @implementation OrderDetailViewController
@@ -46,8 +52,9 @@
     [self resetFather];
     [self addFooter];
     [self addTableView];
-    _numberOfSection = 3;
+    _numberOfSection = 4;
     self.automaticallyAdjustsScrollViewInsets = NO;
+    [self addServiceLayer];
 }
 
 -(void) ShowHeader{
@@ -183,9 +190,12 @@
             number = 4;
             break;
         case 1:
-            number = 3;
+            number = 2;
             break;
         case 2:
+            number = 4;
+            break;
+        case 3:
             number = 4;
             break;
         default:
@@ -218,6 +228,8 @@
         }
     }else if(indexPath.section == 2){
         [self addCostDetail:cell withIndex:indexPath.row];
+    }else if (indexPath.section == 3){
+        [self addOrderDetail:cell withIndex:indexPath.row];
     }
     
     return cell;
@@ -343,19 +355,22 @@
 
 -(UILabel *) addLabelTo:(UIView *) superView withLeftView:(UILabel *) leftView{
     
-    UILabel *txt = [UILabel new];
-    txt.textAlignment = NSTextAlignmentLeft;
-    txt.textColor = RGBColorAlpha(51,51,51,1);
+    UILabel *lbl = [UILabel new];
+    lbl.textAlignment = NSTextAlignmentLeft;
+    lbl.textColor = RGBColorAlpha(51,51,51,1);
 
     if([leftView.text isEqualToString:@"收货人:"]){
-        txt.font = PingFangSCBOLD(SizeWidth(15));
+        lbl.font = PingFangSCBOLD(SizeWidth(15));
     }else{
-        txt.font = PingFangSCMedium(SizeWidth(13));
-
+        lbl.font = PingFangSCMedium(SizeWidth(13));
     }
     
-    [superView addSubview:txt];
-    [txt mas_makeConstraints:^(MASConstraintMaker *make) {
+    if ([leftView.text isEqualToString:@"收货地址:"]) {
+        lbl.numberOfLines = 2;
+    }
+    
+    [superView addSubview:lbl];
+    [lbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(leftView.mas_centerY);
         make.right.equalTo(superView.mas_right).offset(-SizeWidth(10));
         make.left.equalTo(leftView.mas_right).offset(SizeWidth(25/2));
@@ -368,7 +383,7 @@
     }];
 
     
-    return txt;
+    return lbl;
 }
 
 -(void) addContentForDeliveryAddrees:(UITableViewCell *)cell withIndex:(NSInteger) index{
@@ -449,7 +464,7 @@
     if (cell.subviews.count >= 4) {
         return;
     }
-    NSString *title = @"需要上门安装";
+    NSString *title = @"是否需要上门安装";
     if (index==2) {
         title = @"增值服务";
     }else{
@@ -458,33 +473,19 @@
     
     UILabel *lbl = [self addTitleLable:title withSuperView:cell];
     
-    UIButton *btnTip = [UIButton new];
-    [btnTip setImage:[UIImage imageNamed:@"qrdd_icon_zy"] forState:UIControlStateNormal];
-    if (index == 2) {
-        [btnTip addTarget:self action:@selector(tapServiceTipsButton) forControlEvents:UIControlEventTouchUpInside];
-    }else{
-        [btnTip addTarget:self action:@selector(tapInstallTipsButton) forControlEvents:UIControlEventTouchUpInside];
-    }
+    _lblNeedInstall = [UILabel new];
+    _lblNeedInstall.textAlignment = NSTextAlignmentLeft;
+    _lblNeedInstall.textColor = RGBColorAlpha(51,51,51,1);
+   _lblNeedInstall.font = PingFangSCMedium(SizeWidth(13));
+    _lblNeedInstall.text = @"需要上门安装";
     
-    [cell addSubview:btnTip];
-    
-    [btnTip mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(lbl.mas_right).offset(SizeWidth(10));
-        make.centerY.equalTo(lbl);
-        make.width.equalTo(@(SizeWidth(32/2)));
-        make.height.equalTo(@(SizeHeight(32/2)));
-    }];
-    
-    UISwitch *sw = [UISwitch new];
-    sw.on = _needInstall;
-    [sw addTarget:self action:@selector(needInstall:) forControlEvents:UIControlEventValueChanged];
-    [cell addSubview:sw];
-    
-    [sw mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(cell).offset(-SizeWidth(16));
-        make.centerY.equalTo(lbl);
-        make.width.equalTo(@(SizeWidth(102/2)));
-        make.height.equalTo(@(SizeHeight(62/2)));
+    [cell addSubview:_lblNeedInstall];
+    [_lblNeedInstall mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(lbl.mas_centerY);
+        make.right.equalTo(cell.mas_right).offset(-SizeWidth(10));
+        make.left.equalTo(lbl.mas_right).offset(SizeWidth(25/2));
+        make.height.equalTo(@(SizeHeight(25/2)));
+            make.height.equalTo(@(SizeHeight(25/2)));
     }];
 }
 
@@ -553,6 +554,63 @@
     [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
 }
 
+-(void) addOrderDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
+    if (cell.subviews.count >= 3) {
+        return;
+    }
+    
+    NSString *title = @"";
+    UIColor *fontColor = RGBColor(153,153,153);
+    if (index == 0) {
+        title = [self getOrderIdText:@"8783762893"];
+          [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+        [self addBtnCancelOrderTo:cell];
+    }else if(index == 1){
+        title =@"支付方式:";
+        UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+       _lblPayWay = [self addLabelTo:cell withLeftView:lbl];
+        _lblPayWay.textColor = RGBColor(153,153,153);
+        _lblPayWay.text = @"微信支付";
+        
+    }else if(index == 2){
+        title =@"下单时间:";
+        UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+        _lblOrderDate = [self addLabelTo:cell withLeftView:lbl];
+        _lblOrderDate.textColor = RGBColor(153,153,153);
+        _lblOrderDate.text = @"2017-10-10 09:09:09";
+    }else{
+        title =@"确认收货时间:";
+        UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+        _lblConfirmReceiveDate = [self addLabelTo:cell withLeftView:lbl];
+        _lblConfirmReceiveDate.textColor = RGBColor(153,153,153);
+        _lblConfirmReceiveDate.text = @"2017-10-10 09:09:09";
+    }
+}
+
+-(void) addBtnCancelOrderTo:(UITableViewCell *) cell{
+    _btnCancelOrder = [UIButton new];
+    [_btnCancelOrder setTitle:@"取消订单" forState:UIControlStateNormal];
+    [_btnCancelOrder setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];
+    _btnCancelOrder.titleLabel.font = PingFangSCBOLD(SizeWidth(13));
+    [cell addSubview:_btnCancelOrder];
+    
+    [_btnCancelOrder mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(@(SizeHeight(27/2)));
+        make.width.equalTo(@(SizeWidth(140/2)));
+        make.right.equalTo(cell).offset(-SizeWidth(33/2));
+        make.top.equalTo(cell).offset(SizeHeight(29/2));
+    }];
+    
+    [_btnCancelOrder addTarget:self action:@selector(tapCancelOrderButton) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void) tapCancelOrderButton{
+    
+}
+
+-(NSString *) getOrderIdText:(NSString *) orderId{
+    return [NSString stringWithFormat:@"订单编号: %@",orderId];
+}
 
 
 -(void) addCancelButtonTo:(UIView *) sender{
@@ -738,5 +796,57 @@
         wcImgView.image = [UIImage imageNamed:@"icon_xz"];
         _isWechatPay = NO;
     }
+}
+
+-(void) addServiceLayer{
+    UIView *layer = [UIView new];
+    layer.backgroundColor = RGBColorAlpha(0,0,0,0.36);
+    [self.view addSubview:layer];
+    [layer mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(self.view);
+        make.height.equalTo(@(SizeHeight(33)));
+        make.bottom.equalTo(self.view).offset(-SizeHeight(55));
+        make.left.equalTo(self.view);
+    }];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ksjl_icon_zc"]];
+    [layer addSubview:imgView];
+    
+    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(layer).offset(SizeWidth(36/2));
+        make.centerY.equalTo(layer);
+        make.width.equalTo(@(SizeWidth(32/2)));
+        make.height.equalTo(@(SizeHeight(32/2)));
+    }];
+    
+    UILabel *lbl = [UILabel new];
+    lbl.font = PingFangSC(13);
+    lbl.textColor = RGBColor(255,255,255);
+    lbl.textAlignment = NSTextAlignmentRight;
+    lbl.text = @"我已阅读并同意";
+    [layer addSubview:lbl];
+    
+    [lbl mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(layer.mas_centerY);
+        make.left.equalTo(layer).offset(SizeWidth(84/2));
+        make.width.equalTo(@(SizeWidth(90)));
+        make.height.equalTo(@(SizeHeight(15)));
+    }];
+    
+    UILabel *btn = [UILabel new];
+    btn.font = PingFangSC(13);
+    btn.textColor = RGBColor(248,179,23);
+    btn.textAlignment = NSTextAlignmentLeft;
+    NSDictionary *underlineAttribute = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
+    btn.attributedText = [[NSAttributedString alloc] initWithString:@"《增值服务协议》"attributes:underlineAttribute];
+    [layer addSubview:btn];
+    
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(lbl.mas_centerY);
+        make.left.equalTo(lbl.mas_right);
+        make.width.equalTo(@(SizeWidth(150)));
+        make.height.equalTo(@(SizeHeight(15)));
+    }];
+
 }
 @end
