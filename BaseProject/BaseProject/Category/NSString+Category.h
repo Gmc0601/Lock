@@ -19,7 +19,7 @@
 + (NSString*) getSecrectStringWithAccountNo:(NSString*)accountNo;
 
 //计算文字高度
-- (CGFloat   ) heightWithFontSize:(CGFloat)fontSize width:(CGFloat)width;
+- (CGFloat) heightWithFontSize:(CGFloat)fontSize width:(CGFloat)width;
 -(CGFloat)widthWithFont:(UIFont *)font height:(CGFloat)height;
 
 /**抹除运费小数末尾的0*/

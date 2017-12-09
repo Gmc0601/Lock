@@ -1282,7 +1282,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BaseProject/Library/LinkSmart",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cc.BaseProject;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.lock.com.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -1301,7 +1301,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/BaseProject/Library/LinkSmart",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cc.BaseProject;
+				PRODUCT_BUNDLE_IDENTIFIER = cc.lock.com.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

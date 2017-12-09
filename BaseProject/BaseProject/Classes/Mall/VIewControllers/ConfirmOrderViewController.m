@@ -9,6 +9,7 @@
 #import "ConfirmOrderViewController.h"
 #import "KLCPopup.h"
 #import "UIColor+BGHexColor.h"
+
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
 
@@ -107,6 +108,8 @@
     lblTitle.textAlignment = NSTextAlignmentLeft;
     lblTitle.text = @"总计";
     [footer addSubview:lblTitle];
+    
+    
     
     [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(footer.mas_left).offset(SizeWidth(32/2));
