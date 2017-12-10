@@ -10,5 +10,5 @@
 #import "CCBaseViewController.h"
 
 @interface ConfirmOrderViewController : CCBaseViewController
-
+- (instancetype)initWithGoodsId:(NSString *) goodsId;
 @end

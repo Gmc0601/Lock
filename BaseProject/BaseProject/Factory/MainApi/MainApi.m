@@ -59,9 +59,11 @@ static MainApi *request = nil;
 
     NSMutableDictionary *mutArr = [NSMutableDictionary dictionaryWithDictionary:parameters];
         [mutArr addEntriesFromDictionary:@{@"apiCode":URLString}];
-        if ([ConfigModel getBoolObjectforKey:IsLogin]) {
+        //if ([ConfigModel getBoolObjectforKey:IsLogin]) {
+    if (YES) {
             NSString *usertoken = [ConfigModel getStringforKey:UserToken];
-            [mutArr addEntriesFromDictionary:@{@"userToken":usertoken}];
+            [mutArr addEntriesFromDictionary:@{@"userToken":@"2434ce208259d9e2cd8064e8e639ea24"}];
+            
 #if UDID
             KeychainUUID *keychain = [[KeychainUUID alloc] init];
             id data = [keychain readUDID];
@@ -78,8 +80,9 @@ static MainApi *request = nil;
     if ([method isEqualToString:@"POST"]) {
         
         NSLog(@"%@==============",jsDic);
-        
-        [self.manager POST:BaseApi parameters:jsDic progress:^(NSProgress * _Nonnull uploadProgress) {
+        URLString = [NSString stringWithFormat:@"%@%@",BaseApi,URLString];
+
+        [self.manager POST:URLString parameters:jsDic progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"Response Object:\n%@", responseObject);
@@ -94,6 +97,9 @@ static MainApi *request = nil;
             }
         }];
     }else if([method isEqualToString:@"GET"]){
+        NSString *usertoken = [ConfigModel getStringforKey:UserToken];
+        usertoken = @"2434ce208259d9e2cd8064e8e639ea24";
+        URLString = [NSString stringWithFormat:@"%@%@&user_token=%@",BaseApi,URLString,usertoken];
         [self.manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

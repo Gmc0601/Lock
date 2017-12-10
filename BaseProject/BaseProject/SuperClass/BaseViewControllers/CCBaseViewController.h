@@ -10,6 +10,7 @@
 #import <Masonry/Masonry.h>
 #import "UIView+Utils.h"
 #import "NSString+Category.h"
+#import "UIImageView+WebCache.h"
 
 @interface CCBaseViewController : UIViewController
 

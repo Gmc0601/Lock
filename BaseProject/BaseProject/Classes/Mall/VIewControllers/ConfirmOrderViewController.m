@@ -37,9 +37,20 @@
 @property(retain,atomic) UIView* alView;
 @property(retain,atomic) UIView* wcView;
 @property(assign,atomic) BOOL isWechatPay;
+@property(retain,atomic) NSString *goodsId;
+@property(retain,atomic) UILabel *lblShareSaveMoney;
 @end
 
 @implementation ConfirmOrderViewController
+
+- (instancetype)initWithGoodsId:(NSString *) goodsId
+{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,14 +62,46 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
--(void) ShowHeader:(BOOL) show{
-    if (show) {
-        _tb.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, SizeHeight(120))];
-        _tb.tableHeaderView.backgroundColor = [UIColor redColor];
-    }else{
-        _tb.contentInset = UIEdgeInsetsMake(SizeWidth(-16), 0, 0, 0);
+-(NSString *) getShareString:(NSString *) money{
+    return [NSString stringWithFormat:@"分享立减%@元",money];
+}
 
-    }
+-(void) ShowHeader{
+    UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, SizeHeight(120))];
+    _lblShareSaveMoney = [UILabel new];
+    _lblShareSaveMoney.font = PingFangSCBOLD(18);
+    _lblShareSaveMoney.textColor = RGBColor(255,255,255);
+    _lblShareSaveMoney.textAlignment = NSTextAlignmentCenter;
+    _lblShareSaveMoney.text = [self getShareString:@"100"];
+    [img addSubview:_lblShareSaveMoney];
+    
+    [_lblShareSaveMoney mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(img.mas_centerX);
+        make.top.equalTo(img.mas_top).offset(SizeHeight(53/2));
+        make.width.equalTo(img);
+        make.height.equalTo(@(SizeHeight(18)));
+    }];
+    
+    UIButton *btnShare = [UIButton new];
+    btnShare.titleLabel.font = PingFangSCMedium(15);
+    btnShare.titleLabel.textColor = RGBColor(255,255,255);
+    btnShare.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [btnShare setTitle:@"点击分享" forState:UIControlStateNormal];
+    btnShare.layer.borderWidth = 1;
+    btnShare.layer.borderColor = btnShare.titleLabel.textColor.CGColor ;
+    [btnShare addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
+    img.userInteractionEnabled = YES;
+    [img addSubview:btnShare];
+    
+    [btnShare mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(img.mas_centerX);
+        make.bottom.equalTo(img.mas_bottom).offset(-SizeHeight(33/2));
+        make.width.equalTo(@(SizeWidth(186/2)));
+        make.height.equalTo(@(SizeHeight(33)));
+    }];
+    
+    img.backgroundColor = [UIColor redColor];
+    _tb.tableHeaderView = img;
 }
 
 - (void)resetFather {
@@ -86,7 +129,7 @@
         view;
     });
     
-    [self ShowHeader:YES];
+    [self ShowHeader];
     [self.view addSubview:_tb];
 }
 
@@ -587,26 +630,41 @@
         UIView* contentView = [[UIView alloc] init];
         contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
         CGFloat width = self.view.frame.size.width;
-        contentView.frame = CGRectMake(self.view.centerX, self.view.centerY, width, SizeHeight(368/2));
+        contentView.frame = CGRectMake(self.view.centerX, self.view.centerX - SizeHeight(368/2), width, SizeHeight(368/2));
         
         
         CGFloat offset = - SizeWidth(88+62+62/2+88/2)/2;
-        [self addButtonToShareView:contentView withImage:@"icon_fx_pyq" withTitle:@"朋友圈" withLeft:offset withIndex:1];
+        [self addButtonToShareView:contentView withImage:@"fx_icon_pyq" withTitle:@"朋友圈" withLeft:offset withIndex:1];
         offset = -SizeWidth(62/2+88/2)/2;
-        [self addButtonToShareView:contentView withImage:@"icon_fx_wx" withTitle:@"微信好友" withLeft:offset withIndex:2];
+        [self addButtonToShareView:contentView withImage:@"fx_icon_wx" withTitle:@"微信好友" withLeft:offset withIndex:2];
         
         offset = SizeWidth(62/2+88/2)/2;
-        [self addButtonToShareView:contentView withImage:@"icon_fx_qq" withTitle:@"QQ好友" withLeft:offset withIndex:3];
+        [self addButtonToShareView:contentView withImage:@"fx_icon_qq" withTitle:@"QQ好友" withLeft:offset withIndex:3];
         offset = SizeWidth(88+62+62/2+88/2)/2;
         
-        [self addButtonToShareView:contentView withImage:@"icon_fx_qqkj" withTitle:@"QQ空间" withLeft:offset withIndex:4];
+        [self addButtonToShareView:contentView withImage:@"fx_icon_kj" withTitle:@"QQ空间" withLeft:offset withIndex:4];
+        
+        
+        UIButton *btnClose = [UIButton new];
+        [btnClose setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
+        btnClose.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
+        btnClose.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [btnClose setTitle:@"取消" forState:UIControlStateNormal];
+        [btnClose addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+        [contentView addSubview:btnClose];
+        [btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(contentView.mas_centerX);
+            make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(29/2));
+            make.width.equalTo(@(SizeWidth(70/2)));
+            make.height.equalTo(@(SizeHeight(34/2)));
+        }];
         
         _sharePopup = [KLCPopup popupWithContentView:contentView];
-        _sharePopup.showType = KLCPopupShowTypeSlideInFromTop;
-        _sharePopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+        _sharePopup.showType = KLCPopupShowTypeSlideInFromBottom;
+        _sharePopup.dismissType = KLCPopupDismissTypeSlideOutToBottom;
     }
     
-    [_sharePopup show];
+    [_sharePopup showAtCenter:CGPointMake(self.view.centerX, self.view.centerY * 2 - SizeHeight(368/4)) inView:self.view];
 }
 
 -(void) addButtonToShareView:(UIView *) superView withImage:(NSString *) img withTitle:(NSString *) title withLeft:(CGFloat) offset withIndex:(NSInteger) index{
@@ -619,7 +677,7 @@
     
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(superView.mas_centerX).offset(offset);
-        make.top.equalTo(superView).offset(SizeHeight(172/2));
+        make.top.equalTo(superView).offset(SizeHeight(62/2));
         make.width.equalTo(@(SizeWidth(88/2)));
         make.height.equalTo(@(SizeHeight(88/2)));
     }];

@@ -9,4 +9,5 @@ pod 'Masonry'
 pod 'IQKeyboardManager'
 pod 'KLCPopup'
 pod 'TNRadioButtonGroup'
+pod 'MJExtension'
 end

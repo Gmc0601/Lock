@@ -7,12 +7,16 @@
 //
 
 #import "MallViewController.h"
-#import "MyOrderViewController.h"
+#import "ConfirmOrderViewController.h"
+#import "NetworkHelper.h"
+
 
 @interface MallViewController ()<UIWebViewDelegate>
 @property (retain,atomic) UIScrollView *scrollView;
 @property (retain,atomic) UIImageView *img;
 @property (retain,atomic) UIWebView *web;
+@property (retain,atomic)  UIButton *btn ;
+@property (retain,atomic)  NSString *goodsId ;
 @end
 
 @implementation MallViewController
@@ -20,8 +24,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self resetFather];
-    [self addScrollView];
-    [self addBuyButton];
+    
+    [ConfigModel showHud:self];
+    
+    [NetworkHelper getGoodsInfoWithcallBack:^(NSString *error, GoodsInfo *goodsInfo) {
+        [ConfigModel hideHud:self];
+       
+        if (error != nil) {
+            [ConfigModel mbProgressHUD:error andView:self.view];;
+            return ;
+        }
+        
+        if(_scrollView == nil){
+            [self addScrollView];
+            [self addBuyButton];
+        }
+        _goodsId = goodsInfo.goods_id;
+        NSString *title = [self getTitle:goodsInfo.price];
+        [_btn setTitle:title forState:UIControlStateNormal];
+        [_btn.imageView sd_setImageWithURL:[NSURL URLWithString:goodsInfo.head_img]];
+        [_web loadHTMLString:goodsInfo.goods_desc baseURL:nil];
+    }];
 }
 
 - (void)resetFather {
@@ -47,8 +70,9 @@
     
     CGFloat y = SizeHeight(30/2);
     _img = [[UIImageView alloc] initWithFrame:CGRectMake(SizeWidth(52), y, kScreenW - SizeWidth(104), SizeHeight(876/2))];
-    _img.image = [UIImage imageNamed:@"ddxq_icon_shz"];
-    _img.backgroundColor = [UIColor blueColor];
+    _img.contentMode = UIViewContentModeScaleAspectFit;
+//    _img.image = [UIImage imageNamed:@"ddxq_icon_shz"];
+//    _img.backgroundColor = [UIColor blueColor];
     [_scrollView addSubview:_img];
     
     y += SizeHeight(876+149)/2;
@@ -79,18 +103,18 @@
 
 
 -(void) addBuyButton{
-    UIButton *btn = [UIButton new];
-    [btn setTitle:@"￥2400购买" forState:UIControlStateNormal];
-    btn.titleLabel.font = PingFangSCMedium(SizeWidth(15));
-    [btn setTitleColor:RGBColor(255,255,255) forState:UIControlStateNormal];
-    btn.backgroundColor = RGBColor(248,179,23);
-    [btn setImage:[UIImage imageNamed:@"nav_icon_fh"] forState:UIControlStateNormal];
-    btn.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-    btn.imageEdgeInsets = UIEdgeInsetsMake(0, SizeWidth(5), 0, 0 );
-    [btn addTarget:self action:@selector(buy) forControlEvents:UIControlEventTouchUpInside];
+    _btn = [UIButton new];
+    [_btn setTitle:@"" forState:UIControlStateNormal];
+    _btn.titleLabel.font = PingFangSCMedium(SizeWidth(15));
+    [_btn setTitleColor:RGBColor(255,255,255) forState:UIControlStateNormal];
+    _btn.backgroundColor = RGBColor(248,179,23);
+    [_btn setImage:[UIImage imageNamed:@"nav_icon_fh"] forState:UIControlStateNormal];
+    _btn.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    _btn.imageEdgeInsets = UIEdgeInsetsMake(0, SizeWidth(5), 0, 0 );
+    [_btn addTarget:self action:@selector(buy) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.view addSubview:btn];
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.view addSubview:_btn];
+    [_btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).offset(SizeHeight(-180/2));
         make.right.equalTo(self.view);
         make.width.equalTo(@(SizeWidth(236/2)));
@@ -98,9 +122,20 @@
     }];
 }
 
+-(NSString *) getTitle:(NSString *) price{
+    return [NSString stringWithFormat:@"￥%@购买",price];
+}
+
 -(void) buy{
-    MyOrderViewController *newVC = [MyOrderViewController new];
-    [self.navigationController pushViewController:newVC animated:YES];
+    if ([ConfigModel getBoolObjectforKey:IsLogin] == NO) {
+        //TODO:
+        return;
+    }
+    if (_goodsId != nil) {
+        ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsId];
+        [self.navigationController pushViewController:newVC animated:YES];
+    }
+    
 }
 
 @end
