@@ -19,11 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *pwdBtn;
 @property (weak, nonatomic) IBOutlet UIButton *startBtn;
 
-
-
 #if SIMULATOR_TEST
 @property (nonatomic, strong) HFSmartLink * smtlk;
-
 @property (nonatomic) BOOL isconnecting, showPWD;
 #else
 #endif

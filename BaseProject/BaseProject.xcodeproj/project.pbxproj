@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		426AC0B11FDE268D00797C4F /* FindCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0B01FDE268D00797C4F /* FindCellTableViewCell.m */; };
+		426AC0B91FDE660000797C4F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426AC0B81FDE65FF00797C4F /* JavaScriptCore.framework */; };
+		426AC0BC1FDE66BD00797C4F /* FindDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0BB1FDE66BD00797C4F /* FindDetailViewController.m */; };
+		426AC0BF1FDE6F4400797C4F /* MeHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0BE1FDE6F4400797C4F /* MeHeadView.m */; };
+		426AC0C21FDE7DC500797C4F /* CCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0C11FDE7DC500797C4F /* CCButton.m */; };
+		426AC0C51FDE823400797C4F /* MyFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0C41FDE823400797C4F /* MyFavoritesViewController.m */; };
+		426AC0C81FDE833E00797C4F /* DeviceCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0C71FDE833E00797C4F /* DeviceCommandViewController.m */; };
+		426AC0CB1FDE843000797C4F /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0CA1FDE843000797C4F /* UserInfoViewController.m */; };
 		42A4443B1EF133E000F90791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42A444391EF133E000F90791 /* Main.storyboard */; };
 		42A4443E1EF133E000F90791 /* BaseProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42A4443C1EF133E000F90791 /* BaseProject.xcdatamodeld */; };
 		42A444401EF133E000F90791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A4443F1EF133E000F90791 /* Assets.xcassets */; };
@@ -112,6 +120,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		426AC0AF1FDE268D00797C4F /* FindCellTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindCellTableViewCell.h; sourceTree = "<group>"; };
+		426AC0B01FDE268D00797C4F /* FindCellTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindCellTableViewCell.m; sourceTree = "<group>"; };
+		426AC0B81FDE65FF00797C4F /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		426AC0BA1FDE66BD00797C4F /* FindDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindDetailViewController.h; sourceTree = "<group>"; };
+		426AC0BB1FDE66BD00797C4F /* FindDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindDetailViewController.m; sourceTree = "<group>"; };
+		426AC0BD1FDE6F4400797C4F /* MeHeadView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeadView.h; sourceTree = "<group>"; };
+		426AC0BE1FDE6F4400797C4F /* MeHeadView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MeHeadView.m; sourceTree = "<group>"; };
+		426AC0C01FDE7DC400797C4F /* CCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCButton.h; sourceTree = "<group>"; };
+		426AC0C11FDE7DC500797C4F /* CCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCButton.m; sourceTree = "<group>"; };
+		426AC0C31FDE823400797C4F /* MyFavoritesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFavoritesViewController.h; sourceTree = "<group>"; };
+		426AC0C41FDE823400797C4F /* MyFavoritesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyFavoritesViewController.m; sourceTree = "<group>"; };
+		426AC0C61FDE833E00797C4F /* DeviceCommandViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeviceCommandViewController.h; sourceTree = "<group>"; };
+		426AC0C71FDE833E00797C4F /* DeviceCommandViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceCommandViewController.m; sourceTree = "<group>"; };
+		426AC0C91FDE843000797C4F /* UserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
+		426AC0CA1FDE843000797C4F /* UserInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
 		42A4442D1EF133E000F90791 /* BaseProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaseProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42A4443A1EF133E000F90791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		42A4443D1EF133E000F90791 /* BaseProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BaseProject.xcdatamodel; sourceTree = "<group>"; };
@@ -290,6 +313,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426AC0B91FDE660000797C4F /* JavaScriptCore.framework in Frameworks */,
 				42C064BA1FD6485300CACD76 /* libsmartlinklib_7x.a in Frameworks */,
 				B79A5CFD6299881CB3643ACB /* libPods-BaseProject.a in Frameworks */,
 			);
@@ -655,6 +679,12 @@
 			children = (
 				42D0D74B1FBEB9990092CAD1 /* MeViewController.h */,
 				42D0D74C1FBEB9990092CAD1 /* MeViewController.m */,
+				426AC0C31FDE823400797C4F /* MyFavoritesViewController.h */,
+				426AC0C41FDE823400797C4F /* MyFavoritesViewController.m */,
+				426AC0C61FDE833E00797C4F /* DeviceCommandViewController.h */,
+				426AC0C71FDE833E00797C4F /* DeviceCommandViewController.m */,
+				426AC0C91FDE843000797C4F /* UserInfoViewController.h */,
+				426AC0CA1FDE843000797C4F /* UserInfoViewController.m */,
 			);
 			path = VIewControllers;
 			sourceTree = "<group>";
@@ -662,6 +692,10 @@
 		42D0D7311FBEB6DB0092CAD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				426AC0C01FDE7DC400797C4F /* CCButton.h */,
+				426AC0C11FDE7DC500797C4F /* CCButton.m */,
+				426AC0BD1FDE6F4400797C4F /* MeHeadView.h */,
+				426AC0BE1FDE6F4400797C4F /* MeHeadView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -746,6 +780,8 @@
 			children = (
 				42D0D7481FBEB98D0092CAD1 /* FindViewController.h */,
 				42D0D7491FBEB98D0092CAD1 /* FindViewController.m */,
+				426AC0BA1FDE66BD00797C4F /* FindDetailViewController.h */,
+				426AC0BB1FDE66BD00797C4F /* FindDetailViewController.m */,
 			);
 			path = VIewControllers;
 			sourceTree = "<group>";
@@ -753,6 +789,8 @@
 		42D0D73B1FBEB6DB0092CAD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				426AC0AF1FDE268D00797C4F /* FindCellTableViewCell.h */,
+				426AC0B01FDE268D00797C4F /* FindCellTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -851,6 +889,7 @@
 		7F5FE81AF3930B1D8AB68F96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				426AC0B81FDE65FF00797C4F /* JavaScriptCore.framework */,
 				65EBE4FCE8758654A9B05419 /* libPods-BaseProject.a */,
 			);
 			name = Frameworks;
@@ -1019,7 +1058,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		133526D14F1C236D4D0AF02F /* [CP] Copy Pods Resources */ = {
@@ -1077,9 +1116,12 @@
 				42F795BD1F00C8B200A11A69 /* TBNavigationController.m in Sources */,
 				42C064C31FD6828F00CACD76 /* AddDeviceNextViewController.m in Sources */,
 				42D0D74A1FBEB98D0092CAD1 /* FindViewController.m in Sources */,
+				426AC0B11FDE268D00797C4F /* FindCellTableViewCell.m in Sources */,
 				6B595E961FD582FB001F3A5E /* OrderCell.m in Sources */,
 				42C84F0F1EF2E97D0008189D /* UIView+BGFrame.m in Sources */,
+				426AC0BC1FDE66BD00797C4F /* FindDetailViewController.m in Sources */,
 				42F795CD1F00CBDF00A11A69 /* FactorySet.m in Sources */,
+				426AC0C81FDE833E00797C4F /* DeviceCommandViewController.m in Sources */,
 				42F795BF1F00C8B200A11A69 /* TBTabBar.m in Sources */,
 				42F795BB1F00C8B200A11A69 /* BaseTableView.m in Sources */,
 				42C84F081EF2E97D0008189D /* UIColor+BGHexColor.m in Sources */,
@@ -1092,6 +1134,7 @@
 				6B595E9A1FD59EBF001F3A5E /* OrderModel.m in Sources */,
 				42C84F021EF2E97D0008189D /* NSString+Category.m in Sources */,
 				6BDB2F491FCC6A0C00F60802 /* UIView+Utils.m in Sources */,
+				426AC0BF1FDE6F4400797C4F /* MeHeadView.m in Sources */,
 				42F795DC1F00CC3E00A11A69 /* UIScrollView+TBRefresh.m in Sources */,
 				6BCE2F701FD6D18E00864DA5 /* OrderDetailViewController.m in Sources */,
 				42D0D7471FBEB97E0092CAD1 /* MallViewController.m in Sources */,
@@ -1105,9 +1148,11 @@
 				42C84EB91EF2DCD90008189D /* MainApi.m in Sources */,
 				42C84F051EF2E97D0008189D /* NSString+Predicate.m in Sources */,
 				42C84F0E1EF2E97D0008189D /* UIView+Animation.m in Sources */,
+				426AC0C51FDE823400797C4F /* MyFavoritesViewController.m in Sources */,
 				42C84F1D1EF2EB650008189D /* NSString+SBJSON.m in Sources */,
 				6B8FD9881FDD7158006A9965 /* NetworkHelper.m in Sources */,
 				42C84ECB1EF2DD1A0008189D /* NSString+MD5.m in Sources */,
+				426AC0CB1FDE843000797C4F /* UserInfoViewController.m in Sources */,
 				42C84F1C1EF2EB650008189D /* NSObject+SBJSON.m in Sources */,
 				42C84F0D1EF2E97D0008189D /* UITableViewCell+CellAnimation.m in Sources */,
 				6BDB2F4B1FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m in Sources */,
@@ -1122,6 +1167,7 @@
 				42C84EC91EF2DD1A0008189D /* DicToString.m in Sources */,
 				6B595E931FD5827C001F3A5E /* MyOrderViewController.m in Sources */,
 				42C84EFD1EF2E97D0008189D /* NSData+CommonCryptor.m in Sources */,
+				426AC0C21FDE7DC500797C4F /* CCButton.m in Sources */,
 				42C84F0A1EF2E97D0008189D /* UIImage+Category.m in Sources */,
 				6BDB2F481FCC6A0C00F60802 /* UIView+Frame.m in Sources */,
 				42C064B31FD63F0000CACD76 /* AddGateWayViewController.m in Sources */,
