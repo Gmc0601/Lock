@@ -72,7 +72,7 @@
 }
 - (UITableView *)noUseTableView {
     if (!_noUseTableView) {
-        _noUseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenW, kScreenH - 50) style:UITableViewStylePlain];
+        _noUseTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, -20, kScreenW, kScreenH - 30) style:UITableViewStylePlain];
         _noUseTableView.backgroundColor = RGBColor(239, 240, 241);
         _noUseTableView.delegate = self;
         _noUseTableView.dataSource = self;
@@ -87,11 +87,13 @@
             
             head.headImgBlock = ^{
               // 头像点击
+                
                 [weak.navigationController pushViewController:[UserInfoViewController new] animated:YES];
             };
             
             head.orderBlock = ^(int num) {
               //  订单 点击 num 0 - 3
+                
             };
             [view addSubview:head];
             view;

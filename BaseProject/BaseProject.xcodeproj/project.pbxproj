@@ -15,6 +15,14 @@
 		426AC0C51FDE823400797C4F /* MyFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0C41FDE823400797C4F /* MyFavoritesViewController.m */; };
 		426AC0C81FDE833E00797C4F /* DeviceCommandViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0C71FDE833E00797C4F /* DeviceCommandViewController.m */; };
 		426AC0CB1FDE843000797C4F /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0CA1FDE843000797C4F /* UserInfoViewController.m */; };
+		426AC0D01FDF83C800797C4F /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0CE1FDF83C800797C4F /* LoginViewController.m */; };
+		426AC0D11FDF83C800797C4F /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 426AC0CF1FDF83C800797C4F /* LoginViewController.xib */; };
+		426AC0D51FDF840600797C4F /* AddmobileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0D31FDF840600797C4F /* AddmobileViewController.m */; };
+		426AC0D61FDF840600797C4F /* AddmobileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 426AC0D41FDF840600797C4F /* AddmobileViewController.xib */; };
+		426AC0DA1FDFB62C00797C4F /* UserAgreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0D81FDFB62C00797C4F /* UserAgreeViewController.m */; };
+		426AC0DB1FDFB62C00797C4F /* UserAgreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 426AC0D91FDFB62C00797C4F /* UserAgreeViewController.xib */; };
+		426AC0DE1FDFCDE100797C4F /* AppAlterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0DD1FDFCDE100797C4F /* AppAlterView.m */; };
+		426AC0E11FE116D000797C4F /* NODataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0E01FE116D000797C4F /* NODataView.m */; };
 		42A4443B1EF133E000F90791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42A444391EF133E000F90791 /* Main.storyboard */; };
 		42A4443E1EF133E000F90791 /* BaseProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42A4443C1EF133E000F90791 /* BaseProject.xcdatamodeld */; };
 		42A444401EF133E000F90791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A4443F1EF133E000F90791 /* Assets.xcassets */; };
@@ -135,6 +143,19 @@
 		426AC0C71FDE833E00797C4F /* DeviceCommandViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceCommandViewController.m; sourceTree = "<group>"; };
 		426AC0C91FDE843000797C4F /* UserInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
 		426AC0CA1FDE843000797C4F /* UserInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
+		426AC0CD1FDF83C800797C4F /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		426AC0CE1FDF83C800797C4F /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		426AC0CF1FDF83C800797C4F /* LoginViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		426AC0D21FDF840600797C4F /* AddmobileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddmobileViewController.h; sourceTree = "<group>"; };
+		426AC0D31FDF840600797C4F /* AddmobileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddmobileViewController.m; sourceTree = "<group>"; };
+		426AC0D41FDF840600797C4F /* AddmobileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddmobileViewController.xib; sourceTree = "<group>"; };
+		426AC0D71FDFB62C00797C4F /* UserAgreeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserAgreeViewController.h; sourceTree = "<group>"; };
+		426AC0D81FDFB62C00797C4F /* UserAgreeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserAgreeViewController.m; sourceTree = "<group>"; };
+		426AC0D91FDFB62C00797C4F /* UserAgreeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserAgreeViewController.xib; sourceTree = "<group>"; };
+		426AC0DC1FDFCDE100797C4F /* AppAlterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppAlterView.h; sourceTree = "<group>"; };
+		426AC0DD1FDFCDE100797C4F /* AppAlterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppAlterView.m; sourceTree = "<group>"; };
+		426AC0DF1FE116D000797C4F /* NODataView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NODataView.h; sourceTree = "<group>"; };
+		426AC0E01FE116D000797C4F /* NODataView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NODataView.m; sourceTree = "<group>"; };
 		42A4442D1EF133E000F90791 /* BaseProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaseProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42A4443A1EF133E000F90791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		42A4443D1EF133E000F90791 /* BaseProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BaseProject.xcdatamodel; sourceTree = "<group>"; };
@@ -336,6 +357,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		426AC0CC1FDF83AB00797C4F /* Logins */ = {
+			isa = PBXGroup;
+			children = (
+				426AC0CD1FDF83C800797C4F /* LoginViewController.h */,
+				426AC0CE1FDF83C800797C4F /* LoginViewController.m */,
+				426AC0CF1FDF83C800797C4F /* LoginViewController.xib */,
+				426AC0D21FDF840600797C4F /* AddmobileViewController.h */,
+				426AC0D31FDF840600797C4F /* AddmobileViewController.m */,
+				426AC0D41FDF840600797C4F /* AddmobileViewController.xib */,
+				426AC0D71FDFB62C00797C4F /* UserAgreeViewController.h */,
+				426AC0D81FDFB62C00797C4F /* UserAgreeViewController.m */,
+				426AC0D91FDFB62C00797C4F /* UserAgreeViewController.xib */,
+			);
+			path = Logins;
+			sourceTree = "<group>";
+		};
 		42A444241EF133E000F90791 = {
 			isa = PBXGroup;
 			children = (
@@ -486,6 +523,7 @@
 		42C84EA31EF2DB060008189D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				426AC0CC1FDF83AB00797C4F /* Logins */,
 				42D0D7321FBEB6DB0092CAD1 /* FirstView */,
 				42D0D7281FBEB6DB0092CAD1 /* Mall */,
 				42D0D7371FBEB6DB0092CAD1 /* Find */,
@@ -828,6 +866,10 @@
 				42F795B81F00C8B200A11A69 /* TBTabBar.m */,
 				42F795B91F00C8B200A11A69 /* UINavigationBar+Awesome.h */,
 				42F795BA1F00C8B200A11A69 /* UINavigationBar+Awesome.m */,
+				426AC0DC1FDFCDE100797C4F /* AppAlterView.h */,
+				426AC0DD1FDFCDE100797C4F /* AppAlterView.m */,
+				426AC0DF1FE116D000797C4F /* NODataView.h */,
+				426AC0E01FE116D000797C4F /* NODataView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1014,12 +1056,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				426AC0D11FDF83C800797C4F /* LoginViewController.xib in Resources */,
 				42F795D81F00CC3E00A11A69 /* arrowdown@2x.png in Resources */,
 				42F795D91F00CC3E00A11A69 /* arrowup@2x.png in Resources */,
 				42A444431EF133E000F90791 /* LaunchScreen.storyboard in Resources */,
 				42C064C41FD6828F00CACD76 /* AddDeviceNextViewController.xib in Resources */,
 				42C064B41FD63F0000CACD76 /* AddGateWayViewController.xib in Resources */,
+				426AC0DB1FDFB62C00797C4F /* UserAgreeViewController.xib in Resources */,
 				42C064BF1FD67CC300CACD76 /* AddDeviceViewController.xib in Resources */,
+				426AC0D61FDF840600797C4F /* AddmobileViewController.xib in Resources */,
 				42A444401EF133E000F90791 /* Assets.xcassets in Resources */,
 				6B73E7321FD19B9E004C102D /* Place.plist in Resources */,
 				42A4443B1EF133E000F90791 /* Main.storyboard in Resources */,
@@ -1114,6 +1159,7 @@
 				42C84F071EF2E97D0008189D /* UIButton+Category.m in Sources */,
 				42C84EFF1EF2E97D0008189D /* NSMutableArray+Category.m in Sources */,
 				42F795BD1F00C8B200A11A69 /* TBNavigationController.m in Sources */,
+				426AC0E11FE116D000797C4F /* NODataView.m in Sources */,
 				42C064C31FD6828F00CACD76 /* AddDeviceNextViewController.m in Sources */,
 				42D0D74A1FBEB98D0092CAD1 /* FindViewController.m in Sources */,
 				426AC0B11FDE268D00797C4F /* FindCellTableViewCell.m in Sources */,
@@ -1125,6 +1171,7 @@
 				42F795BF1F00C8B200A11A69 /* TBTabBar.m in Sources */,
 				42F795BB1F00C8B200A11A69 /* BaseTableView.m in Sources */,
 				42C84F081EF2E97D0008189D /* UIColor+BGHexColor.m in Sources */,
+				426AC0D01FDF83C800797C4F /* LoginViewController.m in Sources */,
 				42C84F041EF2E97D0008189D /* NSString+MD5.m in Sources */,
 				42C84F131EF2EA140008189D /* UITextView+placeholder.m in Sources */,
 				42C84F091EF2E97D0008189D /* UIControl+ResponseTime.m in Sources */,
@@ -1138,6 +1185,7 @@
 				42F795DC1F00CC3E00A11A69 /* UIScrollView+TBRefresh.m in Sources */,
 				6BCE2F701FD6D18E00864DA5 /* OrderDetailViewController.m in Sources */,
 				42D0D7471FBEB97E0092CAD1 /* MallViewController.m in Sources */,
+				426AC0DE1FDFCDE100797C4F /* AppAlterView.m in Sources */,
 				42C84EFE1EF2E97D0008189D /* NSDictionary+Category.m in Sources */,
 				42C064BE1FD67CC300CACD76 /* AddDeviceViewController.m in Sources */,
 				6BDB2F4A1FCC6A0C00F60802 /* UILabel+Width.m in Sources */,
@@ -1158,6 +1206,7 @@
 				6BDB2F4B1FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m in Sources */,
 				42A4443E1EF133E000F90791 /* BaseProject.xcdatamodeld in Sources */,
 				42F795DA1F00CC3E00A11A69 /* TBRefreshFootView.m in Sources */,
+				426AC0DA1FDFB62C00797C4F /* UserAgreeViewController.m in Sources */,
 				42D0D7401FBEB8880092CAD1 /* CCWebViewViewController.m in Sources */,
 				42C84F001EF2E97D0008189D /* NSMutableAttributedString+Category.m in Sources */,
 				42C84F0B1EF2E97D0008189D /* UIMenuItem+Category.m in Sources */,
@@ -1176,6 +1225,7 @@
 				42D0D7411FBEB8880092CAD1 /* CCBaseViewController.m in Sources */,
 				42D0D7441FBEB96D0092CAD1 /* FirstViewController.m in Sources */,
 				42C84EFA1EF2E97D0008189D /* NSArray+Category.m in Sources */,
+				426AC0D51FDF840600797C4F /* AddmobileViewController.m in Sources */,
 				42C84EC71EF2DD1A0008189D /* GTMBase64.m in Sources */,
 				42C84F011EF2E97D0008189D /* NSMutableDictionary+Category.m in Sources */,
 				6B73E7311FD19B9E004C102D /* PlaceModel.m in Sources */,

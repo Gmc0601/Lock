@@ -7,6 +7,7 @@
 //
 
 #import "AddDeviceNextViewController.h"
+#import "AddGateWayViewController.h"
 
 @interface AddDeviceNextViewController ()
 
@@ -28,13 +29,16 @@
         self.titleLab.text = @"添加网关";
     }else {
         self.titleLab.text = @"添加智能锁";
+        [self.NextBtn setTitle:@"" forState:UIControlStateNormal];
     }
     NSString *text1 = @"";
-    
-    
 }
 
 - (IBAction)nextBtnClick:(id)sender {
+    
+    if (self.type == AddNetWork) {
+        [self.navigationController pushViewController:[AddGateWayViewController new] animated:YES];
+    }
     
 }
 

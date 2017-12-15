@@ -7,6 +7,7 @@
 //
 
 #import "AddDeviceViewController.h"
+#import "AddDeviceNextViewController.h"
 
 @interface AddDeviceViewController ()
 
@@ -25,10 +26,11 @@
 }
 // 添加网关
 - (IBAction)addNet:(id)sender {
-    
+    [self.navigationController pushViewController:[AddDeviceNextViewController new] animated:YES];
 }
 //  添加设备
 - (IBAction)addLock:(id)sender {
+    
 }
 
 
