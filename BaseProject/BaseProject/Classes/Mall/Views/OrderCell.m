@@ -9,8 +9,7 @@
 #import "OrderCell.h"
 #import <Masonry/Masonry.h>
 #import <KLCPopup/KLCPopup.h>
-
-
+#import "UIImageView+WebCache.h"
 @interface OrderCell()
 @property(retain,atomic) UILabel *lblOrder;
 @property(retain,atomic) UILabel *lblTitle;
@@ -24,6 +23,10 @@
 @synthesize model = _model;
 -(void) setModel:(OrderModel *)model{
     _model = model;
+    _lblOrder.text = model.order_sn;
+    _lblTitle.text = model.goods_name;
+    _lblAmount.text = model.order_amount;
+    [_img sd_setImageWithURL:[NSURL URLWithString:model.head_img]];
     [self setFooterStyle];
 }
 
@@ -159,8 +162,8 @@
 }
 
 -(void) tapActionButton{
-     if(_model.status == OrderStatus_waitingReceiving){
-         [self.delegate showConfirmView:_model._id];
+     if(_model.status == OrderStatus_hasSend){
+         [self.delegate showConfirmView:_model.goods_id];
     }
 }
 
@@ -179,10 +182,10 @@
         _btn.backgroundColor = RGBColor(248,179,23);
         _btn.hidden = NO;
 
-    }else if (_model.status == OrderStatus_waitingDeliver){
+    }else if (_model.status == OrderStatus_padyed){
         _lblStatus.textColor = RGBColor(51,51,51);
         _lblStatus.text = @"待发货";
-    }else if(_model.status == OrderStatus_waitingReceiving){
+    }else if(_model.status == OrderStatus_hasSend){
         _lblStatus.textColor = RGBColor(51,51,51);
         _lblStatus.text = @"待收货";
         [_btn setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];

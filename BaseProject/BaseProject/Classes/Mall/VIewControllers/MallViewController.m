@@ -9,7 +9,7 @@
 #import "MallViewController.h"
 #import "ConfirmOrderViewController.h"
 #import "NetworkHelper.h"
-
+#import "MyOrderViewController.h"
 
 @interface MallViewController ()<UIWebViewDelegate>
 @property (retain,atomic) UIScrollView *scrollView;
@@ -135,7 +135,8 @@
         return;
     }
     if (_goodsId != nil) {
-        ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsInfo];
+        //ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsInfo];
+        MyOrderViewController *newVC = [MyOrderViewController new];
         [self.navigationController pushViewController:newVC animated:YES];
     }
     

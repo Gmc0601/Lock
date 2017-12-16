@@ -9,8 +9,12 @@
 #import "OrderDetailViewController.h"
 #import "KLCPopup.h"
 #import "UIColor+BGHexColor.h"
+#import "OrderModel.h"
+#import "NetworkHelper.h"
+
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
+
 
 
 @interface OrderDetailViewController ()<UITableViewDelegate,UITableViewDataSource>{
@@ -22,6 +26,7 @@
 @property (nonatomic, retain) UILabel *lblGooodsPrice;
 @property (nonatomic, retain) UILabel *lblInstallPrice;
 @property (nonatomic, retain) UILabel *lblCoupon;
+@property (nonatomic, retain) UILabel *lblAddedService;
 @property(retain,atomic) UILabel *lblName;
 @property(retain,atomic) UILabel *lblTelNo;
 @property(retain,atomic) UILabel *lblAddress;
@@ -42,10 +47,31 @@
 @property(retain,atomic) UILabel* lblOrderDate;
 @property(retain,atomic) UILabel* lblConfirmReceiveDate;
 @property(retain,atomic) UIButton* btnCancelOrder;
+@property(retain,atomic) OrderModel* order;
 @end
 
 @implementation OrderDetailViewController
-
+-(void) setOrderId:(NSString *)orderId{
+    _orderId = orderId;
+    [NetworkHelper getOrderDetailWithId:orderId WithCallBack:^(NSString *error, OrderModel *order) {
+        _order = order;
+        _lblAmount.text = order.order_amount;
+        _lblOrder.text = [self getOrderIdText:order.order_sn];
+        _lblName.text = order.consignee;
+        _lblTelNo.text = order.phone;
+        _lblCoupon.text = order.discount_amount;
+        _lblPayWay.text = order.pay_type == 0 ? @"支付宝支付":@"微信支付";
+        _lblStatus.text = [self getStatusString:order.status];
+        _lblOrderDate.text = order.create_time;
+        _lblAddress.text = [NSString stringWithFormat:@"%@%@%@%@",order.province,order.city,order.county,order.address];
+        _lblGoodsTitle.text = order.goods_name;
+        _lblGooodsPrice.text = order.goods_price;
+        _lblNeedInstall.text = order.is_install == 0? @"无":@"需要上门安装";
+        _lblInstallPrice.text = order.install_fee;
+        _lblConfirmReceiveDate.text = order.update_time;
+        [_tb reloadData];
+    }];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     _needInstall = YES;
@@ -387,7 +413,8 @@
 }
 
 -(void) addContentForDeliveryAddrees:(UITableViewCell *)cell withIndex:(NSInteger) index{
-    if (cell.subviews.count >= 4) {
+    UILabel *lblTitle = [cell viewWithTag:401];
+    if (lblTitle != nil) {
         return;
     }
     
@@ -406,8 +433,8 @@
             break;
     }
     
-    UILabel *lblTitle = [self addTitleLable:titile withSuperView:cell];
-  
+    lblTitle = [self addTitleLable:titile withSuperView:cell];
+    lblTitle.tag = 401;
         switch (index) {
             case 0:
                 _lblName =  [self addLabelTo:cell withLeftView:lblTitle];
@@ -437,6 +464,10 @@
 }
 
 -(void) addGoodInfoTo:(UITableViewCell *)cell{
+    if (_imgGoods != nil) {
+        return;
+    }
+    
     _imgGoods = [UIImageView new];
     [cell addSubview:_imgGoods];
     
@@ -461,7 +492,8 @@
 }
 
 -(void) addNeedInstall:(UITableViewCell *)cell withIndex:(NSInteger) index{
-    if (cell.subviews.count >= 4) {
+    UILabel *lblTitle = [cell viewWithTag:301];
+    if (lblTitle != nil) {
         return;
     }
     NSString *title = @"是否需要上门安装";
@@ -471,8 +503,8 @@
         [self addBorder:cell];
     }
     
-    UILabel *lbl = [self addTitleLable:title withSuperView:cell];
-    
+    lblTitle = [self addTitleLable:title withSuperView:cell];
+    lblTitle.tag = 301;
     _lblNeedInstall = [UILabel new];
     _lblNeedInstall.textAlignment = NSTextAlignmentLeft;
     _lblNeedInstall.textColor = RGBColorAlpha(51,51,51,1);
@@ -481,9 +513,9 @@
     
     [cell addSubview:_lblNeedInstall];
     [_lblNeedInstall mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(lbl.mas_centerY);
+        make.centerY.equalTo(lblTitle.mas_centerY);
         make.right.equalTo(cell.mas_right).offset(-SizeWidth(10));
-        make.left.equalTo(lbl.mas_right).offset(SizeWidth(25/2));
+        make.left.equalTo(lblTitle.mas_right).offset(SizeWidth(25/2));
         make.height.equalTo(@(SizeHeight(25/2)));
             make.height.equalTo(@(SizeHeight(25/2)));
     }];
@@ -533,7 +565,8 @@
 }
 
 -(void) addCostDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
-    if (cell.subviews.count >= 4) {
+    UILabel *lblTitle = [cell viewWithTag:201];
+    if (lblTitle != nil) {
         return;
     }
     
@@ -541,49 +574,65 @@
     UIColor *fontColor = RGBColor(102, 102, 102);
     if (index == 0) {
         title =@"商品金额";
+       
+        _lblGooodsPrice = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }else if(index == 1){
         title =@"安装费";
+          _lblInstallPrice = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }else if(index == 2){
         title =@"增值服务";
+          _lblAddedService = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }else{
         title =@"分享立减";
+          _lblCoupon = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }
     
-    [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
-    
-    [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+    lblTitle = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+    lblTitle.tag = 201;
+   
 }
 
 -(void) addOrderDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
-    if (cell.subviews.count >= 3) {
+    UILabel *lbl = [cell viewWithTag:101];
+    if(lbl != nil){
         return;
     }
     
     NSString *title = @"";
     UIColor *fontColor = RGBColor(153,153,153);
     if (index == 0) {
-        title = [self getOrderIdText:@"8783762893"];
-          [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
-        [self addBtnCancelOrderTo:cell];
+        if (lbl == nil) {
+            title = [self getOrderIdText:@"8783762893"];
+            lbl = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+            lbl.tag = 101;
+            [self addBtnCancelOrderTo:cell];
+        }else{
+            title = [self getOrderIdText:@"8783762893"];
+            lbl.text = title;
+        }
     }else if(index == 1){
         title =@"支付方式:";
-        UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
-       _lblPayWay = [self addLabelTo:cell withLeftView:lbl];
-        _lblPayWay.textColor = RGBColor(153,153,153);
-        _lblPayWay.text = @"微信支付";
-        
+        if(lbl == nil || _lblPayWay == nil){
+            lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+            _lblPayWay = [self addLabelTo:cell withLeftView:lbl];
+            _lblPayWay.textColor = RGBColor(153,153,153);
+            _lblPayWay.text = _order.pay_type == 0 ? @"支付宝支付":@"微信支付";
+        }
     }else if(index == 2){
         title =@"下单时间:";
         UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+        lbl.tag = 101;
+
         _lblOrderDate = [self addLabelTo:cell withLeftView:lbl];
         _lblOrderDate.textColor = RGBColor(153,153,153);
-        _lblOrderDate.text = @"2017-10-10 09:09:09";
+        _lblOrderDate.text = _order.create_time;
     }else{
         title =@"确认收货时间:";
         UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+        lbl.tag = 101;
         _lblConfirmReceiveDate = [self addLabelTo:cell withLeftView:lbl];
         _lblConfirmReceiveDate.textColor = RGBColor(153,153,153);
-        _lblConfirmReceiveDate.text = @"2017-10-10 09:09:09";
+        _lblConfirmReceiveDate.text = _order.update_time;
     }
 }
 
@@ -848,5 +897,22 @@
         make.height.equalTo(@(SizeHeight(15)));
     }];
 
+}
+
+-(NSString *) getStatusString:(OrderStatus) status{
+    NSString *strStatus = @"";
+    if(status == OrderStatus_padyed || status == OrderStatus_waitingPay){
+        strStatus = @"等待平台发货";
+    }else if (status == OrderStatus_hasSend){
+        strStatus = @"平台已发货";
+    }else if (status == OrderStatus_complete){
+        strStatus = @"已完成";
+    }else if (status == OrderStatus_waitingRefund){
+        strStatus = @"退款审核中";
+    }else if (status == OrderStatus_RefundComplete){
+        strStatus = @"退款成功";
+    }
+    
+    return strStatus;
 }
 @end

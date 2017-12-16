@@ -10,11 +10,12 @@
 #import "OrderCell.h"
 #import <KLCPopup/KLCPopup.h>
 #import "OrderDetailViewController.h"
+#import "NetworkHelper.h"
 
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,OrderCellDelegate>
 @property (nonatomic, retain) UITableView *tb;
 @property (atomic, retain) KLCPopup *confirmPopup;
-@property (atomic, retain) NSMutableArray *datasource;
+@property (atomic, retain) NSArray *datasource;
 @end
 
 @implementation MyOrderViewController
@@ -42,6 +43,11 @@
     
     [self.view addSubview:_tb];
     
+    [NetworkHelper getOrderListWithCallBack:^(NSString *error, NSArray *orders) {
+        _datasource = orders;
+        [_tb reloadData];
+    }];
+    
 }
 
 - (void)resetFather {
@@ -51,7 +57,7 @@
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{
-    return 10;
+    return _datasource.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -63,6 +69,7 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     OrderCell *cell = (OrderCell *)[_tb dequeueReusableCellWithIdentifier:@"cell"];
+    cell.model = _datasource[indexPath.row];
     cell.delegate = self;
     return cell;
 }
@@ -70,7 +77,7 @@
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     OrderModel *model = _datasource[indexPath.row];
     OrderDetailViewController *newVC = [OrderDetailViewController new];
-    newVC.orderId = model._id;
+    newVC.orderId = model.order_id;
     [self.navigationController pushViewController:newVC animated:YES];
 }
 

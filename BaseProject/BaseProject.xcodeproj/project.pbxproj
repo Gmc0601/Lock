@@ -108,6 +108,8 @@
 		6BDB2F4A1FCC6A0C00F60802 /* UILabel+Width.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F411FCC6A0B00F60802 /* UILabel+Width.m */; };
 		6BDB2F4B1FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F441FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m */; };
 		6BDB2F4C1FCC6A0C00F60802 /* UIButton+YX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F451FCC6A0C00F60802 /* UIButton+YX.m */; };
+		6BE66E611FE51FA800FCEF3E /* InstallSummeryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE66E601FE51FA800FCEF3E /* InstallSummeryView.m */; };
+		6BE66E641FE5214100FCEF3E /* InstallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE66E631FE5214100FCEF3E /* InstallCell.m */; };
 		B79A5CFD6299881CB3643ACB /* libPods-BaseProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65EBE4FCE8758654A9B05419 /* libPods-BaseProject.a */; };
 /* End PBXBuildFile section */
 
@@ -328,6 +330,10 @@
 		6BDB2F441FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SSEdgeInsets.m"; sourceTree = "<group>"; };
 		6BDB2F451FCC6A0C00F60802 /* UIButton+YX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+YX.m"; sourceTree = "<group>"; };
 		6BDB2F461FCC6A0C00F60802 /* UILabel+Width.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Width.h"; sourceTree = "<group>"; };
+		6BE66E5F1FE51FA800FCEF3E /* InstallSummeryView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstallSummeryView.h; sourceTree = "<group>"; };
+		6BE66E601FE51FA800FCEF3E /* InstallSummeryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallSummeryView.m; sourceTree = "<group>"; };
+		6BE66E621FE5214100FCEF3E /* InstallCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstallCell.h; sourceTree = "<group>"; };
+		6BE66E631FE5214100FCEF3E /* InstallCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallCell.m; sourceTree = "<group>"; };
 		A2BC379B4929E517CCEBBD81 /* Pods-BaseProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaseProject/Pods-BaseProject.release.xcconfig"; sourceTree = "<group>"; };
 		F79BCDCE7109E930EA932FB6 /* Pods-BaseProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaseProject/Pods-BaseProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -688,6 +694,10 @@
 			children = (
 				6B595E941FD582FB001F3A5E /* OrderCell.h */,
 				6B595E951FD582FB001F3A5E /* OrderCell.m */,
+				6BE66E5F1FE51FA800FCEF3E /* InstallSummeryView.h */,
+				6BE66E601FE51FA800FCEF3E /* InstallSummeryView.m */,
+				6BE66E621FE5214100FCEF3E /* InstallCell.h */,
+				6BE66E631FE5214100FCEF3E /* InstallCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1151,6 +1161,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BE66E641FE5214100FCEF3E /* InstallCell.m in Sources */,
 				42D0D74D1FBEB9990092CAD1 /* MeViewController.m in Sources */,
 				42C84F101EF2E97D0008189D /* UIView+Category.m in Sources */,
 				42F795BC1F00C8B200A11A69 /* BaseViewController.m in Sources */,
@@ -1196,6 +1207,7 @@
 				42C064BE1FD67CC300CACD76 /* AddDeviceViewController.m in Sources */,
 				6BDB2F4A1FCC6A0C00F60802 /* UILabel+Width.m in Sources */,
 				42F795C01F00C8B200A11A69 /* UINavigationBar+Awesome.m in Sources */,
+				6BE66E611FE51FA800FCEF3E /* InstallSummeryView.m in Sources */,
 				42C84EFC1EF2E97D0008189D /* NSData+Category.m in Sources */,
 				42C84EFB1EF2E97D0008189D /* NSAttributedString+Category.m in Sources */,
 				42C84EAF1EF2DB060008189D /* ViewController.m in Sources */,

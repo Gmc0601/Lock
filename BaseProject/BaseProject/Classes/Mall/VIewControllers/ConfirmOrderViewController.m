@@ -10,7 +10,8 @@
 #import "KLCPopup.h"
 #import "UIColor+BGHexColor.h"
 #import "NetworkHelper.h"
-
+#import "InstallSummeryView.h"
+#import "OrderModel.h"
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
 
@@ -21,8 +22,8 @@
 @property (nonatomic, retain) UITableView *tb;
 @property (nonatomic, retain) UILabel *lblAmount;
 @property (nonatomic, retain) UILabel *lblGooodsPrice;
-@property (nonatomic, retain) UILabel *lblInstallPrice;
-@property (nonatomic, retain) UILabel *lblCoupon;
+//@property (nonatomic, retain) UILabel *lblInstallPrice;
+//@property (nonatomic, retain) UILabel *lblCoupon;
 @property(retain,atomic) UITextField *txtName;
 @property(retain,atomic) UITextField *txtTelNo;
 @property(retain,atomic) UITextField *txtAddress;
@@ -41,6 +42,19 @@
 @property(retain,atomic) NSString *goodsId;
 @property(retain,atomic) UILabel *lblShareSaveMoney;
 @property(retain,atomic) GoodsInfo *goodsInfo;
+@property(retain,atomic) InstallSummeryView *installSummeryView;
+@property(retain,atomic)  UIWebView *serviceWebView;
+@property(retain,atomic)  NSArray *requireInstall;
+@property(retain,atomic)  NSArray *unReqiureInstall;
+@property(retain,atomic)  NSString *strSevice;
+@property(assign,atomic)  int countOfFee;
+@property(assign,atomic)  NSString *installPrice;
+@property(assign,atomic)  BOOL needAddedService;
+@property(assign,atomic)  BOOL hasShare;
+@property(assign,atomic)  NSString *city;
+@property(assign,atomic)  NSString *province;
+@property(assign,atomic)  NSString *county;
+@property(assign,atomic)  NSString *discountMoney;
 @end
 
 @implementation ConfirmOrderViewController
@@ -56,11 +70,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _needInstall = YES;
+    _needInstall = NO;
     [self resetFather];
     [self addFooter];
     [self addTableView];
     _numberOfSection = 3;
+    _countOfFee = 1;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     
@@ -74,6 +89,15 @@
         NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",addr.province,addr.city,addr.county];
         [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
         _txtAddress.text = addr.address;
+    }];
+    
+    [NetworkHelper getInstallCallBack:^(NSString *error, NSArray *requireInstall, NSArray *unReqiureInstall) {
+        _requireInstall = requireInstall;
+        _unReqiureInstall = unReqiureInstall;
+    }];
+    
+    [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
+        _strSevice = addedValueService;
     }];
 }
 
@@ -227,7 +251,7 @@
             number = 3;
             break;
         case 2:
-            number = 4;
+            number = _countOfFee;
             break;
         default:
             break;
@@ -353,7 +377,12 @@
     CGFloat width =  [lblName.text widthWithFont:lblName.font height:SizeHeight(25/2)];
     [lblName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(superView.mas_centerY);
+        if([title isEqualToString:@"安装费"]){
+            make.width.equalTo(@(SizeWidth(100)));
+        }else{
         make.width.equalTo(@(width));
+        }
+        
         make.height.equalTo(@(SizeHeight(25/2)));
         if (offset < 0) {
             make.right.equalTo(superView.mas_right).offset(offset);
@@ -567,8 +596,15 @@
     }];
     
     UISwitch *sw = [UISwitch new];
-    sw.on = _needInstall;
-    [sw addTarget:self action:@selector(needInstall:) forControlEvents:UIControlEventValueChanged];
+    if (index==2) {
+        title = @"增值服务";
+        [sw addTarget:self action:@selector(needAddedService:) forControlEvents:UIControlEventValueChanged];
+
+    }else{
+        sw.on = _needInstall;
+        [sw addTarget:self action:@selector(needInstall:) forControlEvents:UIControlEventValueChanged];
+    }
+    
     [cell addSubview:sw];
     
     [sw mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -581,13 +617,44 @@
 
 -(void) needInstall:(UISwitch *) sender{
     _needInstall = sender.on;
+    [self changePrice:_needInstall];
+}
+
+-(void) needAddedService:(UISwitch *) sender{
+    _needAddedService = sender.on;
+    [self changePrice:_needAddedService];
+}
+
+-(void) changePrice:(BOOL) need{
+    if (need) {
+        _countOfFee += 1;
+    }else{
+        _countOfFee -= 1;
+    }
+    
+    [_tb reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+    [self setPrice];
 }
 
 -(void) tapInstallTipsButton{
     if (_installPopup == nil) {
-        _installPopup = [KLCPopup popupWithContentView:[self getContentForTips]];
+        UIView *content = [self getContentForTips];
+        _installSummeryView= [InstallSummeryView new];
+        _installSummeryView.require = _requireInstall;
+        _installSummeryView.unRequire = _unReqiureInstall;
+        [content addSubview:_installSummeryView];
+        [_installSummeryView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(content);
+            make.right.equalTo(content);
+            make.top.equalTo(content);
+            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+        }];
+        
+        _installPopup = [KLCPopup popupWithContentView:content];
         _installPopup.showType = KLCPopupShowTypeSlideInFromTop;
         _installPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+        [_installSummeryView loadData];
+        
     }
     
     [_installPopup show];
@@ -596,8 +663,34 @@
 
 -(void) tapServiceTipsButton{
     if (_serviceDescPopup == nil) {
-       
-        _serviceDescPopup = [KLCPopup popupWithContentView:[self getContentForTips]];
+        UIView *content = [self getContentForTips];
+        UILabel *lblTitle = [UILabel new];
+        lblTitle.font = PingFangSCBOLD(SizeWidth(15));
+        lblTitle.textColor = RGBColor(51,51,51);
+        lblTitle.textAlignment = NSTextAlignmentCenter;
+        lblTitle.text = @"增值服务说明";
+        [content addSubview:lblTitle];
+        
+        [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(content);
+            make.top.equalTo(content).offset(SizeHeight(23));
+            make.width.equalTo(content);
+            make.height.equalTo(@(SizeHeight(17)));
+        }];
+        
+        
+        _serviceWebView= [UIWebView new];
+        _serviceWebView.backgroundColor = self.view.backgroundColor;
+        [_serviceWebView loadHTMLString:_strSevice baseURL:nil];
+        [content addSubview:_serviceWebView];
+        [_serviceWebView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(content).offset(SizeWidth(15));
+            make.right.equalTo(content).offset(-SizeWidth(15));
+            make.top.equalTo(lblTitle.mas_bottom).offset(SizeHeight(20));
+            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+        }];
+        
+        _serviceDescPopup = [KLCPopup popupWithContentView:content];
         _serviceDescPopup.showType = KLCPopupShowTypeSlideInFromTop;
         _serviceDescPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
     }
@@ -623,9 +716,6 @@
 }
 
 -(void) addCostDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
-    if (cell.subviews.count >= 4) {
-        return;
-    }
     
     NSString *title = @"";
     NSString *price = @"0";
@@ -633,18 +723,32 @@
     if (index == 0) {
         title =@"商品金额";
         price = _goodsInfo.price;
-    }else if(index == 1){
+    }else if(index == 1 && _needInstall){
         title =@"安装费";
-    }else if(index == 2){
+    }else if(index == 2 || _needAddedService){
         title =@"增值服务";
         price = _goodsInfo.added_price;
     }else{
         title =@"分享立减";
     }
     
-    [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+    UILabel *lblTitle = (UILabel *)[cell viewWithTag:9001];
+    if (lblTitle != nil) {
+        lblTitle.text = title;
+    }else{
+        lblTitle  = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+        lblTitle.tag = 9001;
+    }
     
-    [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+    UILabel *lblValue = (UILabel *)[cell viewWithTag:9002];
+    if (lblValue != nil) {
+        lblValue.text = price;
+    }else{
+        lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+        lblValue.tag = 9002;
+
+    }
+    
 }
 
 -(void) showShareView{
@@ -796,7 +900,7 @@
         btnPay.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
         btnPay.titleLabel.textAlignment = NSTextAlignmentCenter;
         [btnPay setTitle:@"立即支付" forState:UIControlStateNormal];
-        [btnPay addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+        [btnPay addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:btnPay];
         [btnPay mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(btnClose.mas_left).offset(SizeWidth(237/2));
@@ -822,6 +926,27 @@
     }
     
     [_PayPopup show];
+}
+
+-(void) payNow{
+    OrderModel *order = [OrderModel new];
+    order.goods_id = _goodsInfo.goods_id;
+    order.goods_num = 1;
+    order.consignee = _txtName.text;
+    order.address = _txtAddress.text;
+    order.city = _city;
+    order.province = _province;
+    order.county = _county;
+    order.phone = _txtTelNo.text;
+    order.type = 0;
+    order.is_install = _needInstall ? 1:0;;
+    order.install_fee = _installPrice;
+    order.discount_amount = _discountMoney;
+    order.pay_type = _isWechatPay ? 1:0;
+    [NetworkHelper addOrder:order withCallBack:^(NSString *error, NSString *msg) {
+        NSLog(msg);
+    }];
+    [KLCPopup dismissAllPopups];
 }
 
 -(UIView *) addPayWayView:(int) type withTopView:(UIView *) topView toSuperView:(UIView *) superView{
@@ -906,5 +1031,18 @@
         wcImgView.image = [UIImage imageNamed:@"icon_xz"];
         _isWechatPay = NO;
     }
+}
+
+-(void) setPrice{
+    float amount = _goodsInfo.price.floatValue;
+    if (_needInstall) {
+        amount += _installPrice.floatValue;
+    }
+    
+    if (_needAddedService) {
+        amount += _goodsInfo.added_price.floatValue;
+    }
+    
+    _lblAmount.text = [NSString stringWithFormat:@"%f",amount];
 }
 @end
