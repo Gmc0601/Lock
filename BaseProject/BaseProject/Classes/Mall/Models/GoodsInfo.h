@@ -15,4 +15,5 @@
 @property(retain,atomic) NSString *price;
 @property(retain,atomic) NSString *trial_price;
 @property(retain,atomic) NSString *goods_desc;
+@property(retain,atomic) NSString *added_price;
 @end

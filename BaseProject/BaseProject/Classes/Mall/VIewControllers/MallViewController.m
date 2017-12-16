@@ -17,6 +17,7 @@
 @property (retain,atomic) UIWebView *web;
 @property (retain,atomic)  UIButton *btn ;
 @property (retain,atomic)  NSString *goodsId ;
+@property (retain,atomic)  GoodsInfo *goodsInfo ;
 @end
 
 @implementation MallViewController
@@ -39,6 +40,8 @@
             [self addScrollView];
             [self addBuyButton];
         }
+        
+        _goodsInfo = goodsInfo;
         _goodsId = goodsInfo.goods_id;
         NSString *title = [self getTitle:goodsInfo.price];
         [_btn setTitle:title forState:UIControlStateNormal];
@@ -132,7 +135,7 @@
         return;
     }
     if (_goodsId != nil) {
-        ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsId];
+        ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsInfo];
         [self.navigationController pushViewController:newVC animated:YES];
     }
     

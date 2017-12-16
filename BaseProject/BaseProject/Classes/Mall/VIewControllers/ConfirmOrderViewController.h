@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "CCBaseViewController.h"
+#import "GoodsInfo.h"
 
 @interface ConfirmOrderViewController : CCBaseViewController
-- (instancetype)initWithGoodsId:(NSString *) goodsId;
+- (instancetype)initWithGoodsId:(GoodsInfo *) goodsId;
 @end

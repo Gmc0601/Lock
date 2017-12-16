@@ -24,4 +24,33 @@
         }
     }];
 }
+
++(void)getDiscountAmount:(void(^)(NSString *error,NSString *money)) callback{
+    [HttpRequest getPath:@"public/fenxianglijian" params:nil resultBlock:^(id responseObject, NSError *error) {
+        NSDictionary *datadic = responseObject;
+        
+        if ([datadic[@"success"] intValue] == 1) {
+            NSDictionary *dict = datadic[@"data"];
+            
+            callback(nil,dict[@"lijian"]);
+        }else{
+            callback(datadic[@"msg"],nil);
+        }
+    }];
+}
+
++(void) getAddressWtihCallBack:(void(^)(NSString *error,AddressModel *goodsInfo)) callback{
+    [HttpRequest getPath:@"users/getAddress.html" params:nil resultBlock:^(id responseObject, NSError *error) {
+        NSDictionary *datadic = responseObject;
+        
+        if ([datadic[@"success"] intValue] == 1) {
+            NSDictionary *infoArr = datadic[@"data"];
+            
+            AddressModel *info = [AddressModel mj_objectWithKeyValues: infoArr];
+            callback(nil,info);
+        }else{
+            callback(datadic[@"msg"],nil);
+        }
+    }];
+}
 @end

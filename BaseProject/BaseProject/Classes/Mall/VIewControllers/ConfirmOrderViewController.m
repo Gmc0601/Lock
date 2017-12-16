@@ -9,6 +9,7 @@
 #import "ConfirmOrderViewController.h"
 #import "KLCPopup.h"
 #import "UIColor+BGHexColor.h"
+#import "NetworkHelper.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -39,15 +40,16 @@
 @property(assign,atomic) BOOL isWechatPay;
 @property(retain,atomic) NSString *goodsId;
 @property(retain,atomic) UILabel *lblShareSaveMoney;
+@property(retain,atomic) GoodsInfo *goodsInfo;
 @end
 
 @implementation ConfirmOrderViewController
 
-- (instancetype)initWithGoodsId:(NSString *) goodsId
+- (instancetype)initWithGoodsId:(GoodsInfo *) goodsInfo
 {
     self = [super init];
     if (self) {
-        
+        _goodsInfo = goodsInfo;
     }
     return self;
 }
@@ -60,6 +62,19 @@
     [self addTableView];
     _numberOfSection = 3;
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    
+    [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
+        _lblShareSaveMoney.text = [self getShareString:money];
+    }];
+    
+    [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
+        _txtName.text = addr.consignee;
+        _txtTelNo.text = addr.phone;
+        NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",addr.province,addr.city,addr.county];
+        [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
+        _txtAddress.text = addr.address;
+    }];
 }
 
 -(NSString *) getShareString:(NSString *) money{
@@ -68,6 +83,7 @@
 
 -(void) ShowHeader{
     UIImageView *img = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, SizeHeight(120))];
+    img.image = [UIImage imageNamed:@"yhbjt"];
     _lblShareSaveMoney = [UILabel new];
     _lblShareSaveMoney.font = PingFangSCBOLD(18);
     _lblShareSaveMoney.textColor = RGBColor(255,255,255);
@@ -384,7 +400,7 @@
 -(UIButton *) addRegionButtonTo:(UIView *)superView withLeftView:(UIView *)leftView{
    
     _btnRegion = [UIButton new];
-    [_btnRegion setImage:[UIImage imageNamed:@"icon_gd"] forState:UIControlStateNormal];
+  
     _btnRegion.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
     [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
@@ -495,6 +511,8 @@
 
 -(void) addGoodInfoTo:(UITableViewCell *)cell{
     _imgGoods = [UIImageView new];
+    [_imgGoods sd_setImageWithURL:[NSURL URLWithString:_goodsInfo.head_img]];
+
     [cell addSubview:_imgGoods];
     
     [_imgGoods mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -508,7 +526,8 @@
     _lblGoodsTitle.font = PingFangSCMedium(SizeWidth(15));
     _lblGoodsTitle.textColor = RGBColorAlpha(51,51,51,1);
     _lblGoodsTitle.textAlignment = NSTextAlignmentLeft;
-    _lblGoodsTitle.text = @"智能锁 | 守护你的家庭安全";
+    _lblGoodsTitle.text = _goodsInfo.goods_name;
+    [_lblGoodsTitle size];
     _lblGoodsTitle.numberOfLines = 2;
     _lblGoodsTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     [cell addSubview:_lblGoodsTitle];
@@ -609,20 +628,23 @@
     }
     
     NSString *title = @"";
+    NSString *price = @"0";
     UIColor *fontColor = RGBColor(102, 102, 102);
     if (index == 0) {
         title =@"商品金额";
+        price = _goodsInfo.price;
     }else if(index == 1){
         title =@"安装费";
     }else if(index == 2){
         title =@"增值服务";
+        price = _goodsInfo.added_price;
     }else{
         title =@"分享立减";
     }
     
     [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
     
-    [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+    [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
 }
 
 -(void) showShareView{
