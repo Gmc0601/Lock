@@ -10,4 +10,8 @@ pod 'IQKeyboardManager'
 pod 'KLCPopup'
 pod 'TNRadioButtonGroup'
 pod 'MJExtension'
+pod 'GTSDK'
+pod 'UMengUShare/UI’
+pod 'UMengUShare/Social/WeChat'
+pod 'UMengUShare/Social/QQ'
 end
