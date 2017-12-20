@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "TBTabBarController.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
+#import "NetworkHelper.h"
 
 @interface AppDelegate ()
 @property (nonatomic, retain) TBTabBarController *tabbar;
@@ -30,7 +31,7 @@
     [self.window makeKeyAndVisible];
     
     // 显示小红点
-    
+    [NetworkHelper loadRegion];
     return YES;
 }
 

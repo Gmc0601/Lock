@@ -19,4 +19,5 @@
 +(void) addOrder:(OrderModel *) order withCallBack:(void(^)(NSString *error,NSString *installFee)) callback;
 +(void) getOrderListWithCallBack:(void(^)(NSString *error,NSArray *orders)) callback;
 +(void) getOrderDetailWithId:(NSString *) order_id WithCallBack:(void(^)(NSString *error,OrderModel *order)) callback;
++(void) loadRegion;
 @end

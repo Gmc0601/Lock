@@ -91,6 +91,7 @@
 		42F795DA1F00CC3E00A11A69 /* TBRefreshFootView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F795D31F00CC3E00A11A69 /* TBRefreshFootView.m */; };
 		42F795DB1F00CC3E00A11A69 /* TBRefreshHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F795D51F00CC3E00A11A69 /* TBRefreshHeadView.m */; };
 		42F795DC1F00CC3E00A11A69 /* UIScrollView+TBRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 42F795D71F00CC3E00A11A69 /* UIScrollView+TBRefresh.m */; };
+		6B3C0BC51FE953FA00153615 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3C0BC41FE953FA00153615 /* Utils.m */; };
 		6B595E931FD5827C001F3A5E /* MyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B595E921FD5827C001F3A5E /* MyOrderViewController.m */; };
 		6B595E961FD582FB001F3A5E /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B595E951FD582FB001F3A5E /* OrderCell.m */; };
 		6B595E9A1FD59EBF001F3A5E /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B595E991FD59EBF001F3A5E /* OrderModel.m */; };
@@ -297,6 +298,8 @@
 		42F795D61F00CC3E00A11A69 /* UIScrollView+TBRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+TBRefresh.h"; sourceTree = "<group>"; };
 		42F795D71F00CC3E00A11A69 /* UIScrollView+TBRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+TBRefresh.m"; sourceTree = "<group>"; };
 		65EBE4FCE8758654A9B05419 /* libPods-BaseProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BaseProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B3C0BC31FE953FA00153615 /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		6B3C0BC41FE953FA00153615 /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		6B595E911FD5827C001F3A5E /* MyOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyOrderViewController.h; sourceTree = "<group>"; };
 		6B595E921FD5827C001F3A5E /* MyOrderViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyOrderViewController.m; sourceTree = "<group>"; };
 		6B595E941FD582FB001F3A5E /* OrderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderCell.h; sourceTree = "<group>"; };
@@ -645,6 +648,7 @@
 		42D0D7281FBEB6DB0092CAD1 /* Mall */ = {
 			isa = PBXGroup;
 			children = (
+				6B3C0BC21FE953EA00153615 /* Utils */,
 				6BAE59A21FC7206E00965937 /* Constants */,
 				42D0D7291FBEB6DB0092CAD1 /* ViewModels */,
 				42D0D72A1FBEB6DB0092CAD1 /* Models */,
@@ -914,6 +918,15 @@
 			path = MJRefresh;
 			sourceTree = "<group>";
 		};
+		6B3C0BC21FE953EA00153615 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6B3C0BC31FE953FA00153615 /* Utils.h */,
+				6B3C0BC41FE953FA00153615 /* Utils.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		6B73E7291FD19B9E004C102D /* SHPlacePickerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1118,7 +1131,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		133526D14F1C236D4D0AF02F /* [CP] Copy Pods Resources */ = {
@@ -1228,6 +1241,7 @@
 				42D0D7401FBEB8880092CAD1 /* CCWebViewViewController.m in Sources */,
 				42C84F001EF2E97D0008189D /* NSMutableAttributedString+Category.m in Sources */,
 				42C84F0B1EF2E97D0008189D /* UIMenuItem+Category.m in Sources */,
+				6B3C0BC51FE953FA00153615 /* Utils.m in Sources */,
 				6B8FD9851FDD70CD006A9965 /* GoodsInfo.m in Sources */,
 				42C84EB61EF2DCBC0008189D /* ConfigModel.m in Sources */,
 				42C84EB11EF2DB060008189D /* main.m in Sources */,

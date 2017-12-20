@@ -678,7 +678,6 @@
             make.height.equalTo(@(SizeHeight(17)));
         }];
         
-        
         _serviceWebView= [UIWebView new];
         _serviceWebView.backgroundColor = self.view.backgroundColor;
         [_serviceWebView loadHTMLString:_strSevice baseURL:nil];

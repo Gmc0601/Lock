@@ -8,7 +8,7 @@
 
 #import "NetworkHelper.h"
 #import <MJExtension/MJExtension.h>
-
+#import "Utils.h"
 
 @implementation NetworkHelper
 +(void) getGoodsInfoWithcallBack:(void(^)(NSString *error,GoodsInfo *goodsInfo)) callback{
@@ -151,4 +151,23 @@ NSMutableDictionary *params = [NSMutableDictionary new];
         }
     }];
 }
+
++(void) loadRegion{
+    if ([Utils fileIsExist]) {
+//        [self getRegionData];
+        return;
+    }
+    [HttpRequest getPath:@"public/getArea" params:nil resultBlock:^(id responseObject, NSError *error) {
+        NSDictionary *datadic = responseObject;
+        
+        if ([datadic[@"success"] intValue] == 1) {
+            NSDictionary *infoArr = datadic[@"data"];
+            
+            [Utils writeStringToFile:infoArr];
+        }
+    }];
+}
+
 @end
+
+

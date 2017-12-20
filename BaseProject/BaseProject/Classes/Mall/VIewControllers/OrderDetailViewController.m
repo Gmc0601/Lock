@@ -48,6 +48,7 @@
 @property(retain,atomic) UILabel* lblConfirmReceiveDate;
 @property(retain,atomic) UIButton* btnCancelOrder;
 @property(retain,atomic) OrderModel* order;
+@property(retain,atomic)  UIWebView *serviceWebView;
 @end
 
 @implementation OrderDetailViewController
@@ -538,13 +539,67 @@
 
 -(void) tapServiceTipsButton{
     if (_serviceDescPopup == nil) {
+        UIView *content = [self getContentForTips];
+        UILabel *lblTitle = [UILabel new];
+        lblTitle.font = PingFangSCBOLD(SizeWidth(15));
+        lblTitle.textColor = RGBColor(51,51,51);
+        lblTitle.textAlignment = NSTextAlignmentCenter;
+        lblTitle.text = @"增值服务说明";
+        [content addSubview:lblTitle];
         
-        _serviceDescPopup = [KLCPopup popupWithContentView:[self getContentForTips]];
+        [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(content);
+            make.top.equalTo(content).offset(SizeHeight(23));
+            make.width.equalTo(content);
+            make.height.equalTo(@(SizeHeight(17)));
+        }];
+        
+        _serviceWebView= [UIWebView new];
+        _serviceWebView.backgroundColor = self.view.backgroundColor;
+        [content addSubview:_serviceWebView];
+        [_serviceWebView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(content).offset(SizeWidth(15));
+            make.right.equalTo(content).offset(-SizeWidth(15));
+            make.top.equalTo(lblTitle.mas_bottom).offset(SizeHeight(20));
+            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+        }];
+        
+        _serviceDescPopup = [KLCPopup popupWithContentView:content];
         _serviceDescPopup.showType = KLCPopupShowTypeSlideInFromTop;
         _serviceDescPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+        for (UIView *subView in [_serviceDescPopup subviews])
+            
+        {
+            
+            if ([subView isKindOfClass:[UIScrollView class]])
+                
+            {
+                
+                for (UIView *shadowView in [subView subviews])
+                    
+                {
+                    
+                    if ([shadowView isKindOfClass:[UIImageView class]])
+                        
+                    {
+                        
+                        shadowView.hidden = YES;
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
     }
     
     [_serviceDescPopup show];
+    [ConfigModel showHud:self];
+    [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
+        [ConfigModel hideHud:self];
+        [_serviceWebView loadHTMLString:addedValueService baseURL:nil];
+    }];
 }
 
 -(UIView *) getContentForTips{
@@ -858,6 +913,10 @@
         make.left.equalTo(self.view);
     }];
     
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapServiceTipsButton)];
+    [layer addGestureRecognizer:tapGesture];
+    layer.userInteractionEnabled = YES;
+    
     UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ksjl_icon_zc"]];
     [layer addSubview:imgView];
     
@@ -882,21 +941,20 @@
         make.height.equalTo(@(SizeHeight(15)));
     }];
     
-    UILabel *btn = [UILabel new];
-    btn.font = PingFangSC(13);
-    btn.textColor = RGBColor(248,179,23);
-    btn.textAlignment = NSTextAlignmentLeft;
+    UILabel *lblService = [UILabel new];
+    lblService.font = PingFangSC(13);
+    lblService.textColor = RGBColor(248,179,23);
+    lblService.textAlignment = NSTextAlignmentLeft;
     NSDictionary *underlineAttribute = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
-    btn.attributedText = [[NSAttributedString alloc] initWithString:@"《增值服务协议》"attributes:underlineAttribute];
-    [layer addSubview:btn];
+    lblService.attributedText = [[NSAttributedString alloc] initWithString:@"《增值服务协议》"attributes:underlineAttribute];
+    [layer addSubview:lblService];
     
-    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+    [lblService mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(lbl.mas_centerY);
         make.left.equalTo(lbl.mas_right);
         make.width.equalTo(@(SizeWidth(150)));
         make.height.equalTo(@(SizeHeight(15)));
     }];
-
 }
 
 -(NSString *) getStatusString:(OrderStatus) status{
