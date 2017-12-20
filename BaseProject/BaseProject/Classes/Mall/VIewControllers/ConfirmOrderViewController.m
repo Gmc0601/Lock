@@ -681,6 +681,7 @@
         _serviceWebView= [UIWebView new];
         _serviceWebView.backgroundColor = self.view.backgroundColor;
         [_serviceWebView loadHTMLString:_strSevice baseURL:nil];
+        _serviceWebView.opaque = NO;
         [content addSubview:_serviceWebView];
         [_serviceWebView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(content).offset(SizeWidth(15));

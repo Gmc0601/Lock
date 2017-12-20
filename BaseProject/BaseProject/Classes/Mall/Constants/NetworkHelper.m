@@ -152,6 +152,24 @@ NSMutableDictionary *params = [NSMutableDictionary new];
     }];
 }
 
++(void) modifyOrderWithOrderId:(NSString *) order_id withStatus:(NSString *) status WithCallBack:(void(^)(NSString *error,NSString *msg)) callback{
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [params setValue:order_id forKey:@"order_id"];
+    [params setValue:status forKey:@"status"];
+    
+    [HttpRequest getPath:@"order/setOrderStatus" params:params resultBlock:^(id responseObject, NSError *error) {
+        NSDictionary *datadic = responseObject;
+        
+        if ([datadic[@"success"] intValue] == 1) {
+            NSString *msg = datadic[@"msg"];
+            callback(nil,msg);
+        }else{
+            callback(datadic[@"msg"],nil);
+        }
+    }];
+}
+
+
 +(void) loadRegion{
     if ([Utils fileIsExist]) {
 //        [self getRegionData];
