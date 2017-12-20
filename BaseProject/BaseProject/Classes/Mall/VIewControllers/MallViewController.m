@@ -130,7 +130,7 @@
 }
 
 -(void) buy{
-    if ([ConfigModel getBoolObjectforKey:IsLogin] != NO) {
+    if ([ConfigModel getBoolObjectforKey:IsLogin] == NO) {
         //TODO:
         return;
     }
