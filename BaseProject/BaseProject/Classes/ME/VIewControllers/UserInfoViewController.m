@@ -7,8 +7,10 @@
 //
 
 #import "UserInfoViewController.h"
+#import <UIImageView+WebCache.h>
+#import "GTMBase64.h"
 
-@interface UserInfoViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface UserInfoViewController ()<UITableViewDelegate, UITableViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic,retain) UITableView *noUseTableView;
 
@@ -39,12 +41,44 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    self.navigationController.navigationBar.hidden = YES;
+}
+
 - (void)resetFather {
     [self.rightBar setTitle:@"保存" forState:UIControlStateNormal];
     self.titleLab.text = @"个人信息";
 }
 
 - (void)more:(UIButton *)sender {
+    
+    [ConfigModel showHud:self];
+    NSData *imgData = UIImageJPEGRepresentation(self.headImage.image,0.5);
+    NSString *imgStr = [GTMBase64 stringByEncodingData:imgData];
+    if (!imgStr) {
+        imgStr = nil;
+    }
+    NSDictionary *dic = @{
+                          @"face" : imgStr,
+                          @"nickname" : self.nickName.text
+                          };
+    WeakSelf(weak);
+    [HttpRequest postPath:@"Users/setUserInfo" params:dic resultBlock:^(id responseObject, NSError *error) {
+        if([error isEqual:[NSNull null]] || error == nil){
+            NSLog(@"success");
+        }
+        NSDictionary *datadic = responseObject;
+        if ([datadic[@"success"] intValue] == 1) {
+            [ConfigModel hideHud:weak];
+            [ConfigModel mbProgressHUD:@"修改成功" andView:nil];
+            [weak.navigationController popViewControllerAnimated:YES];
+        }else {
+            NSString *str = datadic[@"msg"];
+            [ConfigModel mbProgressHUD:str andView:nil];
+        }
+    }];
+    
+    
     
 }
 
@@ -70,6 +104,57 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:@"选择图片来源" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self takeAlbum];
+    }];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self takePhoto];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        //TODO
+    }];
+    [actionSheet addAction:action1];
+    [actionSheet addAction:action2];
+    [actionSheet addAction:cancelAction];
+    
+    [self.navigationController presentViewController:actionSheet animated:YES completion:nil];
+}
+
+#pragma mark -- Photo
+- (void)takeAlbum {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self.navigationController presentViewController:picker animated:YES completion:nil];
+}
+
+
+- (void)takePhoto {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentViewController:picker animated:YES completion:nil];
+    } else {
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示" message:@"当前相机不可用" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        [alter show];
+    }
+}
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    self.headImage.image = editedImage;
+    [self.noUseTableView reloadData];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 #pragma mark - UITableDelegate
@@ -110,6 +195,7 @@
         _headImage.layer.masksToBounds =  YES;
         _headImage.layer.cornerRadius = SizeWidth(20);
         _headImage.image = [UIImage imageNamed:@"-s-xq_bg_tx"];
+        [_headImage sd_setImageWithURL:[NSURL URLWithString:[ConfigModel getStringforKey:User_headimage]] placeholderImage:[UIImage imageNamed:@"-s-xq_bg_tx"]];
     }
     return _headImage;
 }
@@ -119,6 +205,7 @@
         _nickName = [[UITextField alloc] initWithFrame:FRAME(kScreenW/2, SizeHeight(15), kScreenW/2 - SizeWidth(30), SizeHeight(25))];
         _nickName.backgroundColor = [UIColor clearColor];
         _nickName.text = @"cc";
+        _nickName.text = [ConfigModel getStringforKey:User_nickname];
         _nickName.placeholder = @"请输入昵称";
         _nickName.textColor = UIColorFromHex(0x666666);
         _nickName.textAlignment = NSTextAlignmentRight;

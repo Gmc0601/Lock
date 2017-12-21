@@ -11,7 +11,7 @@
 #import "NSDictionary+Smart.h"
 @implementation DicToString
 
-+ (NSString *)parametersString:(NSDictionary *)parameters {
++ (NSDictionary *)parametersString:(NSDictionary *)parameters {
     NSMutableDictionary *mutableParameters = [parameters mutableCopy];
     //    NSString *apiCode = [mutableParameters objectForKey:@"apiCode"];
     //    [mutableParameters removeObjectForKey:@"apiCode"];
@@ -38,9 +38,13 @@
     token = [token stringByAppendingString:@"1e56c95504a9a846e4c7043704a20f25"];
     token = [token md5String];
     
-    
-    [mutableParameters addEntriesFromDictionary:@{@"token": token}];
-    return [mutableParameters mmh_JSONString];
+    NSLog(@"%@", token);
+    if ([ConfigModel getBoolObjectforKey:IsLogin]) {
+        NSString *usertoken = [ConfigModel getStringforKey:UserToken];
+        NSLog(@"userToken:%@", usertoken);
+        [mutableParameters addEntriesFromDictionary:@{@"user_token":usertoken}];
+    }
+    return mutableParameters;
 }
 
 @end

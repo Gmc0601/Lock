@@ -48,7 +48,9 @@
 //}
 
 - (void)back:(UIButton *)sender {
-    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+//    [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+    UINavigationController *na = [[UINavigationController alloc] initWithRootViewController:[LoginViewController new]];
+    [self presentViewController:na animated:YES completion:nil];
 }
 
 - (void)more:(UIButton *)sender {

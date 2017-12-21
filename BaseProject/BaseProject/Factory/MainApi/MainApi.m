@@ -59,11 +59,11 @@ static MainApi *request = nil;
 
     NSMutableDictionary *mutArr = [NSMutableDictionary dictionaryWithDictionary:parameters];
         [mutArr addEntriesFromDictionary:@{@"apiCode":URLString}];
-        //if ([ConfigModel getBoolObjectforKey:IsLogin]) {
-    if (YES) {
+        if ([ConfigModel getBoolObjectforKey:IsLogin]) {
+//    if (YES) {
             NSString *usertoken = [ConfigModel getStringforKey:UserToken];
-            [mutArr addEntriesFromDictionary:@{@"userToken":@"2434ce208259d9e2cd8064e8e639ea24"}];
-            
+            [mutArr addEntriesFromDictionary:@{@"userToken":usertoken}];
+
 #if UDID
             KeychainUUID *keychain = [[KeychainUUID alloc] init];
             id data = [keychain readUDID];
@@ -71,18 +71,17 @@ static MainApi *request = nil;
             [mutArr addEntriesFromDictionary:@{@"device_number":udidStr}];
 #else
 #endif
-            
+
         }
-        NSString *jsStr = [DicToString parametersString:mutArr];
-        NSDictionary *jsDic = @{@"json" : jsStr};
+    NSDictionary *jsStr = [DicToString parametersString:mutArr];
     
     
     if ([method isEqualToString:@"POST"]) {
         
-        NSLog(@"%@==============",jsDic);
+        NSLog(@"%@==============",jsStr);
         URLString = [NSString stringWithFormat:@"%@%@",BaseApi,URLString];
 
-        [self.manager POST:URLString parameters:jsDic progress:^(NSProgress * _Nonnull uploadProgress) {
+        [self.manager POST:URLString parameters:jsStr progress:^(NSProgress * _Nonnull uploadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"Response Object:\n%@", responseObject);
