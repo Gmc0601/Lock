@@ -48,6 +48,7 @@
 @property(retain,atomic) UILabel* lblOrder;
 @property(retain,atomic) UILabel* lblPayWay;
 @property(retain,atomic) UILabel* lblOrderDate;
+@property(retain,atomic) UIView *footer;
 @property(retain,atomic) UILabel* lblConfirmReceiveDate;
 @property(retain,atomic) UIButton* btnCancelOrder;
 @property(retain,atomic) OrderModel* order;
@@ -66,28 +67,21 @@
 -(void) loadData{
     [NetworkHelper getOrderDetailWithId:_orderId WithCallBack:^(NSString *error, OrderModel *order) {
         _order = order;
-        _order.status = OrderStatus_hasSend;
-        _lblAmount.text = order.order_amount;
-        _lblOrder.text = [self getOrderIdText:order.order_sn];
-        _lblName.text = order.consignee;
-        _lblTelNo.text = order.phone;
-        _lblCoupon.text = order.discount_amount;
-        _lblPayWay.text = order.pay_type == 0 ? @"支付宝支付":@"微信支付";
-        _lblStatus.text = [self getStatusString:order.status];
-        _lblOrderDate.text = order.create_time;
-        _lblAddress.text = [NSString stringWithFormat:@"%@%@%@%@",order.province,order.city,order.county,order.address];
-        _lblGoodsTitle.text = order.goods_name;
-        _lblGooodsPrice.text = order.goods_price;
-        _lblNeedInstall.text = order.is_install == 0? @"无需上门安装":@"需要上门安装";
-        _lblInstallPrice.text = order.install_fee;
-        _lblConfirmReceiveDate.text = order.update_time;
-        _lblAddedService.text = order.added_fee;
-        if (order.status == OrderStatus_complete) {
-            _countOfUpdateDate = 4;
+        _order.status = OrderStatus_waitingRefund;
+        _order.added_fee = @"10";
+        if (order.status == OrderStatus_complete || order.status == OrderStatus_waitingRefund) {
+            _numberOfSection = 5;
         }
         
+        [self addTableView];
+
         if (_order.added_fee.floatValue > 0) {
-            [self addServiceLayer];
+            [self addFooter];
+            if (_order.status == OrderStatus_hasSend ) {
+                [self addRefundTips];
+            }else{
+                [self addServiceLayer];
+            }
         }else{
             if (_order.status != OrderStatus_waitingPay) {
                 _btnCancelOrder.hidden = YES;
@@ -99,8 +93,6 @@
             }
         }
         
-       
-        [_tb reloadData];
     }];
 }
 
@@ -110,7 +102,6 @@
     _countOfFee = 1;
     _needInstall = YES;
     [self resetFather];
-    [self addTableView];
     _numberOfSection = 4;
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
@@ -136,7 +127,7 @@
     _lblStatus.font = PingFangSCBOLD(SizeWidth(15));
     _lblStatus.textColor = RGBColor(51,51,51);
     _lblStatus.textAlignment = NSTextAlignmentCenter;
-    _lblStatus.text = @"等待平台发货";
+    _lblStatus.text = [self getStatusString:_order.status];
     [headerView addSubview:_lblStatus];
     
     [_lblStatus mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -151,7 +142,7 @@
 
 - (void)resetFather {
     self.line.hidden = YES;
-    self.titleLab.text = @"确认订单";
+    self.titleLab.text = @"订单详情";
     [self.rightBar setTitle:@"客服" forState:UIControlStateNormal];
 }
 
@@ -176,11 +167,11 @@
 }
 
 -(void) addFooter{
-    UIView *footer = [UIView new];
-    footer.backgroundColor = RGBColorAlpha(255,255,255,1);
-    [self.view addSubview:footer];
+    _footer = [UIView new];
+    _footer.backgroundColor = RGBColorAlpha(255,255,255,1);
+    [self.view addSubview:_footer];
     
-    [footer mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_footer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.view);
         make.height.equalTo(@(SizeHeight(110/2)));
         make.bottom.equalTo(self.view);
@@ -191,11 +182,11 @@
     [btnSubmit addTarget:self action:@selector(tapSubmitButton) forControlEvents:UIControlEventTouchUpInside];
 
     btnSubmit.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [footer addSubview:btnSubmit];
+    [_footer addSubview:btnSubmit];
     
     [btnSubmit mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(footer.mas_right).offset(SizeWidth(-32/2));
-        make.centerY.equalTo(footer.mas_centerY);
+        make.right.equalTo(_footer.mas_right).offset(SizeWidth(-32/2));
+        make.centerY.equalTo(_footer.mas_centerY);
         make.width.equalTo(@(SizeWidth(186/2)));
         make.height.equalTo(@(SizeHeight(66/2)));
     }];
@@ -212,11 +203,11 @@
         lblTitle.textColor = RGBColorAlpha(51,51,51,1);
         lblTitle.textAlignment = NSTextAlignmentLeft;
         lblTitle.text = @"总计";
-        [footer addSubview:lblTitle];
+        [_footer addSubview:lblTitle];
         
         [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(footer.mas_left).offset(SizeWidth(32/2));
-            make.centerY.equalTo(footer.mas_centerY);
+            make.left.equalTo(_footer.mas_left).offset(SizeWidth(32/2));
+            make.centerY.equalTo(_footer.mas_centerY);
             make.width.equalTo(@(SizeWidth(55/2)));
             make.height.equalTo(@(SizeHeight(25/2)));
         }];
@@ -225,25 +216,25 @@
         _lblAmount.font = PingFangSC(SizeWidth(15));
         _lblAmount.textColor = RGBColorAlpha(248,179,23,1);
         _lblAmount.textAlignment = NSTextAlignmentLeft;
-        _lblAmount.text = @"266000";
-        [footer addSubview:_lblAmount];
+        _lblAmount.text = _order.order_amount;
+        [_footer addSubview:_lblAmount];
         
         [_lblAmount mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(lblTitle.mas_right).offset(SizeWidth(16/2));
-            make.centerY.equalTo(footer.mas_centerY);
+            make.centerY.equalTo(_footer.mas_centerY);
             make.width.equalTo(@(SizeWidth(200)));
             make.height.equalTo(@(SizeHeight(28/2)));
         }];
-        
-//        font = PingFangSC(SizeWidth(15));
-//        backgroundColor = RGBColorAlpha(248,179,23,1);
-//        titleColor = RGBColorAlpha(255,255,255,1);
-//        title = @"提交订单";
+
     }else{
+        title = @"确认收货";
+
+        if (_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete) {
+            title = @"退款";
+        }
         font = PingFangSCMedium(SizeWidth(13));
         backgroundColor = [UIColor whiteColor];
         titleColor = RGBColor(51,51,51);
-        title = @"确认收货";
         btnSubmit.layer.borderColor = RGBColor(51,51,51).CGColor;
         btnSubmit.layer.borderWidth = 1;
         btnSubmit.layer.cornerRadius = 2;
@@ -258,8 +249,16 @@
 -(void) tapSubmitButton{
     if (_order.status == OrderStatus_hasSend) {
         [self showConfirmView:@"确认已经收到货了吗？" withLeftTitle:@"取消" withRightTitle:@"确认"];
-    }else{
+    }else if(_order.status == OrderStatus_waitingPay){
         [self showPayTypeView];
+    }else{
+        if (_installPopup == nil) {
+            _installPopup = [KLCPopup popupWithContentView:[self getContentForTuiKuanTips]];
+            _installPopup.showType = KLCPopupShowTypeSlideInFromTop;
+            _installPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+        }
+        
+        [_installPopup show];
     }
 }
 
@@ -286,21 +285,22 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     int number = 0;
-    switch (section) {
-        case 0:
-            number = 4;
-            break;
-        case 1:
-            number = 2;
-            break;
-        case 2:
-            number = _countOfFee;
-            break;
-        case 3:
-            number = _countOfUpdateDate;
-            break;
-        default:
-            break;
+    int baseIndex = 0;
+    if (_numberOfSection == 5) {
+        baseIndex+=1;
+        if (section == 0) {
+            return 3;
+        }
+    }
+    if (section == baseIndex) {
+        number = 4;
+    }else if (section == baseIndex + 1) {
+        number = 2;
+    }else if (section == baseIndex + 2) {
+        number = _countOfFee;
+    }
+    else if (section == baseIndex + 3) {
+        number = _countOfUpdateDate;
     }
     
     return number;
@@ -319,21 +319,27 @@
     NSString *cellId = [NSString stringWithFormat:@"%ld%ld", (long)indexPath.section, (long)indexPath.row];
     UITableViewCell *cell =   [self defaleCellWithCellId:cellId];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-   
+    int baseIndex = 0;
+    
+    if (_numberOfSection == 5) {
+        baseIndex += 1;
         if (indexPath.section == 0) {
             [self addContentForExpress:cell withIndex:indexPath.row];
             return cell;
-        }else if (indexPath.section == 1) {
+        }
+    }
+   
+    if (indexPath.section == baseIndex ) {
         [self addContentForDeliveryAddrees:cell withIndex:indexPath.row];
-    }else if(indexPath.section == 2){
+    }else if(indexPath.section == baseIndex + 1){
         if (indexPath.row == 0) {
             [self addGoodInfoTo:cell];
         }else{
             [self addNeedInstall:cell withIndex:indexPath.row];
         }
-    }else if(indexPath.section == 3){
+    }else if(indexPath.section == baseIndex +2){
         [self addCostDetail:cell withIndex:indexPath.row];
-    }else if (indexPath.section == 4){
+    }else if (indexPath.section == baseIndex+3){
         [self addOrderDetail:cell withIndex:indexPath.row];
     }
     
@@ -343,30 +349,27 @@
 #pragma mark - UITableDelegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     CGFloat height = SizeHeight(40);
-    switch (indexPath.section) {
-            case 0:
-            if (_order.status == OrderStatus_complete || _order.status == OrderStatus_hasSend) {
-                height = SizeHeight(50);
-            }else{
-                return 0;
-            }
-            break;
-            case 1:
-            if (indexPath.row == 2) {
-                height = SizeHeight(50);
-            }
-            break;
-        case 2:
-            if (indexPath.row == 0) {
-                height = SizeHeight(166/2);
-            }else{
-                height = SizeHeight(130/2);
-            }
-            break;
-            
-        default:
-            break;
+    int baseIndex = 0;
+    if (_numberOfSection == 5) {
+        baseIndex += 1;
+        if (indexPath.section == 0) {
+            height = SizeHeight(50);
+            return  height;
+        }
     }
+    
+    if (indexPath.section == baseIndex + 2) {
+        if (indexPath.row == 2) {
+            height = SizeHeight(50);
+        }
+    }else if (indexPath.section == baseIndex + 1){
+        if (indexPath.row == 0) {
+            height = SizeHeight(166/2);
+        }else{
+            height = SizeHeight(130/2);
+        }
+    }
+    
     return height;
 }
 
@@ -578,12 +581,15 @@
         switch (index) {
             case 0:
                 _lblName =  [self addLabelTo:cell withLeftView:lblTitle];
+                _lblName.text = _order.consignee;
                 break;
             case 1:
                 _lblTelNo =  [self addLabelTo:cell withLeftView:lblTitle];
+                _lblTelNo.text = _order.phone;
                 break;
             case 2:
                 _lblAddress =  [self addLabelTo:cell withLeftView:lblTitle];
+                _lblAddress.text = [NSString stringWithFormat:@"%@%@%@%@",_order.province,_order.city,_order.county,_order.address];;
                 break;
             default:
                 break;
@@ -609,6 +615,7 @@
     }
     
     _imgGoods = [UIImageView new];
+    [_imgGoods sd_setImageWithURL:[NSURL URLWithString:_order.head_img]];
     [cell addSubview:_imgGoods];
     
     [_imgGoods mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -622,7 +629,7 @@
     _lblGoodsTitle.font = PingFangSCMedium(SizeWidth(15));
     _lblGoodsTitle.textColor = RGBColorAlpha(51,51,51,1);
     _lblGoodsTitle.textAlignment = NSTextAlignmentLeft;
-    _lblGoodsTitle.text = @"智能锁 | 守护你的家庭安全";
+    _lblGoodsTitle.text = _order.goods_name;
     _lblGoodsTitle.numberOfLines = 2;
     _lblGoodsTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     [cell addSubview:_lblGoodsTitle];
@@ -646,10 +653,10 @@
     lblTitle = [self addTitleLable:title withSuperView:cell];
     lblTitle.tag = 301;
     _lblNeedInstall = [UILabel new];
-    _lblNeedInstall.textAlignment = NSTextAlignmentLeft;
+    _lblNeedInstall.textAlignment = NSTextAlignmentRight;
     _lblNeedInstall.textColor = RGBColorAlpha(51,51,51,1);
    _lblNeedInstall.font = PingFangSCMedium(SizeWidth(13));
-    _lblNeedInstall.text = @"需要上门安装";
+    _lblNeedInstall.text = _order.is_install == 0? @"无需上门安装":@"需要上门安装";
     
     [cell addSubview:_lblNeedInstall];
     [_lblNeedInstall mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -750,6 +757,66 @@
     return content;
 }
 
+-(UIView *) getContentForTuiKuanTips{
+    
+    UIView *contentView = [self getContentWithSize:CGSizeMake( SizeWidth(686/2), SizeHeight(1082/2))];
+    
+    UIButton *btnTuikuan = [UIButton new];
+//    btnTuikuan.backgroundColor = RGBColor(241,242,242);
+    [btnTuikuan setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
+    btnTuikuan.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
+    btnTuikuan.titleLabel.textAlignment = NSTextAlignmentCenter;
+    btnTuikuan.layer.cornerRadius = SizeWidth(5);
+    [btnTuikuan setTitle:@"退款" forState:UIControlStateNormal];
+        [btnTuikuan addTarget:self action:@selector(tapPopoverOkButton) forControlEvents:UIControlEventTouchUpInside];
+    
+    [contentView addSubview:btnTuikuan];
+    [btnTuikuan mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(contentView.mas_left).offset(SizeWidth(40/2));
+        make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(30/2));
+        make.width.equalTo(@(SizeWidth(289/2)));
+        make.height.equalTo(@(SizeHeight(88/2)));
+    }];
+    
+    UIButton *btnCancel = [UIButton new];
+    [btnCancel setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
+    btnCancel.titleLabel.font = btnTuikuan.titleLabel.font;
+    btnCancel.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [btnCancel setTitle:@"取消" forState:UIControlStateNormal];
+    btnCancel.layer.cornerRadius = SizeWidth(5);
+//    btnCancel.backgroundColor = RGBColor(99,142,220);
+   
+        [btnCancel addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+        
+    [contentView addSubview:btnCancel];
+    
+    [btnCancel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(btnTuikuan.mas_right).offset(SizeWidth(34/2));
+        make.bottom.equalTo(btnTuikuan.mas_bottom);
+        make.width.equalTo(btnTuikuan);
+        make.height.equalTo(btnTuikuan);
+    }];
+    
+    UIWebView *webView = [UIWebView new];
+    [contentView addSubview:webView];
+    [webView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(contentView);
+        make.right.equalTo(contentView);
+        make.bottom.equalTo(btnCancel.mas_top).offset(-SizeHeight(10));
+        make.top.equalTo(contentView).offset(SizeHeight(60));
+    }];
+    
+    [ConfigModel showHud:self];
+    [NetworkHelper getRefundCallBack:^(NSString *error, NSString *addedValueService) {
+        [ConfigModel hideHud:self];
+        if (error == nil) {
+            [webView loadHTMLString:addedValueService baseURL:nil];
+        }
+    }];
+    return contentView;
+}
+
+
 -(UIView *) getContentWithSize:(CGSize ) size{
     UIView* contentView = [[UIView alloc] init];
     contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
@@ -770,16 +837,16 @@
     if (index == 0) {
         title =@"商品金额";
        
-        _lblGooodsPrice = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+        _lblGooodsPrice = [self addTitleLable:_order.goods_price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }else if(index == 1){
         title =@"安装费";
-          _lblInstallPrice = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+          _lblInstallPrice = [self addTitleLable:_order.install_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }else if(index == 2){
         title =@"增值服务";
           _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }else{
         title =@"分享立减";
-          _lblCoupon = [self addTitleLable:@"￥1222" withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+          _lblCoupon = [self addTitleLable:_order.discount_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }
     
     lblTitle = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
@@ -796,13 +863,13 @@
     NSString *title = @"";
     UIColor *fontColor = RGBColor(153,153,153);
     if (index == 0) {
+        title = [self getOrderIdText:_order.order_sn];
+
         if (lbl == nil) {
-            title = [self getOrderIdText:@"8783762893"];
             lbl = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
             lbl.tag = 101;
             [self addBtnCancelOrderTo:cell];
         }else{
-            title = [self getOrderIdText:@"8783762893"];
             lbl.text = title;
         }
     }else if(index == 1){
@@ -1042,9 +1109,9 @@
     }
 }
 
--(void) addServiceLayer{
+-(void) addRefundTips{
     UIView *layer = [UIView new];
-    layer.backgroundColor = RGBColorAlpha(0,0,0,0.36);
+    layer.backgroundColor = RGBColorAlpha(0,0,0,0.38);
     [self.view addSubview:layer];
     [layer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.view);
@@ -1053,11 +1120,7 @@
         make.left.equalTo(self.view);
     }];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapServiceTipsButton)];
-    [layer addGestureRecognizer:tapGesture];
-    layer.userInteractionEnabled = YES;
-    
-    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ksjl_icon_zc"]];
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ddxq_icon_tsb"]];
     [layer addSubview:imgView];
     
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1068,45 +1131,108 @@
     }];
     
     UILabel *lbl = [UILabel new];
-    lbl.font = PingFangSC(13);
+    lbl.font = PingFangSCMedium(13);
     lbl.textColor = RGBColor(255,255,255);
-    lbl.textAlignment = NSTextAlignmentRight;
-    lbl.text = @"我已阅读并同意";
+    lbl.textAlignment = NSTextAlignmentLeft;
+    lbl.text = @"确认收货后，才能申请退款哦";
     [layer addSubview:lbl];
     
     [lbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(layer.mas_centerY);
         make.left.equalTo(layer).offset(SizeWidth(84/2));
-        make.width.equalTo(@(SizeWidth(90)));
+        make.right.equalTo(layer);
         make.height.equalTo(@(SizeHeight(15)));
     }];
-    
+}
+
+-(void) addServiceLayer{
     UILabel *lblService = [UILabel new];
     lblService.font = PingFangSC(13);
     lblService.textColor = RGBColor(248,179,23);
     lblService.textAlignment = NSTextAlignmentLeft;
     NSDictionary *underlineAttribute = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
     lblService.attributedText = [[NSAttributedString alloc] initWithString:@"《增值服务协议》"attributes:underlineAttribute];
-    [layer addSubview:lblService];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapServiceTipsButton)];
+    [lblService addGestureRecognizer:tapGesture];
+    lblService.userInteractionEnabled = YES;
     
-    [lblService mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(lbl.mas_centerY);
-        make.left.equalTo(lbl.mas_right);
-        make.width.equalTo(@(SizeWidth(150)));
-        make.height.equalTo(@(SizeHeight(15)));
-    }];
+    if(_order.status == OrderStatus_waitingPay ){
+        UIView *layer = [UIView new];
+        layer.backgroundColor = RGBColorAlpha(0,0,0,0.36);
+        [self.view addSubview:layer];
+        [layer mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(self.view);
+            make.height.equalTo(@(SizeHeight(33)));
+            make.bottom.equalTo(self.view).offset(-SizeHeight(55));
+            make.left.equalTo(self.view);
+        }];
+        
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ksjl_icon_zc"]];
+        [layer addSubview:imgView];
+        
+        [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(layer).offset(SizeWidth(36/2));
+            make.centerY.equalTo(layer);
+            make.width.equalTo(@(SizeWidth(32/2)));
+            make.height.equalTo(@(SizeHeight(32/2)));
+        }];
+        
+        UILabel *lbl = [UILabel new];
+        lbl.font = PingFangSC(13);
+        lbl.textColor = RGBColor(255,255,255);
+        lbl.textAlignment = NSTextAlignmentRight;
+        lbl.text = @"我已阅读并同意";
+        [layer addSubview:lbl];
+        
+        [lbl mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(layer.mas_centerY);
+            make.left.equalTo(layer).offset(SizeWidth(84/2));
+            make.width.equalTo(@(SizeWidth(95)));
+            make.height.equalTo(@(SizeHeight(15)));
+        }];
+        
+        [layer addSubview:lblService];
+        
+        [lblService mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(lbl.mas_centerY);
+            make.left.equalTo(lbl.mas_right);
+            make.width.equalTo(@(SizeWidth(150)));
+            make.height.equalTo(@(SizeHeight(15)));
+        }];
+    }else  if(_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete){
+        [_footer addSubview:lblService];
+        [lblService mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(_footer);
+            make.left.equalTo(_footer).offset(SizeWidth(32/2));
+            make.width.equalTo(@(SizeWidth(150)));
+            make.height.equalTo(@(SizeHeight(15)));
+        }];
+    }
 }
 
 -(NSString *) getStatusString:(OrderStatus) status{
     NSString *strStatus = @"";
-    if(status == OrderStatus_padyed || status == OrderStatus_waitingPay){
+    if(status == OrderStatus_padyed){
+        strStatus = @"等待买家付款";
+    }
+     else  if  ( status == OrderStatus_waitingPay){
         strStatus = @"等待平台发货";
     }else if (status == OrderStatus_hasSend){
         strStatus = @"平台已发货";
     }else if (status == OrderStatus_complete){
         strStatus = @"已完成";
+        _imgStatus.image = [UIImage imageNamed:@"ddxq_icon_ywc"];
+        [_imgStatus mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(SizeWidth(98/2)));
+            make.height.equalTo(@(SizeHeight(98/2)));
+        }];
     }else if (status == OrderStatus_waitingRefund){
         strStatus = @"退款审核中";
+        _imgStatus.image = [UIImage imageNamed:@"ddxq_icon_shz"];
+        [_imgStatus mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(SizeWidth(98/2)));
+            make.height.equalTo(@(SizeHeight(98/2)));
+        }];
     }else if (status == OrderStatus_RefundComplete){
         strStatus = @"退款成功";
     }
@@ -1194,6 +1320,9 @@
          [self updateOrder:@"3"];
     }else if (_order.status != OrderStatus_complete && _order.added_fee > 0) {
         [self updateOrder:@"10"];
+    }else if (_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete){
+        [self updateOrder:@"4"];
+
     }
 }
 

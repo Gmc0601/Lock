@@ -69,6 +69,20 @@
     }];
 }
 
++(void) getRefundCallBack:(void(^)(NSString *error,NSString *addedValueService)) callback{
+    [HttpRequest getPath:@"public/tuiyajin.html" params:nil resultBlock:^(id responseObject, NSError *error) {
+        NSDictionary *datadic = responseObject;
+        
+        if ([datadic[@"success"] intValue] == 1) {
+            NSString *strService = datadic[@"data"];
+            
+            callback(nil,strService);
+        }else{
+            callback(datadic[@"msg"],nil);
+        }
+    }];
+}
+
 +(void) getInstallCallBack:(void(^)(NSString *error,NSArray *requireInstall, NSArray *unReqiureInstall)) callback{
     [HttpRequest getPath:@"public/getInstallArea.html" params:nil resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
