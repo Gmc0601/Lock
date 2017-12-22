@@ -100,6 +100,7 @@
     [super viewDidLoad];
     _countOfUpdateDate = 3;
     _countOfFee = 1;
+    
     _needInstall = YES;
     [self resetFather];
     _numberOfSection = 4;
@@ -701,7 +702,8 @@
         }];
         
         _serviceWebView= [UIWebView new];
-        _serviceWebView.backgroundColor = self.view.backgroundColor;
+        _serviceWebView.backgroundColor = [UIColor clearColor];
+        _serviceWebView.opaque = NO;
         _serviceWebView.opaque = NO;
         [content addSubview:_serviceWebView];
         [_serviceWebView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -714,31 +716,7 @@
         _serviceDescPopup = [KLCPopup popupWithContentView:content];
         _serviceDescPopup.showType = KLCPopupShowTypeSlideInFromTop;
         _serviceDescPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
-        for (UIView *subView in [_serviceDescPopup subviews])
-            
-        {
-            
-            if ([subView isKindOfClass:[UIScrollView class]])
-                
-            {
-                
-                for (UIView *shadowView in [subView subviews])
-                    
-                {
-                    
-                    if ([shadowView isKindOfClass:[UIImageView class]])
-                        
-                    {
-                        
-                        shadowView.hidden = YES;
-                        
-                    }
-                    
-                }
-                
-            }
-            
-        }
+    
     }
     
     [_serviceDescPopup show];
@@ -748,6 +726,30 @@
         [_serviceWebView loadHTMLString:addedValueService baseURL:nil];
     }];
 }
+
+//- (void)webViewDidFinishLoad:(UIWebView *)webView {
+//    for (UIView *_aView in [_serviceWebView subviews])
+//    {
+//        if ([_aView isKindOfClass:[UIScrollView class]])
+//        {
+//            [(UIScrollView *)_aView setShowsVerticalScrollIndicator:NO];
+//            //右侧的滚动条
+//            
+//            [(UIScrollView *)_aView setShowsHorizontalScrollIndicator:NO];
+//            //下侧的滚动条
+//            
+//            for (UIView *_inScrollview in _aView.subviews)
+//            {
+//                _inScrollview.backgroundColor = [UIColor whiteColor];
+//                if ([_inScrollview isKindOfClass:[UIImageView class]])
+//                {
+//                    _inScrollview.hidden = YES;  //上下滚动出边界时的黑色的图片
+//                }
+//            }
+//        }
+//    }
+//}
+
 
 -(UIView *) getContentForTips{
     

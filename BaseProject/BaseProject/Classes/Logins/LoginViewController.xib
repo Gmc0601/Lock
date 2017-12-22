@@ -17,6 +17,7 @@
                 <outlet property="codeText" destination="D6T-jv-Wiq" id="2o9-Mt-b2q"/>
                 <outlet property="phoneText" destination="OhG-E1-OTp" id="w35-SK-8NS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="wechatBtn" destination="KFL-4S-nkn" id="uz5-aM-wEf"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -183,7 +184,7 @@
                 <constraint firstItem="Wib-eN-ao1" firstAttribute="top" secondItem="irz-Ou-VL4" secondAttribute="bottom" constant="27" id="qsC-dy-H43"/>
                 <constraint firstAttribute="trailing" secondItem="Jae-Oy-YUL" secondAttribute="trailing" constant="30" id="rZz-5r-zAs"/>
             </constraints>
-            <point key="canvasLocation" x="-414.5" y="-202.5"/>
+            <point key="canvasLocation" x="-695" y="-224"/>
         </view>
     </objects>
 </document>

@@ -10,4 +10,6 @@
 
 @interface AddmobileViewController : CCBaseViewController
 
+@property (nonatomic, copy) NSString *wx_openid, *wx_headimgurl, *wx_nickname;
+
 @end

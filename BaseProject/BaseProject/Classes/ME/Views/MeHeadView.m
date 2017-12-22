@@ -10,6 +10,7 @@
 #import <YYKit.h>
 #import "UIButton+YX.h"
 #import "CCButton.h"
+#import <UIImageView+WebCache.h>
 @implementation MeHeadView
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -27,6 +28,11 @@
     [self addSubview:self.messageBtn];
     [self addSubview:self.headBtn];
     [self addOrderBtn];
+}
+
+- (void)update {
+    [self.headImg sd_setImageWithURL:[NSURL URLWithString:[ConfigModel getStringforKey:User_headimage]] placeholderImage:[UIImage imageNamed:@"-s-xq_bg_tx"]];
+    self.nicknameLab.text = [ConfigModel getStringforKey:User_nickname];
 }
 
 - (void)addOrderBtn {
@@ -48,7 +54,6 @@
 
 - (void)orderClick:(int)sender {
     
-    NSLog(@"%d", sender);
     if (self.orderBlock) {
         self.orderBlock(sender);
     }

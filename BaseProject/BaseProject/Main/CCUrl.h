@@ -46,5 +46,15 @@
 
 #define UserToken @"userTOken"
 
+#define GTclientId @"clientId"
+
+#define User_nickname @"nickName"
+
+#define User_phone @"userphone"
+
+#define User_headimage @"headimage"
+
+#define User_State @"state"
+
 
 #endif /* CCUrl_h */

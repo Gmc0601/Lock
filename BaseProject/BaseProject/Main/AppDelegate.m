@@ -23,11 +23,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
     self.tabbar = [[TBTabBarController alloc] init];
-    
     self.window.rootViewController = self.tabbar;
-    
     self.window.backgroundColor = [UIColor whiteColor];
     [IQKeyboardManager sharedManager].enable = YES;
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
@@ -35,6 +32,7 @@
     [self initGTPush];
     
     [self initUmeng];
+    
     
     [self.window makeKeyAndVisible];
     

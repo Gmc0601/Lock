@@ -10,5 +10,5 @@
 
 @interface DicToString : NSObject
 
-+ (NSString *)parametersString:(NSDictionary *)parameters ;
++ (NSDictionary *)parametersString:(NSDictionary *)parameters ;
 @end

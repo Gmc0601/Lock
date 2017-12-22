@@ -22,4 +22,6 @@
 
 @property (nonatomic, copy) void(^headImgBlock)();
 
+- (void)update;
+
 @end
