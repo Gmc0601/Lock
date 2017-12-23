@@ -22,4 +22,7 @@
 +(void) loadRegion;
 +(void) modifyOrderWithOrderId:(NSString *) order_id  withStatus:(NSString *) status WithCallBack:(void(^)(NSString *error,NSString *msg)) callback;
 +(void) getRefundCallBack:(void(^)(NSString *error,NSString *addedValueService)) callback;
++(void) forceInstall:(NSString *) area_id WithCallBack:(void(^)(NSString *error,bool forceInstall)) callback;
++(void) installFee:(NSString *) area_id WithCallBack:(void(^)(NSString *error,NSString* installFee)) callback;
++(void) getAddedFeeWithCallBack:(void(^)(NSString *error,NSString* installFee)) callback;
 @end

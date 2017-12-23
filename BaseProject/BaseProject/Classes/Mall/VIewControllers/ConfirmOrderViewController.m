@@ -34,6 +34,7 @@
 @property(retain,atomic) UIImageView *imgGoods;
 @property(retain,atomic) UILabel *lblGoodsTitle;
 @property(assign,atomic) BOOL needInstall;
+@property(assign,atomic) BOOL forceInstall;
 @property(retain,atomic)  SHPlacePickerView *shplacePicker;
 @property(retain,atomic) KLCPopup* sharePopup;
 @property(retain,atomic) KLCPopup* installPopup;
@@ -58,6 +59,7 @@
 @property(assign,atomic)  NSString *province;
 @property(assign,atomic)  NSString *county;
 @property(assign,atomic)  NSString *discountMoney;
+@property(assign,atomic)  UISwitch * needInstallSwitch;
 @end
 
 @implementation ConfirmOrderViewController
@@ -87,8 +89,12 @@
     }];
     
     [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
+        if (addr == nil) {
+            return ;
+        }
         _txtName.text = addr.consignee;
         _txtTelNo.text = addr.phone;
+        [self chooseArea:@"110100"];
         NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",addr.province,addr.city,addr.county];
         [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
         _txtAddress.text = addr.address;
@@ -102,6 +108,7 @@
     [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
         _strSevice = addedValueService;
     }];
+    
 }
 
 -(NSString *) getShareString:(NSString *) money{
@@ -520,12 +527,26 @@
 
     if (_shplacePicker == nil) {
         _shplacePicker = [[SHPlacePickerView alloc] initWithIsRecordLocation:YES SendPlaceArray:^(NSArray *placeArray) {
-            
+            [self chooseArea:@"110100"];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
         }];
     }
 
     [self.view addSubview:_shplacePicker];
+}
+
+-(void) chooseArea:(NSString *) arearId{
+    [ConfigModel showHud:self];
+    [NetworkHelper installFee:arearId WithCallBack:^(NSString *error, NSString *installFee) {
+        _installPrice = installFee;
+        [NetworkHelper forceInstall:@"" WithCallBack:^(NSString *error, bool forceInstall) {
+            [ConfigModel hideHud:self];
+            _forceInstall = forceInstall;
+            _needInstall = YES;
+            _needInstallSwitch.on = YES;
+            [self changePrice:_needInstall];
+        }];
+    }];
 }
 
 - (BOOL)textField:(UITextField *) textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -604,6 +625,7 @@
         [sw addTarget:self action:@selector(needAddedService:) forControlEvents:UIControlEventValueChanged];
 
     }else{
+        _needInstallSwitch = sw;
         sw.on = _needInstall;
         [sw addTarget:self action:@selector(needInstall:) forControlEvents:UIControlEventValueChanged];
     }
@@ -625,7 +647,16 @@
 
 -(void) needAddedService:(UISwitch *) sender{
     _needAddedService = sender.on;
-    [self changePrice:_needAddedService];
+    if (_needInstallSwitch) {
+        [ConfigModel showHud:self];
+        [NetworkHelper getAddedFeeWithCallBack:^(NSString *error, NSString *added_price) {
+            [ConfigModel hideHud:self];
+            _goodsInfo.added_price = added_price;
+            [self changePrice:_needAddedService];
+        }];
+    }else{
+        [self changePrice:_needAddedService];
+    }
 }
 
 -(void) changePrice:(BOOL) need{
@@ -728,7 +759,7 @@
         price = _goodsInfo.price;
     }else if(index == 1 && _needInstall){
         title =@"安装费";
-    }else if(index == 2 && _needAddedService){
+    }else if((index == 1 || index == 2) && _needAddedService){
         title =@"增值服务";
         price = _goodsInfo.added_price;
     }else{

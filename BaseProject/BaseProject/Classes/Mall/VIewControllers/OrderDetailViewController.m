@@ -179,6 +179,10 @@
         make.left.equalTo(self.view);
     }];
     
+    if (_order.status == OrderStatus_waitingRefund) {
+        return;
+    }
+    
     UIButton *btnSubmit = [UIButton new];
     [btnSubmit addTarget:self action:@selector(tapSubmitButton) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1201,7 +1205,7 @@
             make.width.equalTo(@(SizeWidth(150)));
             make.height.equalTo(@(SizeHeight(15)));
         }];
-    }else  if(_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete){
+    }else  if(_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete || _order.status == OrderStatus_waitingRefund){
         [_footer addSubview:lblService];
         [lblService mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(_footer);
@@ -1235,11 +1239,27 @@
             make.width.equalTo(@(SizeWidth(98/2)));
             make.height.equalTo(@(SizeHeight(98/2)));
         }];
+        [self addTipsTo:_imgStatus.superview withTitle:@"平台将会及时和您联系退款事宜"];
     }else if (status == OrderStatus_RefundComplete){
         strStatus = @"退款成功";
     }
     
     return strStatus;
+}
+
+-(void) addTipsTo:(UIView *) cell withTitle:(NSString *) title{
+    UILabel *lbl = [UILabel new];
+    lbl.text = title;
+    lbl.font = PingFangSCMedium(12);
+    lbl.textColor = RGBColor(204,204,204);
+    
+    [cell addSubview:lbl];
+    [lbl mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(cell);
+        make.width.equalTo(@(SizeWidth(200)));
+        make.bottom.equalTo(cell).offset(-SizeHeight(15));
+        make.height.equalTo(@(SizeHeight(15)));
+    }];
 }
 
 -(void) showConfirmView:(NSString *) msg withLeftTitle:(NSString *) leftmsg withRightTitle:(NSString *) rightMsg {
