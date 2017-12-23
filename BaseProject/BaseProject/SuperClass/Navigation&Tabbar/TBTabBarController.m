@@ -13,7 +13,7 @@
 #import "MallViewController.h"
 #import "FindViewController.h"
 #import "MeViewController.h"
-
+#import "LoginViewController.h"
 #import "ViewController.h"
 #import "TBNavigationController.h"
 #import "TBTabBar.h"

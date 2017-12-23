@@ -12,6 +12,9 @@
 #import "NetworkHelper.h"
 #import "InstallSummeryView.h"
 #import "OrderModel.h"
+#import <UMSocialCore/UMSocialCore.h>
+
+
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
 
@@ -725,7 +728,7 @@
         price = _goodsInfo.price;
     }else if(index == 1 && _needInstall){
         title =@"安装费";
-    }else if(index == 2 || _needAddedService){
+    }else if(index == 2 && _needAddedService){
         title =@"增值服务";
         price = _goodsInfo.added_price;
     }else{
@@ -824,7 +827,21 @@
 }
 
 -(void) tapShareButton:(UITapGestureRecognizer *) gesture{
+    NSInteger index = gesture.view.tag;
+    UMSocialPlatformType type = UMSocialPlatformType_WechatTimeLine ;
+    switch (index) {
+        case 2:
+            type = UMSocialPlatformType_WechatSession;
+            break;
+        case 3:
+            type = UMSocialPlatformType_QQ;
+            break;
+        case 4:
+            type = UMSocialPlatformType_Qzone;
+            break;
+    }
     
+    [self shareWebPageToPlatformType:type];
 }
 
 -(void) addCancelButtonTo:(UIView *) sender{
@@ -1044,5 +1061,57 @@
     }
     
     _lblAmount.text = [NSString stringWithFormat:@"%f",amount];
+}
+
+- (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType
+{
+    [ConfigModel showHud:self];
+    [HttpRequest getPath:@"public/fenxiang" params:nil resultBlock:^(id responseObject, NSError *error) {
+        [ConfigModel hideHud:self];
+        [KLCPopup dismissAllPopups];
+        if (error) {
+            return ;
+        }
+        
+        if (responseObject[@"success"] == 0) {
+            [ConfigModel mbProgressHUD:responseObject[@"msg"] andView:self.view];
+        }
+        
+        NSString *thumbURL = responseObject[@"data"][@"img_url"];
+        NSString *title = responseObject[@"data"][@"title"];
+        NSString *desc = responseObject[@"data"][@"subtitle"];
+        NSString *url = responseObject[@"data"][@"url"];
+
+        //创建分享消息对象
+        UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
+        
+        UMShareWebpageObject *shareObject = [UMShareWebpageObject shareObjectWithTitle:title descr:desc thumImage:thumbURL];
+        //设置网页地址
+        shareObject.webpageUrl = url;
+        
+        //分享消息对象设置分享内容对象
+        messageObject.shareObject = shareObject;
+        
+        //调用分享接口
+        [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
+            if (error) {
+                UMSocialLogInfo(@"************Share fail with error %@*********",error);
+            }else{
+                _hasShare = true;
+                [self changePrice:YES];
+                if ([data isKindOfClass:[UMSocialShareResponse class]]) {
+                    UMSocialShareResponse *resp = data;
+                    //分享结果消息
+                    UMSocialLogInfo(@"response message is %@",resp.message);
+                    //第三方原始返回的数据
+                    UMSocialLogInfo(@"response originalResponse data is %@",resp.originalResponse);
+                    
+                }else{
+                    UMSocialLogInfo(@"response data is %@",data);
+                }
+            }
+        }];
+    }];
+   
 }
 @end
