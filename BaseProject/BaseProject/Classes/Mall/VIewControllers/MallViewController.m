@@ -135,8 +135,8 @@
         return;
     }
     if (_goodsId != nil) {
-        ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsInfo];
-//        MyOrderViewController *newVC = [MyOrderViewController new];
+     //    ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsInfo];
+       MyOrderViewController *newVC = [MyOrderViewController new];
         [self.navigationController pushViewController:newVC animated:YES];
     }
     

@@ -115,8 +115,7 @@
 
 +(void) addOrder:(OrderModel *) order withCallBack:(void(^)(NSString *error,NSString *installFee)) callback{
     NSDictionary *dict = [order mj_keyValues];
-    
-    [HttpRequest postPath:@"order/add.html" params:dict resultBlock:^(id responseObject, NSError *error) {
+    [HttpRequest getPath:@"order/add.html" params:dict resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {

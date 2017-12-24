@@ -982,8 +982,8 @@
     order.goods_num = 1;
     order.consignee = _txtName.text;
     order.address = _txtAddress.text;
-    order.city = _city;
-    order.province = _province;
+    order.city = @"110101";//_city;
+    order.province = @"110000";//_province;
     order.county = _county;
     order.phone = _txtTelNo.text;
     order.type = 0;
