@@ -23,10 +23,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [[UMSocialManager defaultManager] openLog:YES];
-    /* 设置友盟appkey */
-    [[UMSocialManager defaultManager] setUmSocialAppkey:@""];
-    
+  
     [self configUSharePlatforms];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

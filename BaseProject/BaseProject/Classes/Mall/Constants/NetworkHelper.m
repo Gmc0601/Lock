@@ -99,16 +99,16 @@
     }];
 }
 
-+(void) getInstallFeeCallBack:(void(^)(NSString *error,NSString *installFee)) callback{
++(void) getInstallFeeWithArea:(NSString *) area_id WithCallBack:(void(^)(NSString *error,NSString *installFee,bool canInstall, bool forceInstall)) callback{
     [HttpRequest getPath:@"Public/getInstallFee" params:nil resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
             NSDictionary *dict = datadic[@"data"];
             
-            callback(nil,dict[@"install_fee"]);
+            callback(nil,dict[@"install_fee"],[dict[@"is_install"]  isEqual: @"1"],[dict[@"is_force"] isEqual: @"1"]);
         }else{
-            callback(datadic[@"msg"],nil);
+            callback(datadic[@"msg"],nil,nil,nil);
         }
     }];
 }
@@ -165,40 +165,6 @@ NSMutableDictionary *params = [NSMutableDictionary new];
     }];
 }
 
-+(void) forceInstall:(NSString *) area_id WithCallBack:(void(^)(NSString *error,bool forceInstall)) callback{
-    NSMutableDictionary *params = [NSMutableDictionary new];
-    [params setValue:area_id forKey:@"area_id"];
-    
-    [HttpRequest getPath:@"Public/getIsForce" params:params resultBlock:^(id responseObject, NSError *error) {
-        NSDictionary *datadic = responseObject;
-        
-        if ([datadic[@"success"] intValue] == 1) {
-            NSString *infoArr = datadic[@"data"][@"is_force"];
-            
-            
-            callback(nil,[infoArr  isEqual: @"1"]);
-        }else{
-            callback(datadic[@"msg"],nil);
-        }
-    }];
-}
-
-+(void) installFee:(NSString *) area_id WithCallBack:(void(^)(NSString *error,NSString* installFee)) callback{
-    NSMutableDictionary *params = [NSMutableDictionary new];
-    [params setValue:area_id forKey:@"area_id"];
-    
-    [HttpRequest getPath:@"Public/getInstallFee" params:params resultBlock:^(id responseObject, NSError *error) {
-        NSDictionary *datadic = responseObject;
-        
-        if ([datadic[@"success"] intValue] == 1) {
-            NSString *infoArr = datadic[@"data"][@"install_fee"];
-            
-            callback(nil,infoArr);
-        }else{
-            callback(datadic[@"msg"],nil);
-        }
-    }];
-}
 
 +(void) getAddedFeeWithCallBack:(void(^)(NSString *error,NSString* installFee)) callback{
     [HttpRequest getPath:@"Public/getAddedFee" params:nil resultBlock:^(id responseObject, NSError *error) {

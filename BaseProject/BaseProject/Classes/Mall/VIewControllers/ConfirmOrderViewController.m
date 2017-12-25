@@ -35,6 +35,7 @@
 @property(retain,atomic) UILabel *lblGoodsTitle;
 @property(assign,atomic) BOOL needInstall;
 @property(assign,atomic) BOOL forceInstall;
+@property(assign,atomic) BOOL canInstall;
 @property(retain,atomic)  SHPlacePickerView *shplacePicker;
 @property(retain,atomic) KLCPopup* sharePopup;
 @property(retain,atomic) KLCPopup* installPopup;
@@ -150,7 +151,6 @@
         make.height.equalTo(@(SizeHeight(33)));
     }];
     
-    img.backgroundColor = [UIColor redColor];
     _tb.tableHeaderView = img;
 }
 
@@ -393,7 +393,7 @@
         make.width.equalTo(@(width));
         }
         
-        make.height.equalTo(@(SizeHeight(25/2)));
+        make.height.equalTo(superView);
         if (offset < 0) {
             make.right.equalTo(superView.mas_right).offset(offset);
         }else{
@@ -422,7 +422,7 @@
         make.centerY.equalTo(leftView.mas_centerY);
         make.right.equalTo(superView.mas_right).offset(-SizeWidth(10));
         make.left.equalTo(leftView.mas_right).offset(SizeWidth(25/2));
-        make.height.equalTo(@(SizeHeight(25/2)));
+        make.height.equalTo(superView);
     }];
     
     if (placeHolder != nil && ![@"" isEqualToString:placeHolder]) {
@@ -537,15 +537,13 @@
 
 -(void) chooseArea:(NSString *) arearId{
     [ConfigModel showHud:self];
-    [NetworkHelper installFee:arearId WithCallBack:^(NSString *error, NSString *installFee) {
+    [NetworkHelper getInstallFeeWithArea:arearId WithCallBack:^(NSString *error, NSString *installFee , BOOL canInstall, BOOL forceInstall) {
+        [ConfigModel hideHud:self];
         _installPrice = installFee;
-        [NetworkHelper forceInstall:@"" WithCallBack:^(NSString *error, bool forceInstall) {
-            [ConfigModel hideHud:self];
-            _forceInstall = forceInstall;
-            _needInstall = YES;
-            _needInstallSwitch.on = YES;
+            _forceInstall = canInstall;
+            _needInstall = canInstall;
+            _needInstallSwitch.on = canInstall;
             [self changePrice:_needInstall];
-        }];
     }];
 }
 
@@ -641,6 +639,16 @@
 }
 
 -(void) needInstall:(UISwitch *) sender{
+    if (!_canInstall) {
+        sender.on = NO;
+        [ConfigModel mbProgressHUD:@"您所在区域暂不支持安装服务" andView:self.view];
+        return;
+    }
+    
+    if (_forceInstall) {
+        [ConfigModel mbProgressHUD:@"你所在区域为强制安装区域" andView:self.view];
+        return;
+    }
     _needInstall = sender.on;
     [self changePrice:_needInstall];
 }
