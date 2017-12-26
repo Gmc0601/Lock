@@ -999,8 +999,14 @@
     order.install_fee = _installPrice;
     order.discount_amount = _discountMoney;
     order.pay_type = _isWechatPay ? 1:0;
+    [ConfigModel showHud:self];
     [NetworkHelper addOrder:order withCallBack:^(NSString *error, NSString *msg) {
-        NSLog(msg);
+        [ConfigModel hideHud:self];
+        if (error) {
+            [ConfigModel mbProgressHUD:error andView:self.view];
+        }else{
+            [ConfigModel mbProgressHUD:msg andView:self.view];
+        }
     }];
     [KLCPopup dismissAllPopups];
 }

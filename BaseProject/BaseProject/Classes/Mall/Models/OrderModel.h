@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 typedef enum {
-    OrderStatus_waitingPay,
-    OrderStatus_padyed,
-    OrderStatus_hasSend,
-    OrderStatus_complete,
-    OrderStatus_waitingRefund,
-    OrderStatus_RefundComplete,
-    OrderStatus_RefundCancel
+    OrderStatus_waitingPay = 0,
+    OrderStatus_padyed = 1,
+    OrderStatus_hasSend = 2,
+    OrderStatus_complete = 3,
+    OrderStatus_waitingRefund = 4,
+    OrderStatus_RefundComplete = 5,
+    OrderStatus_RefundCancel = 6,
+    OrderStatus_Cancel =  10,
     
 } OrderStatus;
 

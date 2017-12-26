@@ -69,7 +69,7 @@
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     OrderCell *cell = (OrderCell *)[_tb dequeueReusableCellWithIdentifier:@"cell"];
-    cell.model = _datasource[indexPath.row];
+    cell.model = _datasource[indexPath.section];
     cell.delegate = self;
     return cell;
 }

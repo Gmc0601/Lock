@@ -141,7 +141,7 @@
     [_lblStatus mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(_img.mas_left);
         make.bottom.equalTo(self.mas_bottom).offset(-SizeHeight(24));
-        make.width.equalTo(@(SizeWidth(90/2)));
+        make.width.equalTo(@(SizeWidth(170/2)));
         make.height.equalTo(@(SizeHeight(26/2)));
     }];
     
@@ -200,9 +200,12 @@
     }else if (_model.status == OrderStatus_waitingRefund){
         _lblStatus.textColor = RGBColor(51,51,51);
         _lblStatus.text = @"退款审核中";
-    }else if (_model.status == OrderStatus_waitingRefund){
+    }else if (_model.status == OrderStatus_RefundComplete){
         _lblStatus.textColor = RGBColor(153,153,153);
         _lblStatus.text = @"退款成功";
+    }else{
+        _lblStatus.textColor = RGBColor(51,51,51);
+        _lblStatus.text = @"已取消";
     }
 }
 @end

@@ -14,4 +14,5 @@ pod 'GTSDK'
 pod 'UMengUShare/UI’
 pod 'UMengUShare/Social/WeChat'
 pod 'UMengUShare/Social/QQ'
+pod 'Realm'
 end

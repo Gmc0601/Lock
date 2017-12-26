@@ -135,16 +135,47 @@
         
         if ([datadic[@"success"] intValue] == 1) {
             NSArray *infoArr = datadic[@"data"];
+            NSMutableArray *models = [NSMutableArray new];
+            for (NSDictionary *dict in infoArr) {
+                OrderModel *model = [OrderModel new];
+                model.goods_name = dict[@"goods_name"];
+                model.order_id = dict[@"order_id"];
+                model.order_amount = dict[@"order_amount"];
+                model.pay_time = dict[@"pay_time"];
+                model.order_sn = dict[@"order_sn"];
+                model.goods_id = dict[@"goods_id"];
+                model.head_img = dict[@"head_img"];
+                model.status = [self getOrderStatusFrom:dict[@"status"]];
+                [models addObject:model];
+            }
             
             
-            NSArray *info = [OrderModel mj_objectArrayWithKeyValuesArray:infoArr];
-            callback(nil,info);
+            callback(nil,models);
         }else{
             callback(datadic[@"msg"],nil);
         }
     }];
 }
 
++(OrderStatus) getOrderStatusFrom:(NSString *) strStatus{
+    if ([strStatus isEqualToString:@"0"]) {
+        return OrderStatus_waitingPay;
+    }else if ([strStatus isEqualToString:@"1"]) {
+        return OrderStatus_padyed;
+    }else if ([strStatus isEqualToString:@"2"]) {
+        return OrderStatus_hasSend;
+    }else if ([strStatus isEqualToString:@"3"]) {
+        return OrderStatus_complete;
+    }else if ([strStatus isEqualToString:@"4"]) {
+        return OrderStatus_waitingRefund;
+    }else if ([strStatus isEqualToString:@"5"]) {
+        return OrderStatus_RefundComplete;
+    }else if ([strStatus isEqualToString:@"10"]) {
+        return OrderStatus_Cancel;
+    }
+    
+    return OrderStatus_Cancel;
+}
 
 +(void) getOrderDetailWithId:(NSString *) order_id WithCallBack:(void(^)(NSString *error,OrderModel *order)) callback{
 NSMutableDictionary *params = [NSMutableDictionary new];
