@@ -23,6 +23,7 @@
 @synthesize model = _model;
 -(void) setModel:(OrderModel *)model{
     _model = model;
+    _model.status = OrderStatus_hasSend;
     _lblOrder.text = model.order_sn;
     _lblTitle.text = model.goods_name;
     _lblAmount.text = model.order_amount;
@@ -189,10 +190,11 @@
         _lblStatus.textColor = RGBColor(51,51,51);
         _lblStatus.text = @"待收货";
         [_btn setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];
-        _btn.backgroundColor = RGBColor(225,225,225);
+        _btn.backgroundColor = [UIColor whiteColor];
         _btn.layer.borderColor = RGBColor(224,224,224).CGColor;
         _btn.layer.borderWidth = 1;
         _btn.hidden = NO;
+        [_btn setTitle:@"确认收货" forState:UIControlStateNormal];
         
     }else if (_model.status == OrderStatus_complete){
         _lblStatus.textColor = RGBColor(153,153,153);

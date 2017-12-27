@@ -13,6 +13,7 @@
 #import "InstallSummeryView.h"
 #import "OrderModel.h"
 #import <UMSocialCore/UMSocialCore.h>
+#import "NSString+Category.h"
 
 
 #define Share_TAG 100000
@@ -84,32 +85,47 @@
     _countOfFee = 1;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    
-    [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
-        _lblShareSaveMoney.text = [self getShareString:money];
-    }];
-    
+    [ConfigModel showHud:self];
     [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
+        [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
+            [NetworkHelper getInstallCallBack:^(NSString *error, NSArray *requireInstall, NSArray *unReqiureInstall) {
+                
+                [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
+                    if (error) {
+                        return ;
+                    }
+                    _strSevice = addedValueService;
+                }];
+                
+                if (error) {
+                    return ;
+                }
+                _requireInstall = requireInstall;
+                _unReqiureInstall = unReqiureInstall;
+                
+            }];
+            
+            if (error) {
+                return ;
+            }
+            
+            _lblShareSaveMoney.text = [self getShareString:money];
+        }];
+        
+        [ConfigModel hideHud:self];
         if (addr == nil) {
             return ;
         }
+        
         _txtName.text = addr.consignee;
         _txtTelNo.text = addr.phone;
         [self chooseArea:@"110100"];
         NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",addr.province,addr.city,addr.county];
         [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
         _txtAddress.text = addr.address;
+        
+        [self setPrice];
     }];
-    
-    [NetworkHelper getInstallCallBack:^(NSString *error, NSArray *requireInstall, NSArray *unReqiureInstall) {
-        _requireInstall = requireInstall;
-        _unReqiureInstall = unReqiureInstall;
-    }];
-    
-    [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
-        _strSevice = addedValueService;
-    }];
-    
 }
 
 -(NSString *) getShareString:(NSString *) money{
@@ -317,10 +333,6 @@
     return height;
 }
 
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
         UIView *view = [[UIView alloc] initWithFrame:FRAME(0, 0, kScreenW, SizeHeight(45))];
@@ -541,9 +553,16 @@
         [ConfigModel hideHud:self];
         _installPrice = installFee;
             _forceInstall = canInstall;
+        if (_needInstall != canInstall) {
             _needInstall = canInstall;
             _needInstallSwitch.on = canInstall;
+
             [self changePrice:_needInstall];
+        }else{
+            _needInstall = canInstall;
+            _needInstallSwitch.on = canInstall;
+
+        }
     }];
 }
 
@@ -772,6 +791,7 @@
         price = _goodsInfo.added_price;
     }else{
         title =@"分享立减";
+        price = _lblShareSaveMoney.text;
     }
     
     UILabel *lblTitle = (UILabel *)[cell viewWithTag:9001];
@@ -839,7 +859,7 @@
     UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:img]];
     imgView.tag = Share_TAG + index;
     [superView addSubview:imgView];
-    
+    imgView.userInteractionEnabled = YES;
     UITapGestureRecognizer *tapGuesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapShareButton:)];
     [imgView addGestureRecognizer:tapGuesture];
     
@@ -869,13 +889,13 @@
     NSInteger index = gesture.view.tag;
     UMSocialPlatformType type = UMSocialPlatformType_WechatTimeLine ;
     switch (index) {
-        case 2:
+        case 100002:
             type = UMSocialPlatformType_WechatSession;
             break;
-        case 3:
+        case 100003:
             type = UMSocialPlatformType_QQ;
             break;
-        case 4:
+        case 100004:
             type = UMSocialPlatformType_Qzone;
             break;
     }
@@ -985,6 +1005,19 @@
 }
 
 -(void) payNow{
+    if ([_txtName.text isEqualToString:@""]) {
+        [ConfigModel mbProgressHUD:@"请输入收货人" andView:self.view];
+        return;
+    }else if([_txtAddress.text isEqualToString:@""]){
+        [ConfigModel mbProgressHUD:@"请输入收货地址" andView:self.view];
+        return;
+    }else if([_txtTelNo.text isEqualToString:@""] || ![_txtTelNo.text isTelNumber]){
+        [ConfigModel mbProgressHUD:@"请输入正确的手机号" andView:self.view];
+        return;
+    }else if([_btnRegion.titleLabel.text isEqualToString:@""]){
+        [ConfigModel mbProgressHUD:@"请选择地区" andView:self.view];
+        return;
+    }
     OrderModel *order = [OrderModel new];
     order.goods_id = _goodsInfo.goods_id;
     order.goods_num = 1;
@@ -1103,6 +1136,10 @@
     
     if (_needAddedService) {
         amount += _goodsInfo.added_price.floatValue;
+    }
+    
+    if (_hasShare) {
+        amount -= _lblShareSaveMoney.text.floatValue;
     }
     
     _lblAmount.text = [NSString stringWithFormat:@"%f",amount];

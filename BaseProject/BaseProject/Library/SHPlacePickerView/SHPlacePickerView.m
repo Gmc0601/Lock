@@ -8,7 +8,7 @@
 
 #import "SHPlacePickerView.h"
 #import "PlaceModel.h"
-
+#import "RegionModel.h"
 @interface SHPlacePickerView ()<UIPickerViewDataSource, UIPickerViewDelegate>
 
 
@@ -190,6 +190,7 @@
     NSInteger provinceIndex = [self.selectedProvinceArray indexOfObject:self.selectedProvince];
     self.selectedCityArray = [self.dataArray[provinceIndex] cityArray];
     NSInteger cityIndex = [self.selectedCityArray indexOfObject:self.selectedCity];
+    cityIndex = cityIndex > 1000? 0:cityIndex;
     self.selectedDistrictArray = [self.dataArray[provinceIndex] districtArray][cityIndex];
     
 }
@@ -243,20 +244,21 @@
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Place" ofType:@"plist"]];
     
     NSArray *provinceArray = [dict allKeys];
-    self.selectedProvinceArray = provinceArray;
+    self.selectedProvinceArray = [RegionModel getProvinces];
     
-    for (int i = 0; i < provinceArray.count; i ++) {
-        
-        PlaceModel *placeModel = [[PlaceModel alloc] init];
-        placeModel.provinceName = provinceArray[i];
-        NSDictionary *cityDict = [[dict objectForKey:provinceArray[i]] firstObject];
-        [cityDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-            
-            [placeModel.cityArray addObject:key];
-            [placeModel.districtArray addObject:obj];
-        }];
-        [self.dataArray addObject:placeModel];
-    }
+    self.dataArray = [RegionModel getRegions];
+//    for (int i = 0; i < provinceArray.count; i ++) {
+//
+//        PlaceModel *placeModel = [[PlaceModel alloc] init];
+//        placeModel.provinceName = provinceArray[i];
+//        NSDictionary *cityDict = [[dict objectForKey:provinceArray[i]] firstObject];
+//        [cityDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+//
+//            [placeModel.cityArray addObject:key];
+//            [placeModel.districtArray addObject:obj];
+//        }];
+//        [self.dataArray addObject:placeModel];
+//    }
     
     if (self.isRecordLocation && [[NSUserDefaults standardUserDefaults] objectForKey:@"saveArray"]) {
         

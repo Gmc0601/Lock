@@ -127,6 +127,7 @@
 		6BDB2F4C1FCC6A0C00F60802 /* UIButton+YX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BDB2F451FCC6A0C00F60802 /* UIButton+YX.m */; };
 		6BE66E611FE51FA800FCEF3E /* InstallSummeryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE66E601FE51FA800FCEF3E /* InstallSummeryView.m */; };
 		6BE66E641FE5214100FCEF3E /* InstallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE66E631FE5214100FCEF3E /* InstallCell.m */; };
+		6BF5AAA31FF21E14003E6E51 /* RegionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BF5AAA21FF21E14003E6E51 /* RegionModel.m */; };
 		B79A5CFD6299881CB3643ACB /* libPods-BaseProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65EBE4FCE8758654A9B05419 /* libPods-BaseProject.a */; };
 /* End PBXBuildFile section */
 
@@ -459,6 +460,8 @@
 		6BE66E601FE51FA800FCEF3E /* InstallSummeryView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallSummeryView.m; sourceTree = "<group>"; };
 		6BE66E621FE5214100FCEF3E /* InstallCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InstallCell.h; sourceTree = "<group>"; };
 		6BE66E631FE5214100FCEF3E /* InstallCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InstallCell.m; sourceTree = "<group>"; };
+		6BF5AAA11FF21E14003E6E51 /* RegionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegionModel.h; sourceTree = "<group>"; };
+		6BF5AAA21FF21E14003E6E51 /* RegionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RegionModel.m; sourceTree = "<group>"; };
 		A2BC379B4929E517CCEBBD81 /* Pods-BaseProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-BaseProject/Pods-BaseProject.release.xcconfig"; sourceTree = "<group>"; };
 		F79BCDCE7109E930EA932FB6 /* Pods-BaseProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BaseProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BaseProject/Pods-BaseProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -966,6 +969,8 @@
 				6B8FD9841FDD70CD006A9965 /* GoodsInfo.m */,
 				6BC5FB781FE0109D007E7D49 /* AddressModel.h */,
 				6BC5FB791FE0109D007E7D49 /* AddressModel.m */,
+				6BF5AAA11FF21E14003E6E51 /* RegionModel.h */,
+				6BF5AAA21FF21E14003E6E51 /* RegionModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1318,7 +1323,7 @@
 					42A4442C1EF133E000F90791 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = KWGBLSX3J3;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1413,7 +1418,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		133526D14F1C236D4D0AF02F /* [CP] Copy Pods Resources */ = {
@@ -1556,6 +1561,7 @@
 				426AC0D51FDF840600797C4F /* AddmobileViewController.m in Sources */,
 				42C84EC71EF2DD1A0008189D /* GTMBase64.m in Sources */,
 				42C84F011EF2E97D0008189D /* NSMutableDictionary+Category.m in Sources */,
+				6BF5AAA31FF21E14003E6E51 /* RegionModel.m in Sources */,
 				42F795BE1F00C8B200A11A69 /* TBTabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1710,7 +1716,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BaseProject/BaseProject.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KWGBLSX3J3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1744,8 +1750,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.lock.com.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "731921e2-a1b6-4ab6-9315-28c904d3c1b5";
-				PROVISIONING_PROFILE_SPECIFIER = lockDevelopment;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -1755,7 +1761,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = BaseProject/BaseProject.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KWGBLSX3J3;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1789,8 +1796,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cc.lock.com.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "731921e2-a1b6-4ab6-9315-28c904d3c1b5";
-				PROVISIONING_PROFILE_SPECIFIER = lockDevelopment;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Release;
 		};

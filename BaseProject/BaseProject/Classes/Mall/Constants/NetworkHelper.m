@@ -9,6 +9,7 @@
 #import "NetworkHelper.h"
 #import <MJExtension/MJExtension.h>
 #import "Utils.h"
+#import "RegionModel.h"
 
 @implementation NetworkHelper
 +(void) getGoodsInfoWithcallBack:(void(^)(NSString *error,GoodsInfo *goodsInfo)) callback{
@@ -230,17 +231,23 @@ NSMutableDictionary *params = [NSMutableDictionary new];
 
 
 +(void) loadRegion{
-    if ([Utils fileIsExist]) {
-//        [self getRegionData];
+    if ([RegionModel hasLoad]) {
         return;
     }
     [HttpRequest getPath:@"public/getArea" params:nil resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
-            NSDictionary *infoArr = datadic[@"data"];
-            
-            [Utils writeStringToFile:infoArr];
+            NSArray *infoArr = datadic[@"data"];
+            NSMutableArray *models = [NSMutableArray new];
+            for (NSDictionary *dict in infoArr) {
+                RegionModel *model = [RegionModel new];
+                model.name = dict[@"name"];
+                model.id = dict[@"id"];
+                model.fid = dict[@"fid"];
+                [models addObject:model];
+            }
+            [RegionModel insertRegions:models];
         }
     }];
 }
