@@ -10,7 +10,7 @@
 #import <MJExtension/MJExtension.h>
 #import "Utils.h"
 #import "RegionModel.h"
-
+#import "WXApi.h"
 @implementation NetworkHelper
 +(void) getGoodsInfoWithcallBack:(void(^)(NSString *error,GoodsInfo *goodsInfo)) callback{
     [HttpRequest getPath:@"index/goodsInfo.html" params:nil resultBlock:^(id responseObject, NSError *error) {
@@ -114,15 +114,15 @@
     }];
 }
 
-+(void) addOrder:(OrderModel *) order withCallBack:(void(^)(NSString *error,NSString *installFee)) callback{
++(void) addOrder:(OrderModel *) order withCallBack:(void(^)(NSString *error,OrderResult *result)) callback{
     NSDictionary *dict = [order mj_keyValues];
     [HttpRequest getPath:@"order/add.html" params:dict resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
             NSDictionary *dict = datadic[@"data"];
-            
-            callback(nil,datadic[@"msg"]);
+            OrderResult *result = [OrderResult mj_objectWithKeyValues:dict];
+            callback(nil,result);
         }else{
             callback(datadic[@"msg"],nil);
         }
@@ -250,6 +250,40 @@ NSMutableDictionary *params = [NSMutableDictionary new];
             [RegionModel insertRegions:models];
         }
     }];
+}
+
++ (void)WXPay:(OrderResult *) result{
+    
+    //需要创建这个支付对象
+    PayReq *req   = [[PayReq alloc] init];
+    //由用户微信号和AppID组成的唯一标识，用于校验微信用户
+    req.openID = result.appid;
+    
+    // 商家id，在注册的时候给的
+    req.partnerId = result.mch_id;
+    
+    // 预支付订单这个是后台跟微信服务器交互后，微信服务器传给你们服务器的，你们服务器再传给你
+    req.prepayId  = result.prepay_id;
+    
+    // 根据财付通文档填写的数据和签名
+    //这个比较特殊，是固定的，只能是即req.package = Sign=WXPay
+    req.package   = @"Sign=WXPay";
+    
+    // 随机编码，为了防止重复的，在后台生成
+    req.nonceStr  = result.nonce_str;
+    
+    
+    NSDate* date = [NSDate dateWithTimeIntervalSinceNow:0];//获取当前时间0秒后的时间
+    NSTimeInterval time=[date timeIntervalSince1970]*1000;// *1000 是精确到毫秒，不乘就是精确到秒
+    
+    // 这个是时间戳，也是在后台生成的，为了验证支付的
+    req.timeStamp = time;
+    
+    // 这个签名也是后台做的
+    req.sign = result.sign;
+    
+    //发送请求到微信，等待微信返回onResp
+    [WXApi sendReq:req];
 }
 
 @end

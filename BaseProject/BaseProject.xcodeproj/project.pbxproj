@@ -114,6 +114,7 @@
 		6B595E931FD5827C001F3A5E /* MyOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B595E921FD5827C001F3A5E /* MyOrderViewController.m */; };
 		6B595E961FD582FB001F3A5E /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B595E951FD582FB001F3A5E /* OrderCell.m */; };
 		6B595E9A1FD59EBF001F3A5E /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B595E991FD59EBF001F3A5E /* OrderModel.m */; };
+		6B8F12B11FF3E558000721EA /* OrderResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8F12B01FF3E558000721EA /* OrderResult.m */; };
 		6B8FD9851FDD70CD006A9965 /* GoodsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FD9841FDD70CD006A9965 /* GoodsInfo.m */; };
 		6B8FD9881FDD7158006A9965 /* NetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8FD9871FDD7158006A9965 /* NetworkHelper.m */; };
 		6BC5FB7A1FE0109D007E7D49 /* AddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BC5FB791FE0109D007E7D49 /* AddressModel.m */; };
@@ -434,6 +435,8 @@
 		6B595E951FD582FB001F3A5E /* OrderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderCell.m; sourceTree = "<group>"; };
 		6B595E981FD59EBF001F3A5E /* OrderModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderModel.h; sourceTree = "<group>"; };
 		6B595E991FD59EBF001F3A5E /* OrderModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderModel.m; sourceTree = "<group>"; };
+		6B8F12AF1FF3E558000721EA /* OrderResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OrderResult.h; sourceTree = "<group>"; };
+		6B8F12B01FF3E558000721EA /* OrderResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OrderResult.m; sourceTree = "<group>"; };
 		6B8FD9831FDD70CD006A9965 /* GoodsInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GoodsInfo.h; sourceTree = "<group>"; };
 		6B8FD9841FDD70CD006A9965 /* GoodsInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GoodsInfo.m; sourceTree = "<group>"; };
 		6B8FD9861FDD7158006A9965 /* NetworkHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkHelper.h; sourceTree = "<group>"; };
@@ -971,6 +974,8 @@
 				6BC5FB791FE0109D007E7D49 /* AddressModel.m */,
 				6BF5AAA11FF21E14003E6E51 /* RegionModel.h */,
 				6BF5AAA21FF21E14003E6E51 /* RegionModel.m */,
+				6B8F12AF1FF3E558000721EA /* OrderResult.h */,
+				6B8F12B01FF3E558000721EA /* OrderResult.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1487,6 +1492,7 @@
 				6B595E961FD582FB001F3A5E /* OrderCell.m in Sources */,
 				421A7E4A1FEA6D5400AB8592 /* AppDelegate+UmengSDK.m in Sources */,
 				42C84F0F1EF2E97D0008189D /* UIView+BGFrame.m in Sources */,
+				6B8F12B11FF3E558000721EA /* OrderResult.m in Sources */,
 				426AC0BC1FDE66BD00797C4F /* FindDetailViewController.m in Sources */,
 				42F795CD1F00CBDF00A11A69 /* FactorySet.m in Sources */,
 				426AC0C81FDE833E00797C4F /* DeviceCommandViewController.m in Sources */,

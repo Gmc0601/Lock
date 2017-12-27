@@ -72,4 +72,15 @@
     
     return ((RegionModel *)privences.firstObject).id;
 }
+
++(NSString *) getRegionName:(NSString *) code{
+    NSString *strStatement = [NSString stringWithFormat:@"id = '%@' ",code];
+    
+    RLMResults<RegionModel *> *privences = [RegionModel objectsWhere:strStatement];
+    if (privences.firstObject == nil) {
+        return  @"";
+    }
+    
+    return ((RegionModel *)privences.firstObject).name;
+}
 @end

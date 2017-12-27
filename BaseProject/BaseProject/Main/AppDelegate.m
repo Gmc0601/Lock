@@ -13,9 +13,8 @@
 #import "AppDelegate+GTSdk.h"
 #import "AppDelegate+UmengSDK.h"
 #import <UMSocialCore/UMSocialCore.h>
-
-
-@interface AppDelegate ()
+#import "WXApi.h"
+@interface AppDelegate ()<WXApiDelegate>
 @property (nonatomic, retain) TBTabBarController *tabbar;
 @end
 
@@ -36,10 +35,11 @@
     [self initGTPush];
     
     [self initUmeng];
-    
-    
+
+
     [self.window makeKeyAndVisible];
-    
+    [WXApi registerApp:@"wxca2816298afcf527"];
+
     // 显示小红点
     [NetworkHelper loadRegion];
     return YES;
@@ -95,7 +95,7 @@
     //6.3的新的API调用，是为了兼容国外平台(例如:新版facebookSDK,VK等)的调用[如果用6.2的api调用会没有回调],对国内平台没有影响
     BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
     if (!result) {
-        // 其他如支付等SDK的回调
+        [WXApi handleOpenURL:url delegate:self];
     }
     return result;
 }
@@ -105,10 +105,37 @@
     BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url];
     if (!result) {
         // 其他如支付等SDK的回调
+        [WXApi handleOpenURL:url delegate:self];
     }
     return result;
 }
 
+//微信SDK自带的方法，处理从微信客户端完成操作后返回程序之后的回调方法,显示支付结果的
+-(void) onResp:(BaseResp*)resp
+{
+    NSString * msg = @"";
+    //启动微信支付的response
+    if([resp isKindOfClass:[PayResp class]]){
+        //支付返回结果，实际支付结果需要去微信服务器端查询
+        switch (resp.errCode) {
+            case 0:
+                msg = @"支付结果成功！";
+                break;
+            case -1:
+                msg = @"支付结果失败！";
+                break;
+            case -2:
+                msg = @"用户已经退出支付！";
+                break;
+            default:
+                msg = @"支付结果失败！";
+
+                break;
+        }
+        
+        NSLog(@"%@",msg);
+    }
+}
 
 
 

@@ -20,4 +20,5 @@
 +(NSMutableArray *) getRegions;
 +(NSArray *) getProvinces;
 +(NSString *) getRegionCode:(NSString *) name withFid:(NSString *) fid;
++(NSString *) getRegionName:(NSString *) code;
 @end

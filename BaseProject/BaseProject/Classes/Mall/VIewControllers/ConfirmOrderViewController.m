@@ -15,6 +15,7 @@
 #import <UMSocialCore/UMSocialCore.h>
 #import "NSString+Category.h"
 #import "RegionModel.h"
+#import "OrderResult.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -117,10 +118,18 @@
             return ;
         }
         
+        _county = addr.county;
+        _province = addr.province;
+        _city = addr.city;
+        
+        
         _txtName.text = addr.consignee;
         _txtTelNo.text = addr.phone;
-        [self chooseArea:@"110100"];
-        NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",addr.province,addr.city,addr.county];
+        [self chooseArea:_county];
+        NSString *strProvince = [RegionModel getRegionName:_province];
+        NSString *strCity = [RegionModel getRegionName:_city];
+        NSString *strCounty = [RegionModel getRegionName:_county];
+        NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",strProvince,strCity,strCounty];
         [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
         _txtAddress.text = addr.address;
         
@@ -259,6 +268,19 @@
 }
 
 -(void) tapSubmitButton{
+    if ([_txtName.text isEqualToString:@""]) {
+        [ConfigModel mbProgressHUD:@"请输入收货人" andView:self.view];
+        return;
+    }else if([_txtAddress.text isEqualToString:@""]){
+        [ConfigModel mbProgressHUD:@"请输入收货地址" andView:self.view];
+        return;
+    }else if([_txtTelNo.text isEqualToString:@""] || ![_txtTelNo.text isTelNumber]){
+        [ConfigModel mbProgressHUD:@"请输入正确的手机号" andView:self.view];
+        return;
+    }else if([_btnRegion.titleLabel.text isEqualToString:@""]){
+        [ConfigModel mbProgressHUD:@"请选择地区" andView:self.view];
+        return;
+    }
     [self showPayTypeView];
 }
 
@@ -541,7 +563,7 @@
         _shplacePicker = [[SHPlacePickerView alloc] initWithIsRecordLocation:YES SendPlaceArray:^(NSArray *placeArray) {
             _province = [RegionModel getRegionCode:placeArray[0] withFid:@"0"];
             _city = [RegionModel getRegionCode:placeArray[1] withFid:_province];
-            _county = [RegionModel getRegionCode:placeArray[1] withFid:_city];
+            _county = [RegionModel getRegionCode:placeArray[2] withFid:_city];
 
             [self chooseArea:_county];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
@@ -1009,26 +1031,14 @@
 }
 
 -(void) payNow{
-    if ([_txtName.text isEqualToString:@""]) {
-        [ConfigModel mbProgressHUD:@"请输入收货人" andView:self.view];
-        return;
-    }else if([_txtAddress.text isEqualToString:@""]){
-        [ConfigModel mbProgressHUD:@"请输入收货地址" andView:self.view];
-        return;
-    }else if([_txtTelNo.text isEqualToString:@""] || ![_txtTelNo.text isTelNumber]){
-        [ConfigModel mbProgressHUD:@"请输入正确的手机号" andView:self.view];
-        return;
-    }else if([_btnRegion.titleLabel.text isEqualToString:@""]){
-        [ConfigModel mbProgressHUD:@"请选择地区" andView:self.view];
-        return;
-    }
+   
     OrderModel *order = [OrderModel new];
     order.goods_id = _goodsInfo.goods_id;
     order.goods_num = 1;
     order.consignee = _txtName.text;
     order.address = _txtAddress.text;
-    order.city = @"110101";//_city;
-    order.province = @"110000";//_province;
+    order.city = _city;
+    order.province = _province;
     order.county = _county;
     order.phone = _txtTelNo.text;
     order.type = 0;
@@ -1037,12 +1047,13 @@
     order.discount_amount = _discountMoney;
     order.pay_type = _isWechatPay ? 1:0;
     [ConfigModel showHud:self];
-    [NetworkHelper addOrder:order withCallBack:^(NSString *error, NSString *msg) {
+    [NetworkHelper addOrder:order withCallBack:^(NSString *error, OrderResult *result) {
         [ConfigModel hideHud:self];
         if (error) {
             [ConfigModel mbProgressHUD:error andView:self.view];
         }else{
-            [ConfigModel mbProgressHUD:msg andView:self.view];
+            [NetworkHelper WXPay:result];
+//            [ConfigModel mbProgressHUD:msg andView:self.view];
         }
     }];
     [KLCPopup dismissAllPopups];
