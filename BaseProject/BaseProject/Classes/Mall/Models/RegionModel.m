@@ -61,4 +61,15 @@
     
     return provinceArray;
 }
+
++(NSString *) getRegionCode:(NSString *) name withFid:(NSString *) fid{
+    NSString *strStatement = [NSString stringWithFormat:@"fid = '%@' AND name='%@' ",fid,name];
+
+    RLMResults<RegionModel *> *privences = [RegionModel objectsWhere:strStatement];
+    if (privences.firstObject == nil) {
+        return  @"";
+    }
+    
+    return ((RegionModel *)privences.firstObject).id;
+}
 @end

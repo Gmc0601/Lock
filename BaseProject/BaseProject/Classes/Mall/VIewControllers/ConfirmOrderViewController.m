@@ -14,7 +14,7 @@
 #import "OrderModel.h"
 #import <UMSocialCore/UMSocialCore.h>
 #import "NSString+Category.h"
-
+#import "RegionModel.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -539,7 +539,11 @@
 
     if (_shplacePicker == nil) {
         _shplacePicker = [[SHPlacePickerView alloc] initWithIsRecordLocation:YES SendPlaceArray:^(NSArray *placeArray) {
-            [self chooseArea:@"110100"];
+            _province = [RegionModel getRegionCode:placeArray[0] withFid:@"0"];
+            _city = [RegionModel getRegionCode:placeArray[1] withFid:_province];
+            _county = [RegionModel getRegionCode:placeArray[1] withFid:_city];
+
+            [self chooseArea:_county];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
         }];
     }

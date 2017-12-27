@@ -19,4 +19,5 @@
 +(BOOL) hasLoad;
 +(NSMutableArray *) getRegions;
 +(NSArray *) getProvinces;
++(NSString *) getRegionCode:(NSString *) name withFid:(NSString *) fid;
 @end
