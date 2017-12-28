@@ -316,6 +316,32 @@ NSMutableDictionary *params = [NSMutableDictionary new];
 }
 
 
++(void) pay:(NSString *) order_id {
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [params setValue:order_id forKey:@"order_id"];
+    
+    [HttpRequest getPath:@"order/getPayInfo" params:params resultBlock:^(id responseObject, NSError *error) {
+        NSDictionary *datadic = responseObject;
+        
+        if ([datadic[@"success"] intValue] == 1) {
+            NSDictionary *dict = datadic[@"data"];
+            NSString *type = dict[@"pay_type"];
+
+            if ([type isEqualToString:@"0"]) {
+                NSDictionary *data = dict[@"alipay_info"];
+                OrderResult *result = [OrderResult mj_objectWithKeyValues:data];
+
+                [[PayManager manager] payByAlipay:result];
+            }else{
+                NSDictionary *data = dict[@"wx_pay_info"];
+                OrderResult *result = [OrderResult mj_objectWithKeyValues:data];
+
+                [NetworkHelper WXPay:result];
+            }
+        }
+    }];
+}
+
 
 @end
 

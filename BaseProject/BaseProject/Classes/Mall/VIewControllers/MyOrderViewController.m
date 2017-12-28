@@ -45,7 +45,21 @@
     [self.view addSubview:_tb];
     
     [self reload];
-    
+}
+
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(completePay) name:@"completePay" object:nil];
+}
+
+-(void) viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"completePay" object:nil];
+}
+
+-(void) completePay{
+    [self reload];
 }
 
 -(void) reload{

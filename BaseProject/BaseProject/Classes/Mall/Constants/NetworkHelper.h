@@ -27,4 +27,5 @@
 +(void) getInstallFeeWithArea:(NSString *) area_id WithCallBack:(void(^)(NSString *error,NSString* installFee,BOOL canInstall, BOOL forceInstall)) callback;
 +(void) getAddedFeeWithCallBack:(void(^)(NSString *error,NSString* installFee)) callback;
 + (void)WXPay:(OrderResult *) result;
++(void) pay:(NSString *) order_id;
 @end

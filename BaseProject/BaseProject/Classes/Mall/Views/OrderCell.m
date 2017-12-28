@@ -10,6 +10,8 @@
 #import <Masonry/Masonry.h>
 #import <KLCPopup/KLCPopup.h>
 #import "UIImageView+WebCache.h"
+#import "NetworkHelper.h"
+
 @interface OrderCell()
 @property(retain,atomic) UILabel *lblOrder;
 @property(retain,atomic) UILabel *lblTitle;
@@ -161,7 +163,9 @@
 }
 
 -(void) tapActionButton{
-     if(_model.status == OrderStatus_hasSend){
+    if(_model.status == OrderStatus_waitingPay){
+        [NetworkHelper pay:_model.order_id];
+    }else if(_model.status == OrderStatus_hasSend){
          [self.delegate showConfirmView:_model];
     }
 }

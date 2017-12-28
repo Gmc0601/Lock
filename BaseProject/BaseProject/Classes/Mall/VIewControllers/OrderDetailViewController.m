@@ -116,7 +116,22 @@
     [self resetFather];
     _numberOfSection = 4;
     self.automaticallyAdjustsScrollViewInsets = NO;
+}
 
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(completePay) name:@"completePay" object:nil];
+}
+
+-(void) viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"completePay" object:nil];
+}
+
+-(void) completePay{
+    [_tb removeFromSuperview];
+    _tb = nil;
+    [self loadData];
 }
 
 - (void)back:(UIButton *)sender {
@@ -277,7 +292,10 @@
 }
 
 -(void) tapSubmitButton{
-    if (_order.status == OrderStatus_hasSend) {
+    if (_order.status == OrderStatus_waitingPay) {
+        [NetworkHelper pay:_order.order_id];
+        
+    }else if (_order.status == OrderStatus_hasSend) {
         [self showConfirmView:@"确认已经收到货了吗？" withLeftTitle:@"取消" withRightTitle:@"确认"];
     }else if(_order.status == OrderStatus_waitingPay){
         [self showPayTypeView];
