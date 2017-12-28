@@ -278,10 +278,7 @@ NSMutableDictionary *params = [NSMutableDictionary new];
     // 这个是时间戳，也是在后台生成的，为了验证支付的
     req.timeStamp = timeStamp;
     
-    // 这个签名也是后台做的
-    req.sign = result.sign;
-    
-   // req.sign = [self createMD5SingForPayWithAppID:req.openID partnerid:req.partnerId prepayid:req.prepayId package:req.package noncestr:req.nonceStr timestamp:req.timeStamp];
+    req.sign = [self createMD5SingForPayWithAppID:result.appid partnerid:req.partnerId prepayid:req.prepayId package:req.package noncestr:req.nonceStr timestamp:req.timeStamp];
     
     //发送请求到微信，等待微信返回onResp
     [WXApi sendReq:req];
@@ -313,7 +310,7 @@ NSMutableDictionary *params = [NSMutableDictionary new];
         }
     }
     //添加商户密钥key字段  API 密钥
-    [contentString appendFormat:@"key=%@", @"商户秘钥"];
+    [contentString appendFormat:@"key=%@", @"1fd22df350beff66bb55c3a1478ae077"];
     NSString *result = [((NSString *)contentString) md5WithString];//md5加密
     return result;
 }
