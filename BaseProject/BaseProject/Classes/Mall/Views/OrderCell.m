@@ -23,7 +23,6 @@
 @synthesize model = _model;
 -(void) setModel:(OrderModel *)model{
     _model = model;
-    _model.status = OrderStatus_hasSend;
     _lblOrder.text = model.order_sn;
     _lblTitle.text = model.goods_name;
     _lblAmount.text = model.order_amount;
@@ -61,13 +60,12 @@
     _lblOrder.font = Helvetica(SizeWidth(13));
     _lblOrder.textColor = RGBColor(51,51,51);
     _lblOrder.textAlignment = NSTextAlignmentLeft;
-    _lblOrder.text = @"4545454545454";
     [self addSubview:_lblOrder];
     
     [_lblOrder mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(lblTitle.mas_right).offset(SizeWidth(5));
         make.centerY.equalTo(lblTitle.mas_centerY);
-        make.width.equalTo(@(SizeWidth(250/2)));
+        make.width.equalTo(self);
         make.height.equalTo(@(SizeHeight(22/2)));
     }];
     

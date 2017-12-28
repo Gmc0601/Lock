@@ -11,6 +11,8 @@
 #import "UIColor+BGHexColor.h"
 #import "OrderModel.h"
 #import "NetworkHelper.h"
+#import "RegionModel.h"
+#import "MallViewController.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -114,6 +116,20 @@
     [self resetFather];
     _numberOfSection = 4;
     self.automaticallyAdjustsScrollViewInsets = NO;
+
+}
+
+- (void)back:(UIButton *)sender {
+    if (self.fromBuy) {
+        for (UIViewController *vc in self.navigationController.viewControllers) {
+            if ([vc isKindOfClass:[MallViewController class]]) {
+                [self.navigationController popToViewController:vc animated:YES];
+                return;
+            }
+        }
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(void) ShowHeader{
@@ -614,9 +630,13 @@
                 _lblTelNo =  [self addLabelTo:cell withLeftView:lblTitle];
                 _lblTelNo.text = _order.phone;
                 break;
-            case 2:
+            case 2:{
                 _lblAddress =  [self addLabelTo:cell withLeftView:lblTitle];
-                _lblAddress.text = [NSString stringWithFormat:@"%@%@%@%@",_order.province,_order.city,_order.county,_order.address];;
+                NSString *strProvince = [RegionModel getRegionName:_order.province];
+                NSString *strCity = [RegionModel getRegionName:_order.city];
+                NSString *strCounty = [RegionModel getRegionName:_order.county];
+                _lblAddress.text = [NSString stringWithFormat:@"%@%@%@%@",strProvince,strCity,strCounty,_order.address];
+            }
                 break;
             default:
                 break;

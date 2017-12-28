@@ -14,8 +14,8 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #import "WXApi.h"
-
-#define Alipay_APPID  @"2017081408198293"
+#import "OrderModel.h"
+#define Alipay_APPID  @"2017122201065706"
 
 
 #define Alipay_KEY @"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDDs7IAARusdF49Izv/EmVSaaFPF6a2LmbiZuIMPQqHUP2b9v9TWwTasPvC2vO4i67lt/oTtIrS/LCEhB23zFGoXvtrbvdFtl6ySdEy5DnG2WS3j4rnLG7/0tsiUe+bqRfGC707Yi3z2Ny6wd2A5obcfGd8it2oJkGSGmCvI+/IGlwqs+9yQFGPT7kPA3+Rx/76UuCCwBbp2OZDyluCsbvVweMTBLDWAF+JYWc+dF41sLswsvRPYIsGPFjjTwCy1wJr5AqjFHsihcoFLJCVORb21XAO3jI2iAbyXFyyWU98qSksyvpzjaxIeRbdzbnm6I2gCLw8l7gHqLso3YaWgG5jAgMBAAECggEAerxiMFqBjqDU0acdY5WX8h3JSx9cMPndELTRpDdMOR10ULKR4yc8XiONYeGL5PvFztCZiG48eqJ72kA5myILPHuFVxWbAx+jOFHPYAl+qtWAsxbVWLKnUs5dHKMikQ91l4GZRnsGst4ZYQ9g6gyqG/HxvUwiQ+jqSsU8SdtR8L5ukf2xck9dIYW0DnEnyA2aCbe3BkbzfkydA5lRVCewV2JYyomzGJlb/D7Rp6WYeUdJctPLrTTjqgyqrP+rnCBe31jCSuDloW6k3BpOh4NpjtmFaZPDZfyCHId/7w8tCjISdVUYcIyv2syopwYKNdsupCztT/dXcNJYdkQmGjHA8QKBgQDnYmawRcO78YEUF8s5BGDFTe+4Zi96J7IPkNhgZYLZONVUq6G89j0wwQqZVuw/Wi83lOmLhovr9fiOhOQisZcEW5e22Cw5LwmKO++7qDOqYg8vkkHJn4/3lHP5Dw+/HoyJal3Ko7IVd7cwukUYfgVuTndF9DHULry9WXD8o0MxfwKBgQDYhYG0t1zV41kxFDyVkiQB+7OPkMMgS2mmGoi3DaF1u9ZrXqnor50vkd90yRRYnT+M/OE/nvWtIkZ6BkInkEqsldzHXoNasDRSWsNpRnLzQzmzNQoMH9UkmWdokTfTJwu3UauSaOuLNXri1vhF89JjxdfCUEqjYd+Ww3++tw+tHQKBgDyrcIGHyWreSBocowywOS+C3/hZ0tkUz3uFXzbnZwfN/yHUXvRNHH5MH5tVT1zNKNRKF3KeNNIKDMJR1f/C0PYzjfRDelUEIFw+mv15fRKP46t1jgpv7C/enQoRCO/z8qWVXkJj6a33VfFQ5g0l/gaOTHfrL6WTG6oKabXUmSnBAoGAHGSVd68720hu38K5lxuM4T2ydDcVf1ykRAXiu65r59Zz7ayCN2MgB6bnWJcttdkZBlH6767WpJeECmhbsHh5clxMkVBRhUjp84q3aUy1sjS0kk14PdLGzn/XUZ0JZwUNwkJRb2eWy7B9ptVtxS6N/ktpWa/Ruc8R1OFaFRZIVfkCgYBcTY8N36KebMG8Dzcu4qPieWxH81bm3JG+u1HLxe52OhjnsFNVPKFoHIKbxyIyhBknoGrvxZnGyqWmjN90MghV1Gjmn02dbeEHSOxGX3RO5ilKnxS1LfvodP217oQavkCiZMKLztAFdArNkqgsWvnlV7WFAQYXoDxM7ISLhpZ1pg=="
@@ -23,7 +23,7 @@
 //商户API密钥，填写相应参数
 #define WXpaySignKey      @"5F93F3E9A16369A43D79949A2D0CADEE"
 //支付结果回调页面
-#define NOTIFY_URL      @"http://139.224.70.219:89/callback.php"
+#define NOTIFY_URL      @"http://www.lingyuetec.com/MicroService/alipaycallback"
 //获取服务器端支付数据地址（商户自定义）
 #define SP_URL          @"http://wxpay.weixin.qq.com/pub_v2/app/app_pay.php"
 
@@ -222,7 +222,7 @@ static PayManager *payManager = nil;
 //}
 
 
-- (void)payByAlipay:(NSString *)price  out_trade_no:(NSString *)out_trade_no
+- (void)payByAlipay:(OrderModel *) model  out_trade_no:(NSString *)out_trade_no
 {
   
    
@@ -241,7 +241,7 @@ static PayManager *payManager = nil;
     NSString *rsa2PrivateKey = Alipay_KEY;
     NSString *rsaPrivateKey = @"";
     
-      self.task_num = price; ///// task_num
+      self.task_num = model.goods_price; ///// task_num
     
     
     if ([appID length] == 0 ||
@@ -285,11 +285,11 @@ static PayManager *payManager = nil;
     order.notify_url = NOTIFY_URL;
     // NOTE: 商品数据
     order.biz_content = [BizContent new];
-    order.biz_content.body = @"港城拍";
-    order.biz_content.subject = @"港城拍";
-    order.biz_content.out_trade_no = out_trade_no; //订单ID（由商家自行制定）
+    order.biz_content.body = model.goods_name;
+    order.biz_content.subject = model.goods_name;
+    order.biz_content.out_trade_no = model.order_sn; //订单ID（由商家自行制定）
     order.biz_content.timeout_express = @"30m"; //超时时间设置
-    order.biz_content.total_amount = [NSString stringWithFormat:@"%@", price]; //商品价格
+    order.biz_content.total_amount = [NSString stringWithFormat:@"%@", model.goods_price]; //商品价格
     
     //将商品信息拼接成字符串  
     NSString *orderInfo = [order orderInfoEncoded:NO];

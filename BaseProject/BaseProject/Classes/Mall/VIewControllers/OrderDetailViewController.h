@@ -11,4 +11,5 @@
 
 @interface OrderDetailViewController : CCBaseViewController
 @property(copy,nonatomic) NSString *orderId;
+@property(assign,nonatomic) BOOL fromBuy;
 @end

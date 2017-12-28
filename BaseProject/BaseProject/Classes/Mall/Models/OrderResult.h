@@ -18,4 +18,9 @@
 @property (retain,atomic) NSString *return_msg;
 @property (retain,atomic) NSString *sign;
 @property (retain,atomic) NSString *trade_type;
+@property (retain,atomic) NSString  *order_id;
+@property (retain,atomic) NSString  *order_sn;
+@property (retain,atomic) NSString  *timeout_express;
+@property (retain,atomic) NSString  *subject;
+@property (retain,atomic) NSString  *total_amount;
 @end

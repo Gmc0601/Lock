@@ -133,6 +133,7 @@
                 break;
         }
         
+        [NSNotificationCenter.defaultCenter postNotificationName:@"completePay" object:nil];
         NSLog(@"%@",msg);
     }
 }

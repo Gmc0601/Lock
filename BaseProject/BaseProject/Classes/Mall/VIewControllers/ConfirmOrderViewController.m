@@ -59,11 +59,12 @@
 @property(assign,atomic)  NSString *installPrice;
 @property(assign,atomic)  BOOL needAddedService;
 @property(assign,atomic)  BOOL hasShare;
-@property(assign,atomic)  NSString *city;
-@property(assign,atomic)  NSString *province;
-@property(assign,atomic)  NSString *county;
-@property(assign,atomic)  NSString *discountMoney;
-@property(assign,atomic)  UISwitch * needInstallSwitch;
+@property(retain,atomic)  NSString *city;
+@property(retain,atomic)  NSString *province;
+@property(retain,atomic)  NSString *county;
+@property(retain,atomic)  NSString *discountMoney;
+@property(retain,atomic)  UISwitch * needInstallSwitch;
+@property(retain,atomic)  NSString * orderId;
 @end
 
 @implementation ConfirmOrderViewController
@@ -136,6 +137,25 @@
         
         [self setPrice];
     }];
+    
+   
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(completePay) name:@"completePay" object:nil];
+}
+
+-(void) viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [NSNotificationCenter.defaultCenter removeObserver:self name:@"completePay" object:nil];
+}
+
+-(void) completePay{
+    OrderDetailViewController *newVC = [OrderDetailViewController new];
+    newVC.orderId = _orderId;
+    newVC.fromBuy = YES;
+    [self.navigationController pushViewController:newVC animated:YES];
 }
 
 -(NSString *) getShareString:(NSString *) money{
@@ -1054,9 +1074,7 @@
             [ConfigModel mbProgressHUD:error andView:self.view];
         }else{
             [NetworkHelper WXPay:result];
-            OrderDetailViewController *newVC = [OrderDetailViewController new];
-            newVC.orderId = order.order_id;
-            [self.navigationController pushViewController:newVC animated:YES];
+            _orderId = result.order_id;
 //            [ConfigModel mbProgressHUD:msg andView:self.view];
         }
     }];
