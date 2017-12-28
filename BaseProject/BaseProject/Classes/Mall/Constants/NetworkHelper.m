@@ -11,6 +11,9 @@
 #import "Utils.h"
 #import "RegionModel.h"
 #import "WXApi.h"
+#import "PayManager.h"
+#import "NSString+MD5.h"
+
 @implementation NetworkHelper
 +(void) getGoodsInfoWithcallBack:(void(^)(NSString *error,GoodsInfo *goodsInfo)) callback{
     [HttpRequest getPath:@"index/goodsInfo.html" params:nil resultBlock:^(id responseObject, NSError *error) {
@@ -253,38 +256,69 @@ NSMutableDictionary *params = [NSMutableDictionary new];
 }
 
 + (void)WXPay:(OrderResult *) result{
-    
+    [WXApi registerApp:result.appid];
+
     //需要创建这个支付对象
     PayReq *req   = [[PayReq alloc] init];
     //由用户微信号和AppID组成的唯一标识，用于校验微信用户
-    req.openID = result.appid;
-    
+//    req.openID = result.appid;
     // 商家id，在注册的时候给的
     req.partnerId = result.mch_id;
-    
     // 预支付订单这个是后台跟微信服务器交互后，微信服务器传给你们服务器的，你们服务器再传给你
     req.prepayId  = result.prepay_id;
     
-    // 根据财付通文档填写的数据和签名
     //这个比较特殊，是固定的，只能是即req.package = Sign=WXPay
     req.package   = @"Sign=WXPay";
-    
     // 随机编码，为了防止重复的，在后台生成
     req.nonceStr  = result.nonce_str;
     
-    
-    NSDate* date = [NSDate dateWithTimeIntervalSinceNow:0];//获取当前时间0秒后的时间
-    NSTimeInterval time=[date timeIntervalSince1970]*1000;// *1000 是精确到毫秒，不乘就是精确到秒
-    
+    NSDate *datenow = [NSDate date];
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
+    UInt32 timeStamp =[timeSp intValue];
     // 这个是时间戳，也是在后台生成的，为了验证支付的
-    req.timeStamp = time;
+    req.timeStamp = timeStamp;
     
     // 这个签名也是后台做的
     req.sign = result.sign;
     
+   // req.sign = [self createMD5SingForPayWithAppID:req.openID partnerid:req.partnerId prepayid:req.prepayId package:req.package noncestr:req.nonceStr timestamp:req.timeStamp];
+    
     //发送请求到微信，等待微信返回onResp
     [WXApi sendReq:req];
 }
+//
++(NSString *)createMD5SingForPayWithAppID:(NSString *)appid_key partnerid:(NSString *)partnerid_key prepayid:(NSString *)prepayid_key package:(NSString *)package_key noncestr:(NSString *)noncestr_key timestamp:(UInt32)timestamp_key{
+    NSMutableDictionary *signParams = [NSMutableDictionary dictionary];
+    [signParams setObject:appid_key forKey:@"appid"];//微信appid 例如wxfb132134e5342
+    [signParams setObject:noncestr_key forKey:@"noncestr"];//随机字符串
+    [signParams setObject:package_key forKey:@"package"];//扩展字段  参数为 Sign=WXPay
+    [signParams setObject:partnerid_key forKey:@"partnerid"];//商户账号
+    [signParams setObject:prepayid_key forKey:@"prepayid"];//此处为统一下单接口返回的预支付订单号
+    [signParams setObject:[NSString stringWithFormat:@"%u",timestamp_key] forKey:@"timestamp"];//时间戳
+
+    NSMutableString *contentString  =[NSMutableString string];
+    NSArray *keys = [signParams allKeys];
+    //按字母顺序排序
+    NSArray *sortedArray = [keys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2 options:NSNumericSearch];
+    }];
+    //拼接字符串
+    for (NSString *categoryId in sortedArray) {
+        if (   ![[signParams objectForKey:categoryId] isEqualToString:@""]
+            && ![[signParams objectForKey:categoryId] isEqualToString:@"sign"]
+            && ![[signParams objectForKey:categoryId] isEqualToString:@"key"]
+            )
+        {
+            [contentString appendFormat:@"%@=%@&", categoryId, [signParams objectForKey:categoryId]];
+        }
+    }
+    //添加商户密钥key字段  API 密钥
+    [contentString appendFormat:@"key=%@", @"商户秘钥"];
+    NSString *result = [((NSString *)contentString) md5WithString];//md5加密
+    return result;
+}
+
+
 
 @end
 

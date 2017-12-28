@@ -33,14 +33,13 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [IQKeyboardManager sharedManager].enable = YES;
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
-    
+
     [self initGTPush];
     
     [self initUmeng];
 
 
     [self.window makeKeyAndVisible];
-    [WXApi registerApp:@"wxca2816298afcf527"];
 
     // 显示小红点
     [NetworkHelper loadRegion];

@@ -14,11 +14,12 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #import "WXApi.h"
+#import "NSString+MD5.h"
 
 #define Alipay_APPID  @"2017122201065706"
 
 
-#define Alipay_KEY @"MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDDs7IAARusdF49Izv/EmVSaaFPF6a2LmbiZuIMPQqHUP2b9v9TWwTasPvC2vO4i67lt/oTtIrS/LCEhB23zFGoXvtrbvdFtl6ySdEy5DnG2WS3j4rnLG7/0tsiUe+bqRfGC707Yi3z2Ny6wd2A5obcfGd8it2oJkGSGmCvI+/IGlwqs+9yQFGPT7kPA3+Rx/76UuCCwBbp2OZDyluCsbvVweMTBLDWAF+JYWc+dF41sLswsvRPYIsGPFjjTwCy1wJr5AqjFHsihcoFLJCVORb21XAO3jI2iAbyXFyyWU98qSksyvpzjaxIeRbdzbnm6I2gCLw8l7gHqLso3YaWgG5jAgMBAAECggEAerxiMFqBjqDU0acdY5WX8h3JSx9cMPndELTRpDdMOR10ULKR4yc8XiONYeGL5PvFztCZiG48eqJ72kA5myILPHuFVxWbAx+jOFHPYAl+qtWAsxbVWLKnUs5dHKMikQ91l4GZRnsGst4ZYQ9g6gyqG/HxvUwiQ+jqSsU8SdtR8L5ukf2xck9dIYW0DnEnyA2aCbe3BkbzfkydA5lRVCewV2JYyomzGJlb/D7Rp6WYeUdJctPLrTTjqgyqrP+rnCBe31jCSuDloW6k3BpOh4NpjtmFaZPDZfyCHId/7w8tCjISdVUYcIyv2syopwYKNdsupCztT/dXcNJYdkQmGjHA8QKBgQDnYmawRcO78YEUF8s5BGDFTe+4Zi96J7IPkNhgZYLZONVUq6G89j0wwQqZVuw/Wi83lOmLhovr9fiOhOQisZcEW5e22Cw5LwmKO++7qDOqYg8vkkHJn4/3lHP5Dw+/HoyJal3Ko7IVd7cwukUYfgVuTndF9DHULry9WXD8o0MxfwKBgQDYhYG0t1zV41kxFDyVkiQB+7OPkMMgS2mmGoi3DaF1u9ZrXqnor50vkd90yRRYnT+M/OE/nvWtIkZ6BkInkEqsldzHXoNasDRSWsNpRnLzQzmzNQoMH9UkmWdokTfTJwu3UauSaOuLNXri1vhF89JjxdfCUEqjYd+Ww3++tw+tHQKBgDyrcIGHyWreSBocowywOS+C3/hZ0tkUz3uFXzbnZwfN/yHUXvRNHH5MH5tVT1zNKNRKF3KeNNIKDMJR1f/C0PYzjfRDelUEIFw+mv15fRKP46t1jgpv7C/enQoRCO/z8qWVXkJj6a33VfFQ5g0l/gaOTHfrL6WTG6oKabXUmSnBAoGAHGSVd68720hu38K5lxuM4T2ydDcVf1ykRAXiu65r59Zz7ayCN2MgB6bnWJcttdkZBlH6767WpJeECmhbsHh5clxMkVBRhUjp84q3aUy1sjS0kk14PdLGzn/XUZ0JZwUNwkJRb2eWy7B9ptVtxS6N/ktpWa/Ruc8R1OFaFRZIVfkCgYBcTY8N36KebMG8Dzcu4qPieWxH81bm3JG+u1HLxe52OhjnsFNVPKFoHIKbxyIyhBknoGrvxZnGyqWmjN90MghV1Gjmn02dbeEHSOxGX3RO5ilKnxS1LfvodP217oQavkCiZMKLztAFdArNkqgsWvnlV7WFAQYXoDxM7ISLhpZ1pg=="
+#define Alipay_KEY @"MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCdRfcz+EELqTL2ucLOML4NTLS1/VaSv436fIFOROD1CF6F1P5jez0jR0DGDReel9musOqfn2ggTp8xa2dHqLsChW9R6Pc0DM/+/A15rbufrcmcyX0CDJArc9rUBQoGg6EQgslX7I31NbABzhTCp1BIyGE4haj8Cv1Mu6iK4Jj585WJ1CJ8cb+XzNV4Jd4jAK2AgWrWn6Bu4TBxHmpx8DyjH9Um1ZK2Q02QYzdILkuUylAyk4yrtO4ZmNFLQ96QZrUb/dpMYOyPzP64Nt8GveE1Ec8vZRd2ZbCFpfZ8gXTolLJNpo5AgLIE2lHFh7OvOwLD/4Pxevxd0c1Cz7onsfCvAgMBAAECggEAbgbZp6EBGIBZqCRTNd8Bxton/r3qiCW81UWvTKuBWctuHWDiS4SXRAwAM85K/OetIbqhmeRye0+lrXQ/P/G6S0xAkeRStTZVeUSqxLqXbWGuj6KicwGJBu05ZWTVG7OQxbVJ2Nokgiz6InkjKv7Ueua8pUdU7mddyAXtJqN0QkBcnnDC59bbyHQmW7SwryDDg71U5qwthKOhg0e54veSgaKppDQxbMY5+isU4jWLcPKUgYwhemCJPPJbowjx1ZY9TfEzS/xc3QRvrTkAqLVxSdyQwBg1oKwX3SIgO8uK22g4W7FZZXyf+eMP3cCFwdDWz5dVa/GkJDq9vknYc08dWQKBgQDmnBKAz50KQ9vwfjSqs9TJgZ4bDNYHERn8jHOQmXdWeSi9wlOypXJ4/mnbJHOMB7vhIa28dINS4bdqRWq0xg2oreAdCVTuTEbQVuOoRwD1Lw1Dx0zWIcNQ4M28tNS7rrcbB8YnAuJ68XvvsBHZooQkfe3L7IAk+zxOKmTYc6E6WwKBgQCultiq1ZkBbJ7iZcV36XFp0E4mNSF3Xn9hdgcw0nvwgOT86/h9FK0JHs65QqSn9p5onFfc2poMd3ZrHnUSxabT9QdQf7x+2zXuOiWoixLKlPrMQA+aLTi5boFwSAqrLCsxPV5vQQYcdizGU4Ze4V2txFzVjgtc0kcjGzYpzBlrPQKBgQCbK7V/mzNuLs8VebZyjmLF3EPIq9BwHN/BgbhZOgqE0y3I0bOD57OpGnecD2D4flO7XvAKeNPMtzi1d1Qfo4yZTbYZk6fkWMrlcTHqjyxjzm88hiR7iWhlSX7mVT83so5ez9JTeatvUoI0e+Lm8GW+MEYMC20GdU7Uwc3tn5CDNQKBgHl7mTP2AMtO65eZPThdBX+dZGONoMXQyU3ltMcyDu+goLWk9HkEhArOlwWt66i8ICmmcDTLH1oBXjLXNJtlUNo3q2lGGMEkg3hKmZ2Xd/HijEjHYpPjV48f541bc6D70OooS6eaVUhEqo8t21f19RtOgVJPznQ+FSXGb3/R9vX5AoGBAM+8Zyvb2jIxL7Bk9OiN8Ucd4heeZ8Ja2lzHk3haJbhaxKV3N2OVyurwxf8LmnlypU9Hl10MVeQI8CtkBZw2keEXxBJdZBoHWXYMmtste0+43nfMYaeqOwMX8tueAbWtWxBGgFA2J7mCam55iIRxn9QxnNV+umAeDSO1H2cqnKmE"
 
 //商户API密钥，填写相应参数
 #define WXpaySignKey      @"5F93F3E9A16369A43D79949A2D0CADEE"
@@ -176,35 +177,8 @@ static PayManager *payManager = nil;
 //
 //
 //
-//// 创建package签名
-//- (NSString *)createMD5Sign:(NSDictionary *)dict
-//{
-//    NSMutableString *contentString = [NSMutableString string];
-//    NSArray *keys = [dict allKeys];
-//    //按字母顺序排序
-//    NSArray *sortArray = [keys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-//        return [obj1 compare:obj2 options:NSNumericSearch];
-//    }];
-//    // 拼接字符串
-//    for (NSString *key in sortArray) {
-//        if (![dict[key] isEqualToString:@""] &&
-//            ![key isEqualToString:@"sign"] &&
-//            ![key isEqualToString:@"key"])
-//        {
-//            [contentString appendString:key];
-//            [contentString appendString:@"="];
-//            [contentString appendString:dict[key]];
-//            [contentString appendString:@"&"];      //样式类似于
-//        }
-//    }
-//    // 添加key 商户API密钥
-//    [contentString appendFormat:@"key=%@",WXpaySignKey];
-//    // 得到MD5加密后的 sign 签名
-//    NSString *md5Sign = [contentString md5String];
-//    
-//    return md5Sign;
-//}
-//
+
+
 //
 //#pragma mark -   微信返回结果
 //-(void) onResp:(BaseResp*)resp{
