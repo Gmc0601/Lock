@@ -16,6 +16,7 @@
 #import "NSString+Category.h"
 #import "RegionModel.h"
 #import "OrderResult.h"
+#import "OrderDetailViewController.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -1053,6 +1054,9 @@
             [ConfigModel mbProgressHUD:error andView:self.view];
         }else{
             [NetworkHelper WXPay:result];
+            OrderDetailViewController *newVC = [OrderDetailViewController new];
+            newVC.orderId = order.order_id;
+            [self.navigationController pushViewController:newVC animated:YES];
 //            [ConfigModel mbProgressHUD:msg andView:self.view];
         }
     }];
