@@ -16,6 +16,7 @@
 @property (nonatomic, retain) UITableView *tb;
 @property (atomic, retain) KLCPopup *confirmPopup;
 @property (atomic, retain) NSArray *datasource;
+@property (atomic, retain) OrderModel *selectedModel;
 @end
 
 @implementation MyOrderViewController
@@ -43,11 +44,15 @@
     
     [self.view addSubview:_tb];
     
+    [self reload];
+    
+}
+
+-(void) reload{
     [NetworkHelper getOrderListWithCallBack:^(NSString *error, NSArray *orders) {
         _datasource = orders;
         [_tb reloadData];
     }];
-    
 }
 
 - (void)resetFather {
@@ -89,7 +94,8 @@
     [KLCPopup dismissAllPopups];
 }
 
--(void) showConfirmView:(NSString *) orderId{
+-(void) showConfirmView:(OrderModel *) model{
+    _selectedModel = model;
     if (_confirmPopup == nil) {
         _confirmPopup = [self getPopup:@"确认已经收到货了吗？" withCancelText:@"取消" withOKText:@"确认"];
     }
@@ -163,5 +169,33 @@
     contentView.layer.cornerRadius = 5;
     
     return contentView;
+}
+
+-(void) tapPopoverOkButton{
+    if (_selectedModel.status == OrderStatus_hasSend) {
+        [self updateOrder:@"3"];
+    }else if (_selectedModel.status != OrderStatus_complete && _selectedModel.added_fee > 0) {
+        [self updateOrder:@"10"];
+    }else if (_selectedModel.status == OrderStatus_padyed || _selectedModel.status == OrderStatus_complete){
+        [self updateOrder:@"4"];
+    }
+}
+
+
+-(void) updateOrder:(NSString *) status{
+    [ConfigModel showHud:self];
+    
+    [NetworkHelper modifyOrderWithOrderId:_selectedModel.order_id withStatus:status WithCallBack:^(NSString *error, NSString *msg) {
+        [ConfigModel hideHud:self];
+        
+        if (error == nil) {
+            [self reload];
+            [ConfigModel mbProgressHUD:msg andView:self.view];
+        }else{
+            [ConfigModel mbProgressHUD:error andView:self.view];
+        }
+        
+        [KLCPopup dismissAllPopups];
+    }];
 }
 @end

@@ -164,7 +164,7 @@
 
 -(void) tapActionButton{
      if(_model.status == OrderStatus_hasSend){
-         [self.delegate showConfirmView:_model.goods_id];
+         [self.delegate showConfirmView:_model];
     }
 }
 

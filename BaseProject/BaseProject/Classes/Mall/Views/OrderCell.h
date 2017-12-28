@@ -10,7 +10,7 @@
 #import "OrderModel.h"
 
 @protocol OrderCellDelegate <NSObject>
-    -(void) showConfirmView:(NSString *) orderId;
+    -(void) showConfirmView:(OrderModel *) model;
 @end
 
 @interface OrderCell : UITableViewCell
