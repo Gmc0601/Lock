@@ -17,6 +17,7 @@
 #import "RegionModel.h"
 #import "OrderResult.h"
 #import "OrderDetailViewController.h"
+#import "PayManager.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -1073,7 +1074,11 @@
         if (error) {
             [ConfigModel mbProgressHUD:error andView:self.view];
         }else{
-            [NetworkHelper WXPay:result];
+            if(_isWechatPay){
+                [NetworkHelper WXPay:result];
+            }else{
+                [[PayManager manager] payByAlipay:result];
+            }
             _orderId = result.order_id;
 //            [ConfigModel mbProgressHUD:msg andView:self.view];
         }

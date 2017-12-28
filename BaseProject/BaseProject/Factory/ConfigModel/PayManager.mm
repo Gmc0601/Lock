@@ -14,7 +14,7 @@
 #import <ifaddrs.h>
 #import <arpa/inet.h>
 #import "WXApi.h"
-#import "OrderModel.h"
+
 #define Alipay_APPID  @"2017122201065706"
 
 
@@ -222,7 +222,7 @@ static PayManager *payManager = nil;
 //}
 
 
-- (void)payByAlipay:(OrderModel *) model  out_trade_no:(NSString *)out_trade_no
+- (void)payByAlipay:(OrderResult *) model
 {
   
    
@@ -241,7 +241,7 @@ static PayManager *payManager = nil;
     NSString *rsa2PrivateKey = Alipay_KEY;
     NSString *rsaPrivateKey = @"";
     
-      self.task_num = model.goods_price; ///// task_num
+      self.task_num = model.order_sn; ///// task_num
     
     
     if ([appID length] == 0 ||
@@ -278,18 +278,18 @@ static PayManager *payManager = nil;
     order.timestamp = [formatter stringFromDate:[NSDate date]];
     
     // NOTE: 支付版本
-    order.version = @"1.0";
+    order.version = @"2.0";
     
     // NOTE: sign_type 根据商户设置的私钥来决定
     order.sign_type = (rsa2PrivateKey.length > 1)?@"RSA2":@"RSA";
     order.notify_url = NOTIFY_URL;
     // NOTE: 商品数据
     order.biz_content = [BizContent new];
-    order.biz_content.body = model.goods_name;
-    order.biz_content.subject = model.goods_name;
+    order.biz_content.body = model.subject;
+    order.biz_content.subject = model.subject;
     order.biz_content.out_trade_no = model.order_sn; //订单ID（由商家自行制定）
     order.biz_content.timeout_express = @"30m"; //超时时间设置
-    order.biz_content.total_amount = [NSString stringWithFormat:@"%@", model.goods_price]; //商品价格
+    order.biz_content.total_amount = [NSString stringWithFormat:@"%@", model.total_amount]; //商品价格
     
     //将商品信息拼接成字符串  
     NSString *orderInfo = [order orderInfoEncoded:NO];
@@ -315,7 +315,7 @@ static PayManager *payManager = nil;
         NSString *orderString = [NSString stringWithFormat:@"%@&sign=%@",
                                  orderInfoEncoded, signedString];
         // NOTE: 调用支付结果开始支付
-        [[AlipaySDK defaultService] payOrder:orderString fromScheme:@"GangChengpai-alipay" callback:^(NSDictionary *resultDic) {
+        [[AlipaySDK defaultService] payOrder:orderString fromScheme:@"qijia-alipay" callback:^(NSDictionary *resultDic) {
             NSLog(@"reslut = %@",resultDic);
             [self alipayResult:resultDic];
         }];

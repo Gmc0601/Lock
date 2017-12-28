@@ -47,7 +47,7 @@
 			<string>alipayShare</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>qujia</string>
+				<string>qijia-alipay</string>
 			</array>
 		</dict>
 	</array>

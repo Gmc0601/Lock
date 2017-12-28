@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-
+#import "OrderResult.h"
 typedef NS_ENUM (NSInteger, PayType) {
     PayTypeAlipay = 2 ,
     PayTypeWeChat = 3
@@ -29,7 +29,7 @@ typedef NS_ENUM (NSInteger, PayType) {
  */
 - (void)payByWeChatWithPrice:(NSString *)price order_num:(NSString *)order_num;
 
-- (void)payByAlipay:(NSString *)price  out_trade_no:(NSString *)out_trade_no;
+- (void)payByAlipay:(OrderResult *) order;
 
 @end
 
