@@ -291,10 +291,12 @@
 }
 
 -(void) tapSubmitButton{
-     if (_order.status == OrderStatus_hasSend) {
+    if (_order.status == OrderStatus_waitingPay) {
+        [NetworkHelper pay:_order.order_id];
+        
+    }else if (_order.status == OrderStatus_hasSend) {
         [self showConfirmView:@"确认已经收到货了吗？" withLeftTitle:@"取消" withRightTitle:@"确认"];
-    }else if(_order.status == OrderStatus_waitingPay){
-        [self showPayTypeView];
+  
     }else{
         if (_installPopup == nil) {
             _installPopup = [KLCPopup popupWithContentView:[self getContentForTuiKuanTips]];
@@ -1058,7 +1060,7 @@
         btnPay.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
         btnPay.titleLabel.textAlignment = NSTextAlignmentCenter;
         [btnPay setTitle:@"立即支付" forState:UIControlStateNormal];
-        [btnPay addTarget:self action:@selector(pay:) forControlEvents:UIControlEventTouchUpInside];
+        [btnPay addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:btnPay];
         [btnPay mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(btnClose.mas_left).offset(SizeWidth(237/2));
@@ -1084,26 +1086,6 @@
     }
     
     [_PayPopup show];
-}
-
--(void) pay{
-       
-        [NetworkHelper addOrder:order withCallBack:^(NSString *error, OrderResult *result) {
-            [ConfigModel hideHud:self];
-            if (error) {
-                [ConfigModel mbProgressHUD:error andView:self.view];
-            }else{
-                if(_isWechatPay){
-                    [NetworkHelper WXPay:result];
-                }else{
-                    [[PayManager manager] payByAlipay:result];
-                }
-                _orderId = result.order_id;
-                //            [ConfigModel mbProgressHUD:msg andView:self.view];
-            }
-        }];
-        [KLCPopup dismissAllPopups];
-    }
 }
 
 -(UIView *) addPayWayView:(int) type withTopView:(UIView *) topView toSuperView:(UIView *) superView{
