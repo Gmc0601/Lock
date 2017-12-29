@@ -11,7 +11,7 @@
 #import "MyFavoritesViewController.h"
 #import "DeviceCommandViewController.h"
 #import "UserInfoViewController.h"
-
+#import "MyOrderViewController.h"
 @interface MeViewController ()<UITableViewDelegate, UITableViewDataSource>{
     NSString *phone;
 }
@@ -168,6 +168,10 @@
             
             head.orderBlock = ^(int num) {
               //  订单 点击 num 0 - 3
+                if (num == 3) {
+                    MyOrderViewController *newVC = [MyOrderViewController new];
+                    [self.navigationController pushViewController:newVC animated:YES];
+                }
                 
             };
             self.head = head;

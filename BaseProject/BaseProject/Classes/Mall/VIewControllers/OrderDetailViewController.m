@@ -69,8 +69,7 @@
 -(void) loadData{
     [NetworkHelper getOrderDetailWithId:_orderId WithCallBack:^(NSString *error, OrderModel *order) {
         _order = order;
-        _order.status = OrderStatus_waitingPay;
-//        _order.added_fee = @"10";
+
         if (order.status == OrderStatus_complete || _order.status == OrderStatus_hasSend) {
             _numberOfSection = 5;
         }
@@ -129,8 +128,6 @@
 }
 
 -(void) completePay{
-    [_tb removeFromSuperview];
-    _tb = nil;
     [self loadData];
 }
 
@@ -148,37 +145,38 @@
 }
 
 -(void) ShowHeader{
-    if (_imgStatus != nil) {
-        return;
-    }
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, SizeHeight(140))];
-    headerView.backgroundColor = [UIColor whiteColor];
-    _imgStatus = [UIImageView new];
+//    if (_imgStatus == nil) {
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, SizeHeight(140))];
+        headerView.backgroundColor = [UIColor whiteColor];
+        _imgStatus = [UIImageView new];
+        [headerView addSubview:_imgStatus];
+        
+        [_imgStatus mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(headerView);
+            make.top.equalTo(headerView).offset(SizeHeight(52/2));
+            make.width.equalTo(@(SizeWidth(44)));
+            make.height.equalTo(@(SizeHeight(56.2/2)));
+        }];
+        
+        _lblStatus = [UILabel new];
+        _lblStatus.font = PingFangSCBOLD(SizeWidth(15));
+        _lblStatus.textColor = RGBColor(51,51,51);
+        _lblStatus.textAlignment = NSTextAlignmentCenter;
+        [headerView addSubview:_lblStatus];
+        
+        [_lblStatus mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(_imgStatus.mas_centerX);
+            make.top.equalTo(_imgStatus.mas_bottom).offset(SizeHeight(15));
+            make.width.equalTo(headerView);
+            make.height.equalTo(@(SizeHeight(18)));
+        }];
+        [self addBorder:headerView];
+        _tb.tableHeaderView  = headerView;
+//    }
+  
     _imgStatus.image = [UIImage imageNamed:@"ddxq_icon_yfh"];
-    [headerView addSubview:_imgStatus];
-    
-    [_imgStatus mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(headerView);
-        make.top.equalTo(headerView).offset(SizeHeight(52/2));
-        make.width.equalTo(@(SizeWidth(44)));
-        make.height.equalTo(@(SizeHeight(56.2/2)));
-    }];
-    
-    _lblStatus = [UILabel new];
-    _lblStatus.font = PingFangSCBOLD(SizeWidth(15));
-    _lblStatus.textColor = RGBColor(51,51,51);
-    _lblStatus.textAlignment = NSTextAlignmentCenter;
     _lblStatus.text = [self getStatusString:_order.status];
-    [headerView addSubview:_lblStatus];
-    
-    [_lblStatus mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(_imgStatus.mas_centerX);
-        make.top.equalTo(_imgStatus.mas_bottom).offset(SizeHeight(15));
-        make.width.equalTo(headerView);
-        make.height.equalTo(@(SizeHeight(18)));
-    }];
-    [self addBorder:headerView];
-    _tb.tableHeaderView  = headerView;
+
 }
 
 - (void)resetFather {
@@ -188,12 +186,13 @@
 }
 
 -(void) addTableView{
+   
     _tb = [[UITableView alloc] initWithFrame:CGRectMake(0, SizeHeight(64), kScreenW, kScreenH - SizeHeight(64)- SizeHeight(55)) style:UITableViewStyleGrouped];
     _tb.backgroundColor = RGBColorAlpha(224,224,224,1);
     _tb.backgroundColor = RGBColor(239, 240, 241);
     _tb.delegate = self;
     _tb.dataSource = self;
-    
+    [_tb registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     [_tb setSeparatorStyle:UITableViewCellSeparatorStyleNone];
  
     
@@ -292,10 +291,7 @@
 }
 
 -(void) tapSubmitButton{
-    if (_order.status == OrderStatus_waitingPay) {
-        [NetworkHelper pay:_order.order_id];
-        
-    }else if (_order.status == OrderStatus_hasSend) {
+     if (_order.status == OrderStatus_hasSend) {
         [self showConfirmView:@"确认已经收到货了吗？" withLeftTitle:@"取消" withRightTitle:@"确认"];
     }else if(_order.status == OrderStatus_waitingPay){
         [self showPayTypeView];
@@ -354,18 +350,14 @@
     return number;
 }
 
-- (UITableViewCell *)defaleCellWithCellId:(NSString *)cellId {
-    UITableViewCell *cell = [_tb dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
-    }
-    
-    return cell;
-}
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *cellId = [NSString stringWithFormat:@"%ld%ld", (long)indexPath.section, (long)indexPath.row];
-    UITableViewCell *cell =   [self defaleCellWithCellId:cellId];
+//    NSString *cellId = [NSString stringWithFormat:@"%ld%ld", (long)indexPath.section, (long)indexPath.row];
+    UITableViewCell         *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"];
+
+//    if (!cell) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+//    }
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     int baseIndex = 0;
     
@@ -1066,7 +1058,7 @@
         btnPay.titleLabel.font = PingFangSCBOLD(SizeWidth(18));
         btnPay.titleLabel.textAlignment = NSTextAlignmentCenter;
         [btnPay setTitle:@"立即支付" forState:UIControlStateNormal];
-        [btnPay addTarget:self action:@selector(dismissPopup) forControlEvents:UIControlEventTouchUpInside];
+        [btnPay addTarget:self action:@selector(pay:) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:btnPay];
         [btnPay mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(btnClose.mas_left).offset(SizeWidth(237/2));
@@ -1092,6 +1084,26 @@
     }
     
     [_PayPopup show];
+}
+
+-(void) pay{
+       
+        [NetworkHelper addOrder:order withCallBack:^(NSString *error, OrderResult *result) {
+            [ConfigModel hideHud:self];
+            if (error) {
+                [ConfigModel mbProgressHUD:error andView:self.view];
+            }else{
+                if(_isWechatPay){
+                    [NetworkHelper WXPay:result];
+                }else{
+                    [[PayManager manager] payByAlipay:result];
+                }
+                _orderId = result.order_id;
+                //            [ConfigModel mbProgressHUD:msg andView:self.view];
+            }
+        }];
+        [KLCPopup dismissAllPopups];
+    }
 }
 
 -(UIView *) addPayWayView:(int) type withTopView:(UIView *) topView toSuperView:(UIView *) superView{
@@ -1299,6 +1311,8 @@
         strStatus = @"退款成功";
         [self updateStatusImg:@"ddxq_icon_ywc"];
         [self addTipsTo:_imgStatus.superview withTitle:@"押金已退回原支付账户"];
+    }else{
+        strStatus = @"已取消";
 
     }
     
@@ -1411,7 +1425,6 @@
         [self updateOrder:@"10"];
     }else if (_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete){
         [self updateOrder:@"4"];
-
     }
 }
 

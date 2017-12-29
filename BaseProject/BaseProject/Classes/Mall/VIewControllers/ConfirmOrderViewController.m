@@ -1027,7 +1027,7 @@
         [btnPay addTarget:self action:@selector(payNow) forControlEvents:UIControlEventTouchUpInside];
         [contentView addSubview:btnPay];
         [btnPay mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(btnClose.mas_left).offset(SizeWidth(237/2));
+            make.right.equalTo(contentView.mas_right).offset(SizeWidth(-100/2));
             make.bottom.equalTo(btnClose.mas_bottom);
             make.width.equalTo(@(SizeWidth(150/2)));
             make.height.equalTo(@(SizeHeight(34/2)));
@@ -1115,7 +1115,7 @@
         make.top.equalTo(content);
         make.left.equalTo(content);
         make.width.equalTo(@(SizeWidth(56/2)));
-        make.height.equalTo(@(SizeHeight(46/2)));
+        make.height.equalTo(@(SizeHeight(50/2)));
     }];
     
     UILabel *lblTitle = [UILabel new];
@@ -1184,7 +1184,7 @@
         amount -= _lblShareSaveMoney.text.floatValue;
     }
     
-    _lblAmount.text = [NSString stringWithFormat:@"%f",amount];
+    _lblAmount.text = [NSString stringWithFormat:@"%.2f",amount];
 }
 
 - (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType

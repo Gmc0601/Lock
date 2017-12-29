@@ -44,12 +44,13 @@
     
     [self.view addSubview:_tb];
     
-    [self reload];
 }
 
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self reload];
+
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(completePay) name:@"completePay" object:nil];
 }
 
@@ -94,7 +95,7 @@
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    OrderModel *model = _datasource[indexPath.row];
+    OrderModel *model = _datasource[indexPath.section];
     OrderDetailViewController *newVC = [OrderDetailViewController new];
     newVC.orderId = model.order_id;
     [self.navigationController pushViewController:newVC animated:YES];

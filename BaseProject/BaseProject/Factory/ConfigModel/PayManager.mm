@@ -263,7 +263,7 @@ static PayManager *payManager = nil;
     order.biz_content.subject = model.subject;
     order.biz_content.out_trade_no = model.order_sn; //订单ID（由商家自行制定）
     order.biz_content.timeout_express = model.timeout_express; //超时时间设置
-    order.biz_content.total_amount = [NSString stringWithFormat:@"%@", @"0.01"]; //商品价格
+    order.biz_content.total_amount = [NSString stringWithFormat:@"%@", model.total_amount]; //商品价格
     
     //将商品信息拼接成字符串  
     NSString *orderInfo = [order orderInfoEncoded:NO];
