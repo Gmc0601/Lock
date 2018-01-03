@@ -27,6 +27,7 @@
     _model = model;
     _lblOrder.text = model.order_sn;
     _lblTitle.text = model.goods_name;
+    [_lblTitle sizeToFit];
     _lblAmount.text = model.order_amount;
     [_img sd_setImageWithURL:[NSURL URLWithString:model.head_img]];
     [self setFooterStyle];
@@ -106,11 +107,11 @@
         make.height.equalTo(@(SizeHeight(144/2)));
     }];
     
-    _lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(SizeWidth(207/2), SizeHeight(120/2), SizeWidth(506/2), SizeHeight(75))];
+    _lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(SizeWidth(207/2), SizeHeight(120/2), SizeWidth(300), SizeHeight(75))];
     _lblTitle.font = PingFangSCMedium(SizeWidth(15));
     _lblTitle.textColor = RGBColorAlpha(51,51,51,1);
     _lblTitle.textAlignment = NSTextAlignmentLeft;
-    _lblTitle.text = @"智能锁 | 守护你的家庭安全";
+    _lblTitle.text = @"shahahahahahaahahahaahahahahaha";
     _lblTitle.numberOfLines = 2;
     _lblTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     [self addSubview:_lblTitle];

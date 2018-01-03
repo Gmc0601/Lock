@@ -10,6 +10,7 @@
 #import "ConfirmOrderViewController.h"
 #import "NetworkHelper.h"
 #import "MyOrderViewController.h"
+#import "LoginViewController.h"
 
 @interface MallViewController ()<UIWebViewDelegate>
 @property (retain,atomic) UIScrollView *scrollView;
@@ -131,9 +132,10 @@
 
 -(void) buy{
     if ([ConfigModel getBoolObjectforKey:IsLogin] == NO) {
-        //TODO:
+        [ConfigModel mbProgressHUD:@"请先登录" andView:self.view];
         return;
     }
+    
     if (_goodsId != nil) {
         ConfirmOrderViewController *newVC = [[ConfirmOrderViewController alloc] initWithGoodsId:_goodsInfo];
      //   MyOrderViewController *newVC = [MyOrderViewController new];

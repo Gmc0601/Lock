@@ -278,7 +278,7 @@ NSMutableDictionary *params = [NSMutableDictionary new];
     // 这个是时间戳，也是在后台生成的，为了验证支付的
     req.timeStamp = timeStamp;
     
-    req.sign = [self createMD5SingForPayWithAppID:result.appid partnerid:req.partnerId prepayid:req.prepayId package:req.package noncestr:req.nonceStr timestamp:req.timeStamp];
+    req.sign = result.sign;
     
     //发送请求到微信，等待微信返回onResp
     [WXApi sendReq:req];
