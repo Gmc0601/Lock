@@ -428,17 +428,17 @@
     UIView *view = [[UIView alloc] initWithFrame:FRAME(0, 0, kScreenW, SizeHeight(45))];
     view.backgroundColor = [UIColor whiteColor];
     NSString *title = @"";
-    switch (section) {
-        
-        case 1:
-            title = @"商品信息";
-            break;
-        case 2:
-            title = @"费用明细";
-            break;
-        default:
-            break;
-    }
+//    switch (section) {
+//
+//        case 1:
+//            title = @"商品信息";
+//            break;
+//        case 2:
+//            title = @"费用明细";
+//            break;
+//        default:
+//            break;
+//    }
     
     [self addHeaderTitle:view withTitle:title];
     return view;

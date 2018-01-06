@@ -88,7 +88,7 @@
     _numberOfSection = 3;
     _countOfFee = 1;
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+
     [ConfigModel showHud:self];
     [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
         [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
@@ -228,6 +228,13 @@
     
     [self ShowHeader];
     [self.view addSubview:_tb];
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    [_tb addGestureRecognizer:gestureRecognizer];
+}
+
+- (void) hideKeyboard {
+    [self.view endEditing:YES];
 }
 
 -(void) addFooter{
@@ -401,7 +408,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-        return SizeHeight(45);
+    return SizeHeight(45);
 }
 
 -(void) addHeaderTitle:(UIView *) header withTitle:(NSString *) title{
@@ -472,6 +479,7 @@
     txt.font = PingFangSCMedium(SizeWidth(13));
     txt.textColor = RGBColorAlpha(51,51,51,1);
     txt.textAlignment = NSTextAlignmentLeft;
+    txt.delegate = self;
     
     [superView addSubview:txt];
     [txt mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -590,9 +598,9 @@
             [self chooseArea:_county];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
         }];
+        [self.view addSubview:_shplacePicker];
     }
-
-    [self.view addSubview:_shplacePicker];
+    _shplacePicker.hidden = NO;
 }
 
 -(void) chooseArea:(NSString *) arearId{
@@ -1238,4 +1246,12 @@
     }];
    
 }
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    if (_shplacePicker!=nil) {
+           _shplacePicker.hidden = YES;
+    }
+}
+
+
 @end

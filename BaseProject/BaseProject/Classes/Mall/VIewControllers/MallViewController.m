@@ -132,7 +132,9 @@
 
 -(void) buy{
     if ([ConfigModel getBoolObjectforKey:IsLogin] == NO) {
-        [ConfigModel mbProgressHUD:@"请先登录" andView:self.view];
+        //[ConfigModel mbProgressHUD:@"请先登录" andView:self.view];
+        LoginViewController *newVC = [LoginViewController new];
+        [self.navigationController pushViewController:newVC animated:YES];
         return;
     }
     
