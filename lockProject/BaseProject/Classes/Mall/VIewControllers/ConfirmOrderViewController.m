@@ -608,8 +608,9 @@
             [weakSelf.btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
         }];
-        [self.view addSubview:_shplacePicker];
     }
+    [self.view addSubview:_shplacePicker];
+
     _shplacePicker.hidden = NO;
 }
 

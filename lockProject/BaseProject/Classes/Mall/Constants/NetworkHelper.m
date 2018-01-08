@@ -138,8 +138,14 @@
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
-            NSArray *infoArr = datadic[@"data"];
             NSMutableArray *models = [NSMutableArray new];
+
+            if(datadic[@"data"] == [NSNull null]){
+                callback(nil,models);
+                return ;
+            }
+            NSArray *infoArr = datadic[@"data"];
+
             for (NSDictionary *dict in infoArr) {
                 OrderModel *model = [OrderModel new];
                 model.goods_name = dict[@"goods_name"];
