@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeInfoViewController">
+            <connections>
+                <outlet property="text" destination="Tgv-Qk-6KO" id="jxU-xt-ovd"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="圆角矩形1" translatesAutoresizingMaskIntoConstraints="NO" id="xW5-XZ-lHr">
+                    <rect key="frame" x="19.5" y="149" width="336" height="59"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="59" id="u3d-8e-AH7"/>
+                    </constraints>
+                </imageView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入昵称，最多10个字" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tgv-Qk-6KO">
+                    <rect key="frame" x="42" y="163" width="241" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="2bd-14-1sa"/>
+                        <constraint firstAttribute="width" constant="241" id="hIs-h6-9JN"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GUx-Ay-Uhv">
+                    <rect key="frame" x="108" y="257" width="159" height="70"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="6q3-42-JbA"/>
+                        <constraint firstAttribute="width" constant="159" id="jTf-yQ-kPy"/>
+                    </constraints>
+                    <state key="normal">
+                        <attributedString key="attributedTitle">
+                            <fragment content="保存">
+                                <attributes>
+                                    <font key="NSFont" metaFont="system" size="18"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </state>
+                    <connections>
+                        <action selector="save:" destination="-1" eventType="touchUpInside" id="bbr-Pz-DHo"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="Tgv-Qk-6KO" firstAttribute="centerY" secondItem="xW5-XZ-lHr" secondAttribute="centerY" id="0Gh-pH-z1X"/>
+                <constraint firstItem="GUx-Ay-Uhv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="1s4-jH-kQO"/>
+                <constraint firstItem="Tgv-Qk-6KO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="163" id="GlV-di-MOs"/>
+                <constraint firstItem="GUx-Ay-Uhv" firstAttribute="top" secondItem="xW5-XZ-lHr" secondAttribute="bottom" constant="49" id="JXS-pm-fNW"/>
+                <constraint firstItem="xW5-XZ-lHr" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Kyi-16-b5v"/>
+                <constraint firstItem="Tgv-Qk-6KO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="42" id="PW6-JE-bdS"/>
+            </constraints>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="vkG-Et-M6Y" appends="YES" id="6qM-oo-Ebf"/>
+            </connections>
+            <point key="canvasLocation" x="-258" y="10"/>
+        </view>
+        <tapGestureRecognizer id="vkG-Et-M6Y">
+            <connections>
+                <action selector="touch:" destination="-1" id="AiT-DB-BJ4"/>
+                <outlet property="delegate" destination="-1" id="7YL-hP-7E0"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="圆角矩形1" width="336" height="55"/>
+    </resources>
+</document>

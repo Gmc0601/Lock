@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="ArialRoundedMTBold.ttf">
+            <string>ArialRoundedMTBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddLockViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tjzns_icon_zns" translatesAutoresizingMaskIntoConstraints="NO" id="AK6-86-aVc">
+                    <rect key="frame" x="163" y="208" width="49" height="79"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="79" id="bhy-1r-udA"/>
+                        <constraint firstAttribute="width" constant="49" id="y2W-lB-oSf"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aX2-Fe-LYj">
+                    <rect key="frame" x="16" y="323" width="343" height="112"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="112" id="gam-JL-3bj"/>
+                    </constraints>
+                    <string key="text">1. 安装电池，在锁体菜单找到“锁体绑定”，按“#”键确认，使门锁进入匹配状态2.点击下方“开始匹配”进行APP与锁体匹配</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.79587405919999998" green="0.79999309780000005" blue="0.80403131250000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2wL-1j-uex">
+                    <rect key="frame" x="92" y="475" width="190" height="58"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="58" id="JfT-GQ-Pqv"/>
+                        <constraint firstAttribute="width" constant="190" id="MAh-Xo-XRr"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="17"/>
+                    <state key="normal" title="开始匹配"/>
+                    <connections>
+                        <action selector="connectLock:" destination="-1" eventType="touchUpInside" id="Zxd-KO-6ey"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="AK6-86-aVc" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="208" id="5ip-B9-WTz"/>
+                <constraint firstItem="AK6-86-aVc" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="9et-JL-vGo"/>
+                <constraint firstItem="aX2-Fe-LYj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="cVE-kO-rOz"/>
+                <constraint firstAttribute="trailing" secondItem="aX2-Fe-LYj" secondAttribute="trailing" constant="16" id="m0X-3F-ccp"/>
+                <constraint firstItem="2wL-1j-uex" firstAttribute="top" secondItem="aX2-Fe-LYj" secondAttribute="bottom" constant="40" id="mXG-GX-c3t"/>
+                <constraint firstItem="aX2-Fe-LYj" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mj9-t1-JTq"/>
+                <constraint firstItem="2wL-1j-uex" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="o2o-5C-N6D"/>
+                <constraint firstItem="aX2-Fe-LYj" firstAttribute="top" secondItem="AK6-86-aVc" secondAttribute="bottom" constant="36" id="xre-Md-zNl"/>
+            </constraints>
+            <point key="canvasLocation" x="-184.5" y="46.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="tjzns_icon_zns" width="56" height="94"/>
+    </resources>
+</document>
