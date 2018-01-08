@@ -97,7 +97,6 @@ static MainApi *request = nil;
         }];
     }else if([method isEqualToString:@"GET"]){
         NSString *usertoken = [ConfigModel getStringforKey:UserToken];
-        usertoken = @"bfd3673710371d07160258a691e09115";
         URLString = [NSString stringWithFormat:@"%@%@&user_token=%@",BaseApi,URLString,usertoken];
         [self.manager GET:URLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
             

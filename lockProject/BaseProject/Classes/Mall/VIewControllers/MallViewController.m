@@ -95,9 +95,7 @@
     _web.delegate = self;
     [_scrollView addSubview:_web];
     
-    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
-    
-    [_web loadRequest:request];
+    [_web loadHTMLString:_goodsInfo.goods_desc baseURL:nil];
     
 }
 

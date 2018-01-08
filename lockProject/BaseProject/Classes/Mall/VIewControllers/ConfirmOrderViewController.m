@@ -134,6 +134,8 @@
         NSString *strCounty = [RegionModel getRegionName:_county];
         NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",strProvince,strCity,strCounty];
         [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
+        _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
+        [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
         _txtAddress.text = addr.address;
         
         [self setPrice];
@@ -503,10 +505,13 @@
 -(UIButton *) addRegionButtonTo:(UIView *)superView withLeftView:(UIView *)leftView{
    
     _btnRegion = [UIButton new];
-  
+    [_btnRegion setTitle:@"请选择所在地区" forState:UIControlStateNormal];
     _btnRegion.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
-    [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
+    UIFont *placeHolderFont = PingFangSCMedium(SizeWidth(13));
+    UIColor *placeHolderColor = RGBColorAlpha(204,204,204,1);
+    
+    _btnRegion.titleLabel.font = placeHolderFont;
+    [_btnRegion setTitleColor:placeHolderColor forState:UIControlStateNormal];
     [_btnRegion addTarget:self action:@selector(tapRegionButton:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -545,12 +550,15 @@
     switch (index) {
         case 0:
             titile = @"收货人:";
+            placeHolder = @"请填写收货人";
             break;
         case 1:
             titile = @"联系电话:";
+            placeHolder = @"请填写联系电话";
             break;
         case 2:
             titile = @"所在地区:";
+            placeHolder = @"请选择所在地区";
             break;
         case 3:
             titile = @"详细地址:";
@@ -588,7 +596,7 @@
 
 -(void) tapRegionButton:(UIButton *) sender{
     __weak __typeof(self)weakSelf = self;
-
+    [self.view endEditing:YES];
     if (_shplacePicker == nil) {
         _shplacePicker = [[SHPlacePickerView alloc] initWithIsRecordLocation:YES SendPlaceArray:^(NSArray *placeArray) {
             _province = [RegionModel getRegionCode:placeArray[0] withFid:@"0"];
@@ -596,6 +604,8 @@
             _county = [RegionModel getRegionCode:placeArray[2] withFid:_city];
 
             [self chooseArea:_county];
+            weakSelf.btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
+            [weakSelf.btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
         }];
         [self.view addSubview:_shplacePicker];
@@ -899,7 +909,7 @@
         [btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(contentView.mas_centerX);
             make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(29/2));
-            make.width.equalTo(@(SizeWidth(70/2)));
+            make.width.equalTo(@(SizeWidth(90/2)));
             make.height.equalTo(@(SizeHeight(34/2)));
         }];
         
@@ -1023,7 +1033,7 @@
         [btnClose mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(contentView.mas_left).offset(SizeWidth(136/2));
             make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(30/2));
-            make.width.equalTo(@(SizeWidth(70/2)));
+            make.width.equalTo(@(SizeWidth(90/2)));
             make.height.equalTo(@(SizeHeight(34/2)));
         }];
         
