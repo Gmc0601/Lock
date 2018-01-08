@@ -46,7 +46,7 @@
         _goodsId = goodsInfo.goods_id;
         NSString *title = [self getTitle:goodsInfo.price];
         [_btn setTitle:title forState:UIControlStateNormal];
-        [_img sd_setImageWithURL:[NSURL URLWithString:goodsInfo.head_img]];
+        [_img sd_setImageWithURL:[NSURL URLWithString:goodsInfo.adverts_img]];
         [_web loadHTMLString:goodsInfo.goods_desc baseURL:nil];
     }];
 }
