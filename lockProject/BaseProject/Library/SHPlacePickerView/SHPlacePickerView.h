@@ -16,6 +16,7 @@ typedef void(^SendPlaceArray)(NSArray *placeArray);
  传出选中数组
  */
 @property (nonatomic,strong) SendPlaceArray sendPlaceArray;
+@property (nonatomic,strong) NSMutableArray *datasource;
 
 
 /**
@@ -31,6 +32,6 @@ typedef void(^SendPlaceArray)(NSArray *placeArray);
  @param sendPlaceArray 传出选中的地区数组
  @return SHPlacePickerView
  */
-- (instancetype)initWithIsRecordLocation:(BOOL)isrecordLocation SendPlaceArray:(SendPlaceArray)sendPlaceArray;
+- (instancetype)initWithIsRecordLocation:(BOOL)isrecordLocation SendPlaceArray:(SendPlaceArray)sendPlaceArray  withDataSource:(NSMutableArray *) datasource;
 
 @end

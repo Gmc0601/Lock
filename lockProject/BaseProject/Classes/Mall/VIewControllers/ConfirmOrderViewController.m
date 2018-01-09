@@ -66,6 +66,8 @@
 @property(retain,atomic)  NSString *discountMoney;
 @property(retain,atomic)  UISwitch * needInstallSwitch;
 @property(retain,atomic)  NSString * orderId;
+@property(retain,atomic)  NSMutableArray * regionArr;
+
 @end
 
 @implementation ConfirmOrderViewController
@@ -88,26 +90,27 @@
     _numberOfSection = 3;
     _countOfFee = 1;
     self.automaticallyAdjustsScrollViewInsets = NO;
-
+    
     [ConfigModel showHud:self];
     [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
+        if (addr != nil) {
+            [self chooseArea:addr.county];
+        }
+        
+        _regionArr =  [RegionModel getRegions];
+
         [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
-            [NetworkHelper getInstallCallBack:^(NSString *error, NSArray *requireInstall, NSArray *unReqiureInstall) {
-                
-                [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
-                    if (error) {
-                        return ;
-                    }
-                    _strSevice = addedValueService;
-                }];
-                
+            
+            [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
                 if (error) {
                     return ;
                 }
-                _requireInstall = requireInstall;
-                _unReqiureInstall = unReqiureInstall;
-                
+                _strSevice = addedValueService;
             }];
+            
+            if (error) {
+                return ;
+            }
             
             if (error) {
                 return ;
@@ -141,12 +144,12 @@
         [self setPrice];
     }];
     
-   
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(completePay) name:@"completePay" object:nil];
+    [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(completePay) name:@"completePay" object:nil];
 }
 
 -(void) viewWillDisappear:(BOOL)animated{
@@ -172,7 +175,7 @@
     _lblShareSaveMoney.font = PingFangSCBOLD(18);
     _lblShareSaveMoney.textColor = RGBColor(255,255,255);
     _lblShareSaveMoney.textAlignment = NSTextAlignmentCenter;
-    _lblShareSaveMoney.text = [self getShareString:@"100"];
+    _lblShareSaveMoney.text = [self getShareString:@"0"];
     [img addSubview:_lblShareSaveMoney];
     
     [_lblShareSaveMoney mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -221,7 +224,7 @@
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 0)];
         view;
     });
-
+    
     _tb.tableFooterView = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW,  SizeHeight(0))];
         view.backgroundColor = [UIColor blueColor];
@@ -271,7 +274,7 @@
     _lblAmount.font = PingFangSC(SizeWidth(15));
     _lblAmount.textColor = RGBColorAlpha(248,179,23,1);
     _lblAmount.textAlignment = NSTextAlignmentLeft;
-    _lblAmount.text = @"266000";
+    _lblAmount.text = _goodsInfo.price;
     [footer addSubview:_lblAmount];
     
     [_lblAmount mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -376,7 +379,7 @@
             if (indexPath.row == 0) {
                 height = SizeHeight(166/2);
             }else{
-               height = SizeHeight(130/2);
+                height = SizeHeight(130/2);
             }
             break;
             
@@ -388,8 +391,8 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-        UIView *view = [[UIView alloc] initWithFrame:FRAME(0, 0, kScreenW, SizeHeight(45))];
-        view.backgroundColor = [UIColor whiteColor];
+    UIView *view = [[UIView alloc] initWithFrame:FRAME(0, 0, kScreenW, SizeHeight(45))];
+    view.backgroundColor = [UIColor whiteColor];
     NSString *title = @"";
     switch (section) {
         case 0:
@@ -455,7 +458,7 @@
         if([title isEqualToString:@"安装费"]){
             make.width.equalTo(@(SizeWidth(100)));
         }else{
-        make.width.equalTo(@(width));
+            make.width.equalTo(@(width));
         }
         
         make.height.equalTo(superView);
@@ -463,7 +466,7 @@
             make.right.equalTo(superView.mas_right).offset(offset);
         }else{
             make.left.equalTo(superView.mas_left).offset(SizeWidth(16));
-
+            
         }
     }];
     
@@ -476,7 +479,7 @@
 }
 
 -(UITextField *) addTextFieldTo:(UIView *) superView withLeftView:(UIView *) leftView withPlaceHolder:(NSString *) placeHolder{
-   
+    
     UITextField *txt = [UITextField new];
     txt.font = PingFangSCMedium(SizeWidth(13));
     txt.textColor = RGBColorAlpha(51,51,51,1);
@@ -503,7 +506,7 @@
 }
 
 -(UIButton *) addRegionButtonTo:(UIView *)superView withLeftView:(UIView *)leftView{
-   
+    
     _btnRegion = [UIButton new];
     [_btnRegion setTitle:@"请选择所在地区" forState:UIControlStateNormal];
     _btnRegion.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -544,7 +547,7 @@
     if (cell.subviews.count >= 4) {
         return;
     }
-
+    
     NSString *titile = @"";
     NSString *placeHolder = @"";
     switch (index) {
@@ -569,7 +572,7 @@
     }
     
     UILabel *lblTitle = [self addTitleLable:titile withSuperView:cell];
-
+    
     if (index == 2) {
         [self addRegionButtonTo:cell withLeftView:lblTitle];
     }else{
@@ -588,30 +591,35 @@
             default:
                 break;
         }
-       
+        
     }
     
     [self addBorder:cell];
 }
 
 -(void) tapRegionButton:(UIButton *) sender{
+    [ConfigModel showHud:self];
+    
     __weak __typeof(self)weakSelf = self;
-    [self.view endEditing:YES];
     if (_shplacePicker == nil) {
         _shplacePicker = [[SHPlacePickerView alloc] initWithIsRecordLocation:YES SendPlaceArray:^(NSArray *placeArray) {
             _province = [RegionModel getRegionCode:placeArray[0] withFid:@"0"];
             _city = [RegionModel getRegionCode:placeArray[1] withFid:_province];
             _county = [RegionModel getRegionCode:placeArray[2] withFid:_city];
+            NSLog(@"---------");
 
             [self chooseArea:_county];
             weakSelf.btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
             [weakSelf.btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
-        }];
+        } withDataSource:_regionArr];
     }
-    [self.view addSubview:_shplacePicker];
 
-    _shplacePicker.hidden = NO;
+    [self.view endEditing:YES];
+    [self.view addSubview:_shplacePicker];
+    NSLog(@"==============");
+
+    [ConfigModel hideHud:self];
 }
 
 -(void) chooseArea:(NSString *) arearId{
@@ -619,17 +627,18 @@
     [NetworkHelper getInstallFeeWithArea:arearId WithCallBack:^(NSString *error, NSString *installFee , BOOL canInstall, BOOL forceInstall) {
         [ConfigModel hideHud:self];
         _installPrice = installFee;
-            _forceInstall = canInstall;
+        _forceInstall = forceInstall;
+        _canInstall = canInstall;
         if (_needInstall != canInstall) {
             _needInstall = canInstall;
             _needInstallSwitch.on = canInstall;
-
-            [self changePrice:_needInstall];
         }else{
             _needInstall = canInstall;
             _needInstallSwitch.on = canInstall;
-
         }
+        
+        [self changePrice:_needInstall];
+        
     }];
 }
 
@@ -649,7 +658,7 @@
 -(void) addGoodInfoTo:(UITableViewCell *)cell{
     _imgGoods = [UIImageView new];
     [_imgGoods sd_setImageWithURL:[NSURL URLWithString:_goodsInfo.head_img]];
-
+    
     [cell addSubview:_imgGoods];
     
     [_imgGoods mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -669,7 +678,7 @@
     _lblGoodsTitle.lineBreakMode = NSLineBreakByTruncatingTail;
     [cell addSubview:_lblGoodsTitle];
     [_lblGoodsTitle sizeToFit];
-
+    
     [self addBorder:cell];
 }
 
@@ -707,7 +716,7 @@
     if (index==2) {
         title = @"增值服务";
         [sw addTarget:self action:@selector(needAddedService:) forControlEvents:UIControlEventValueChanged];
-
+        
     }else{
         _needInstallSwitch = sw;
         sw.on = _needInstall;
@@ -732,6 +741,8 @@
     }
     
     if (_forceInstall) {
+        sender.on = YES;
+        
         [ConfigModel mbProgressHUD:@"你所在区域为强制安装区域" andView:self.view];
         return;
     }
@@ -830,7 +841,7 @@
     
     UIView *content = [self getContentWithSize:CGSizeMake( SizeWidth(686/2), SizeHeight(1082/2))];
     [self addCancelButtonTo:content];
-
+    
     return content;
 }
 
@@ -875,7 +886,7 @@
     }else{
         lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
         lblValue.tag = 9002;
-
+        
     }
     
 }
@@ -1072,7 +1083,7 @@
 }
 
 -(void) payNow{
-   
+    
     OrderModel *order = [OrderModel new];
     order.goods_id = _goodsInfo.goods_id;
     order.goods_num = 1;
@@ -1099,7 +1110,7 @@
                 [[PayManager manager] payByAlipay:result];
             }
             _orderId = result.order_id;
-//            [ConfigModel mbProgressHUD:msg andView:self.view];
+            //            [ConfigModel mbProgressHUD:msg andView:self.view];
         }
     }];
     [KLCPopup dismissAllPopups];
@@ -1224,7 +1235,7 @@
         NSString *title = responseObject[@"data"][@"title"];
         NSString *desc = responseObject[@"data"][@"subtitle"];
         NSString *url = responseObject[@"data"][@"url"];
-
+        
         //创建分享消息对象
         UMSocialMessageObject *messageObject = [UMSocialMessageObject messageObject];
         
@@ -1255,12 +1266,12 @@
             }
         }];
     }];
-   
+    
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     if (_shplacePicker!=nil) {
-           _shplacePicker.hidden = YES;
+        [_shplacePicker removeFromSuperview];
     }
 }
 

@@ -18,7 +18,7 @@
 
 
 // 存储索引数据
-@property (nonatomic, strong) NSArray *selectedProvinceArray;
+@property (nonatomic, strong) NSMutableArray *selectedProvinceArray;
 @property (nonatomic, strong) NSMutableArray *selectedCityArray;
 @property (nonatomic, strong) NSMutableArray *selectedDistrictArray;
 @property (nonatomic, strong) NSArray *saveArray;                       // 存储选中地区索引数组
@@ -33,8 +33,8 @@
 @implementation SHPlacePickerView
 
 
-- (instancetype)initWithIsRecordLocation:(BOOL)isrecordLocation SendPlaceArray:(SendPlaceArray)sendPlaceArray{
-    
+- (instancetype)initWithIsRecordLocation:(BOOL)isrecordLocation SendPlaceArray:(SendPlaceArray)sendPlaceArray withDataSource:(NSMutableArray *) datasource{
+    self.datasource = datasource;
     self.sendPlaceArray = sendPlaceArray;
     self.isRecordLocation = isrecordLocation;
     
@@ -179,7 +179,7 @@
     if (self.selectedProvince && self.selectedCity && self.selectedDistrict) {
         
         self.selectArray = @[self.selectedProvince,self.selectedCity,self.selectedDistrict];
-//        NSLog(@"省:%@ 市:%@ 区:%@",self.selectedProvince,self.selectedCity,self.selectedDistrict);
+        //        NSLog(@"省:%@ 市:%@ 区:%@",self.selectedProvince,self.selectedCity,self.selectedDistrict);
     }
 }
 
@@ -209,13 +209,13 @@
     self.toolView.backgroundColor = RGBColor(246,246,246);
     [self addSubview:self.toolView];
     
-//    UIView *belowLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 33, self.frame.size.width, 1)];
-//    belowLineView.backgroundColor = [UIColor grayColor];
-//    [self.toolView addSubview:belowLineView];
-//
-//    UIView *aboveLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1)];
-//    aboveLineView.backgroundColor = [UIColor grayColor];
-//    [self.toolView addSubview:aboveLineView];
+    //    UIView *belowLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 33, self.frame.size.width, 1)];
+    //    belowLineView.backgroundColor = [UIColor grayColor];
+    //    [self.toolView addSubview:belowLineView];
+    //
+    //    UIView *aboveLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 1)];
+    //    aboveLineView.backgroundColor = [UIColor grayColor];
+    //    [self.toolView addSubview:aboveLineView];
     
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -241,24 +241,32 @@
     
     self.dataArray = [NSMutableArray arrayWithCapacity:34];
     
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Place" ofType:@"plist"]];
     
-    NSArray *provinceArray = [dict allKeys];
-    self.selectedProvinceArray = [RegionModel getProvinces];
+    if (self.datasource != nil) {
+        self.dataArray = self.datasource;
+    }else{
+        self.dataArray = [RegionModel getRegions];
+    }
     
-    self.dataArray = [RegionModel getRegions];
-//    for (int i = 0; i < provinceArray.count; i ++) {
-//
-//        PlaceModel *placeModel = [[PlaceModel alloc] init];
-//        placeModel.provinceName = provinceArray[i];
-//        NSDictionary *cityDict = [[dict objectForKey:provinceArray[i]] firstObject];
-//        [cityDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-//
-//            [placeModel.cityArray addObject:key];
-//            [placeModel.districtArray addObject:obj];
-//        }];
-//        [self.dataArray addObject:placeModel];
-//    }
+    self.selectedProvinceArray =  [NSMutableArray new];
+    //[RegionModel getProvinces];
+    
+    for (PlaceModel *model in self.dataArray) {
+        [self.selectedProvinceArray addObject:model.provinceName];
+    }
+    
+    //    for (int i = 0; i < provinceArray.count; i ++) {
+    //
+    //        PlaceModel *placeModel = [[PlaceModel alloc] init];
+    //        placeModel.provinceName = provinceArray[i];
+    //        NSDictionary *cityDict = [[dict objectForKey:provinceArray[i]] firstObject];
+    //        [cityDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+    //
+    //            [placeModel.cityArray addObject:key];
+    //            [placeModel.districtArray addObject:obj];
+    //        }];
+    //        [self.dataArray addObject:placeModel];
+    //    }
     
     if (self.isRecordLocation && [[NSUserDefaults standardUserDefaults] objectForKey:@"saveArray"]) {
         
@@ -268,7 +276,7 @@
         self.selectedProvince = placeModel.provinceName;
         self.selectedCity = placeModel.cityArray[[array[1] integerValue]];
         self.selectedDistrict = placeModel.districtArray[[array[1] integerValue]][[array[2] integerValue]];
-
+        
     }else{
         
         PlaceModel *placeModel = self.dataArray[0];

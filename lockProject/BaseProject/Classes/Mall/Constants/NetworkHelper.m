@@ -104,7 +104,10 @@
 }
 
 +(void) getInstallFeeWithArea:(NSString *) area_id WithCallBack:(void(^)(NSString *error,NSString *installFee,bool canInstall, bool forceInstall)) callback{
-    [HttpRequest getPath:@"Public/getInstallFee" params:nil resultBlock:^(id responseObject, NSError *error) {
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    [params setValue:area_id forKey:@"area_id"];
+    
+    [HttpRequest getPath:@"Public/getInstallFee" params:params resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
