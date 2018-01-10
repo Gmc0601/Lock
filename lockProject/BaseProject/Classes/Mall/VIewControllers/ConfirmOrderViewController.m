@@ -92,6 +92,11 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [ConfigModel showHud:self];
+    
+    [NetworkHelper getInstallCallBack:^(NSString *error, NSArray *requireInstall, NSArray *unReqiureInstall) {
+        _requireInstall = requireInstall;
+        _unReqiureInstall = unReqiureInstall;
+    }];
     [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
         _regionArr =  [RegionModel getRegions];
         if (addr != nil) {
