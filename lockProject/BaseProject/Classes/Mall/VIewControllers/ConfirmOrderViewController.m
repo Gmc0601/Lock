@@ -93,55 +93,38 @@
     
     [ConfigModel showHud:self];
     [NetworkHelper getAddressWtihCallBack:^(NSString *error, AddressModel *addr) {
-        if (addr != nil) {
-            [self chooseArea:addr.county];
-        }
-        
         _regionArr =  [RegionModel getRegions];
-
-        [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
-            
-            [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
-                if (error) {
-                    return ;
-                }
-                _strSevice = addedValueService;
-            }];
-            
-            if (error) {
-                return ;
-            }
-            
-            if (error) {
-                return ;
-            }
-            
-            _lblShareSaveMoney.text = [self getShareString:money];
-        }];
-        
-        [ConfigModel hideHud:self];
-        if (addr == nil) {
-            return ;
+        if (addr != nil) {
+            _county = addr.county;
+            _province = addr.province;
+            _city = addr.city;
+            _txtName.text = addr.consignee;
+            _txtTelNo.text = addr.phone;
+            [self chooseArea:_county];
+            [ConfigModel hideHud:self];
+            NSString *strProvince = [RegionModel getRegionName:_province];
+            NSString *strCity = [RegionModel getRegionName:_city];
+            NSString *strCounty = [RegionModel getRegionName:_county];
+            NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",strProvince,strCity,strCounty];
+            [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
+            _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
+            [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
+            _txtAddress.text = addr.address;
         }
-        
-        _county = addr.county;
-        _province = addr.province;
-        _city = addr.city;
-        
-        
-        _txtName.text = addr.consignee;
-        _txtTelNo.text = addr.phone;
-        [self chooseArea:_county];
-        NSString *strProvince = [RegionModel getRegionName:_province];
-        NSString *strCity = [RegionModel getRegionName:_city];
-        NSString *strCounty = [RegionModel getRegionName:_county];
-        NSString *strAddree = [NSString stringWithFormat:@"%@ %@ %@",strProvince,strCity,strCounty];
-        [_btnRegion setTitle:strAddree forState:UIControlStateNormal];
-        _btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
-        [_btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
-        _txtAddress.text = addr.address;
-        
-        [self setPrice];
+        [NetworkHelper getDiscountAmount:^(NSString *error, NSString *money) {
+            if (error == nil) {
+                _lblShareSaveMoney.text = [self getShareString:money];
+            }
+            [NetworkHelper getAddServiceCallBack:^(NSString *error, NSString *addedValueService) {
+                if (error == nil) {
+                    _strSevice = addedValueService;
+                    
+                    [self setPrice];
+                    [ConfigModel hideHud:self];
+                }
+                
+            }];
+        }];
     }];
     
     
@@ -607,18 +590,18 @@
             _city = [RegionModel getRegionCode:placeArray[1] withFid:_province];
             _county = [RegionModel getRegionCode:placeArray[2] withFid:_city];
             NSLog(@"---------");
-
+            
             [self chooseArea:_county];
             weakSelf.btnRegion.titleLabel.font = PingFangSCMedium(SizeWidth(13));
             [weakSelf.btnRegion setTitleColor:RGBColorAlpha(51,51,51,1) forState:UIControlStateNormal];
             [weakSelf.btnRegion setTitle:[NSString stringWithFormat:@"%@ %@ %@",placeArray[0],placeArray[1],placeArray[2]] forState:UIControlStateNormal];
         } withDataSource:_regionArr];
     }
-
+    
     [self.view endEditing:YES];
     [self.view addSubview:_shplacePicker];
     NSLog(@"==============");
-
+    
     [ConfigModel hideHud:self];
 }
 
@@ -765,10 +748,17 @@
 }
 
 -(void) changePrice:(BOOL) need{
-    if (need) {
+    _countOfFee = 1;
+    if (_needAddedService) {
         _countOfFee += 1;
-    }else{
-        _countOfFee -= 1;
+    }
+    
+    if (_needInstall) {
+        _countOfFee += 1;
+    }
+    
+    if (_hasShare) {
+        _countOfFee += 1;
     }
     
     [_tb reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
@@ -864,30 +854,33 @@
         price = _goodsInfo.price;
     }else if(index == 1 && _needInstall){
         title =@"安装费";
+        price =  _installPrice;
     }else if((index == 1 || index == 2) && _needAddedService){
         title =@"增值服务";
         price = _goodsInfo.added_price;
-    }else{
+    }else if(_hasShare){
         title =@"分享立减";
         price = _lblShareSaveMoney.text;
     }
-    
-    UILabel *lblTitle = (UILabel *)[cell viewWithTag:9001];
-    if (lblTitle != nil) {
-        lblTitle.text = title;
-    }else{
-        lblTitle  = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
-        lblTitle.tag = 9001;
-    }
-    
-    UILabel *lblValue = (UILabel *)[cell viewWithTag:9002];
-    if (lblValue != nil) {
-        lblValue.text = price;
-    }else{
-        lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
-        lblValue.tag = 9002;
+    if (![title isEqualToString:@""]) {
+        UILabel *lblTitle = (UILabel *)[cell viewWithTag:9001];
+        if (lblTitle != nil) {
+            lblTitle.text = title;
+        }else{
+            lblTitle  = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+            lblTitle.tag = 9001;
+        }
         
+        UILabel *lblValue = (UILabel *)[cell viewWithTag:9002];
+        if (lblValue != nil) {
+            lblValue.text = price;
+        }else{
+            lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+            lblValue.tag = 9002;
+            
+        }
     }
+    
     
 }
 
@@ -1094,8 +1087,9 @@
     order.county = _county;
     order.phone = _txtTelNo.text;
     order.type = 0;
+    order.added_fee = _needAddedService ? _strSevice:0;
     order.is_install = _needInstall ? 1:0;;
-    order.install_fee = _installPrice;
+    order.install_fee = _needInstall? _installPrice:0;
     order.discount_amount = _discountMoney;
     order.pay_type = _isWechatPay ? 1:0;
     [ConfigModel showHud:self];
@@ -1274,6 +1268,5 @@
         [_shplacePicker removeFromSuperview];
     }
 }
-
 
 @end

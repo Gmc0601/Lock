@@ -48,6 +48,7 @@
         [_btn setTitle:title forState:UIControlStateNormal];
         [_img sd_setImageWithURL:[NSURL URLWithString:goodsInfo.adverts_img]];
         [_web loadHTMLString:goodsInfo.goods_desc baseURL:nil];
+        _web.scalesPageToFit = YES;
     }];
 }
 
