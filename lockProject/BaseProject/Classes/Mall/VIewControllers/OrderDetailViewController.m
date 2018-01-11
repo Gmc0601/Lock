@@ -70,16 +70,32 @@
     [NetworkHelper getOrderDetailWithId:_orderId WithCallBack:^(NSString *error, OrderModel *order) {
         _order = order;
 
-        if (order.status == OrderStatus_complete || _order.status == OrderStatus_hasSend) {
+        if ([order.wuliu_type isEqualToString:@"0"] && (order.status == OrderStatus_complete || _order.status == OrderStatus_hasSend)) {
             _numberOfSection = 5;
         }
         
+        _countOfFee = 1;
         if (order.status == OrderStatus_complete) {
              _countOfUpdateDate = 4;
         }
         
+        if(order.install_fee.floatValue > 0){
+            _countOfFee += 1;
+        }
+        
+        if (order.added_fee.floatValue > 0) {
+            _countOfFee += 1;
+        }
+        
+        if (order.discount_amount.floatValue > 0) {
+            _countOfFee += 1;
+        }
+        
         [self addTableView];
-
+        if (_footer != nil) {
+            [_footer removeFromSuperview];
+            _footer = nil;
+        }
         if (_order.added_fee.floatValue > 0) {
             if (_order.status != OrderStatus_RefundComplete) {
                 [self addFooter];
@@ -186,7 +202,10 @@
 }
 
 -(void) addTableView{
-   
+    if(_tb != nil){
+        [_tb removeFromSuperview];
+        _tb = nil;
+    }
     _tb = [[UITableView alloc] initWithFrame:CGRectMake(0, SizeHeight(64), kScreenW, kScreenH - SizeHeight(64)- SizeHeight(55)) style:UITableViewStyleGrouped];
     _tb.backgroundColor = RGBColorAlpha(224,224,224,1);
     _tb.backgroundColor = RGBColor(239, 240, 241);
@@ -573,9 +592,6 @@
 
 -(void) addContentForExpress:(UITableViewCell *)cell withIndex:(NSInteger) index{
     UILabel *lblTitle = [cell viewWithTag:401];
-    if (lblTitle != nil) {
-        return;
-    }
     
     switch (index) {
         case 0:
@@ -612,9 +628,7 @@
 
 -(void) addContentForDeliveryAddrees:(UITableViewCell *)cell withIndex:(NSInteger) index{
     UILabel *lblTitle = [cell viewWithTag:401];
-    if (lblTitle != nil) {
-        return;
-    }
+   
     
     NSString *titile = @"";
     switch (index) {
@@ -669,10 +683,7 @@
 }
 
 -(void) addGoodInfoTo:(UITableViewCell *)cell{
-    if (_imgGoods != nil) {
-        return;
-    }
-    
+   
     _imgGoods = [UIImageView new];
     [_imgGoods sd_setImageWithURL:[NSURL URLWithString:_order.head_img]];
     [cell addSubview:_imgGoods];
@@ -699,9 +710,7 @@
 
 -(void) addNeedInstall:(UITableViewCell *)cell withIndex:(NSInteger) index{
     UILabel *lblTitle = [cell viewWithTag:301];
-    if (lblTitle != nil) {
-        return;
-    }
+    
     NSString *title = @"是否需要上门安装";
     if (index==2) {
         title = @"增值服务";
@@ -760,6 +769,7 @@
         }];
         
         _serviceWebView= [UIWebView new];
+        _serviceWebView.scalesPageToFit = YES;
         _serviceWebView.backgroundColor = [UIColor clearColor];
         _serviceWebView.opaque = NO;
         _serviceWebView.opaque = NO;
@@ -821,6 +831,20 @@
     
     UIView *contentView = [self getContentWithSize:CGSizeMake( SizeWidth(686/2), SizeHeight(1082/2))];
     
+    UILabel *lblTitle = [UILabel new];
+    lblTitle.font = PingFangSCBOLD(SizeWidth(15));
+    lblTitle.textColor = RGBColor(51,51,51);
+    lblTitle.textAlignment = NSTextAlignmentCenter;
+    lblTitle.text = @"退款规则";
+    [contentView addSubview:lblTitle];
+    
+    [lblTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(contentView);
+        make.top.equalTo(contentView).offset(SizeHeight(23));
+        make.width.equalTo(contentView);
+        make.height.equalTo(@(SizeHeight(17)));
+    }];
+    
     UIButton *btnTuikuan = [UIButton new];
 //    btnTuikuan.backgroundColor = RGBColor(241,242,242);
     [btnTuikuan setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];;
@@ -858,6 +882,7 @@
     }];
     
     UIWebView *webView = [UIWebView new];
+    webView.scalesPageToFit = YES;
     [contentView addSubview:webView];
     [webView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(contentView);
@@ -888,9 +913,7 @@
 
 -(void) addCostDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
     UILabel *lblTitle = [cell viewWithTag:201];
-    if (lblTitle != nil) {
-        return;
-    }
+   
     
     NSString *title = @"";
     UIColor *fontColor = RGBColor(102, 102, 102);
@@ -898,17 +921,20 @@
         title =@"商品金额";
        
         _lblGooodsPrice = [self addTitleLable:_order.goods_price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
-    }else if(index == 1){
+    }else if(index == 1 && _order.install_fee.floatValue > 0){
         title =@"安装费";
           _lblInstallPrice = [self addTitleLable:_order.install_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
-    }else if(index == 2){
+    }else if((index == 1||index == 2)  && _order.added_fee.floatValue > 0){
         title =@"增值服务";
           _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
-    }else{
+    }else if(_order.discount_amount.floatValue > 0){
         title =@"分享立减";
           _lblCoupon = [self addTitleLable:_order.discount_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
     }
     
+    if ([title isEqualToString:@""]) {
+        return;
+    }
     lblTitle = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
     lblTitle.tag = 201;
    
@@ -916,9 +942,7 @@
 
 -(void) addOrderDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
     UILabel *lbl = [cell viewWithTag:101];
-    if(lbl != nil){
-        return;
-    }
+  
     
     NSString *title = @"";
     UIColor *fontColor = RGBColor(153,153,153);
@@ -1403,10 +1427,10 @@
 -(void) tapPopoverOkButton{
     if (_order.status == OrderStatus_hasSend) {
          [self updateOrder:@"3"];
-    }else if (_order.status != OrderStatus_complete && _order.added_fee > 0) {
-        [self updateOrder:@"10"];
     }else if (_order.status == OrderStatus_padyed || _order.status == OrderStatus_complete){
         [self updateOrder:@"4"];
+    }else if (_order.status != OrderStatus_complete && _order.added_fee > 0) {
+        [self updateOrder:@"10"];
     }
 }
 

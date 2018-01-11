@@ -97,6 +97,7 @@
     [_scrollView addSubview:_web];
     
     [_web loadHTMLString:_goodsInfo.goods_desc baseURL:nil];
+    _web.scalesPageToFit = YES;
     
 }
 

@@ -60,7 +60,7 @@
 }
 
 +(void) getAddServiceCallBack:(void(^)(NSString *error,NSString *addedValueService)) callback{
-    [HttpRequest getPath:@"public/tuiyajin.html" params:nil resultBlock:^(id responseObject, NSError *error) {
+    [HttpRequest getPath:@"public/shiyong" params:nil resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
@@ -74,7 +74,7 @@
 }
 
 +(void) getRefundCallBack:(void(^)(NSString *error,NSString *addedValueService)) callback{
-    [HttpRequest getPath:@"public/tuiyajin.html" params:nil resultBlock:^(id responseObject, NSError *error) {
+    [HttpRequest getPath:@"public/tuiyajin" params:nil resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {
