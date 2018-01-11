@@ -13,6 +13,7 @@
 #import "NetworkHelper.h"
 #import "RegionModel.h"
 #import "MallViewController.h"
+#import "InstallSummeryView.h"
 
 #define Share_TAG 100000
 #define CBX_PAY_TAG 2003
@@ -58,6 +59,8 @@
 @property(assign,atomic)  int countOfUpdateDate;
 @property(assign,atomic)  int countOfFee;
 @property (atomic, retain) KLCPopup *confirmPopup;
+@property(retain,atomic)  NSArray *requireInstall;
+@property(retain,atomic)  NSArray *unReqiureInstall;
 @end
 
 @implementation OrderDetailViewController
@@ -67,6 +70,11 @@
 }
 
 -(void) loadData{
+    [NetworkHelper getInstallCallBack:^(NSString *error, NSArray *requireInstall, NSArray *unReqiureInstall) {
+        _requireInstall = requireInstall;
+        _unReqiureInstall = unReqiureInstall;
+    }];
+    
     [NetworkHelper getOrderDetailWithId:_orderId WithCallBack:^(NSString *error, OrderModel *order) {
         _order = order;
 
@@ -612,13 +620,15 @@
         case 0:
             _lblExpressStatus = [self addLabelTo:cell withLeftView:nil];
             _lblExpressStatus.font = PingFangSCBOLD(SizeWidth(15));
-            _lblExpressStatus.text = @"快递小哥已为您完成配送";
+            _lblExpressStatus.text = _order.express_status;
             break;
         case 1:
             _lblExpressComponyName =  [self addLabelTo:cell withLeftView:lblTitle];
+            _lblExpressComponyName.text =  _order.express_name;
             break;
         case 2:
             _lblExpressNo =  [self addLabelTo:cell withLeftView:lblTitle];
+            _lblExpressNo.text = _order.express_no;
             break;
         default:
             break;
@@ -726,6 +736,23 @@
    _lblNeedInstall.font = PingFangSCMedium(SizeWidth(13));
     _lblNeedInstall.text = _order.is_install == 0? @"无需上门安装":@"需要上门安装";
     
+   
+    if (index == 1 &&_order.status == OrderStatus_waitingPay) {
+        UIButton *btnTip = [UIButton new];
+        [btnTip setImage:[UIImage imageNamed:@"qrdd_icon_zy"] forState:UIControlStateNormal];
+        [btnTip addTarget:self action:@selector(tapInstallTipsButton) forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:btnTip];
+        
+        [btnTip mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(lblTitle.mas_right).offset(SizeWidth(10));
+            make.centerY.equalTo(lblTitle);
+            make.width.equalTo(@(SizeWidth(32/2)));
+            make.height.equalTo(@(SizeHeight(32/2)));
+        }];
+    }
+    
+   
+    
     [cell addSubview:_lblNeedInstall];
     [_lblNeedInstall mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(lblTitle.mas_centerY);
@@ -742,9 +769,22 @@
 
 -(void) tapInstallTipsButton{
     if (_installPopup == nil) {
-        _installPopup = [KLCPopup popupWithContentView:[self getContentForTips]];
+        UIView *content = [self getContentForTips];
+        InstallSummeryView *_installSummeryView= [InstallSummeryView new];
+        _installSummeryView.require = _requireInstall;
+        _installSummeryView.unRequire = _unReqiureInstall;
+        [content addSubview:_installSummeryView];
+        [_installSummeryView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(content);
+            make.right.equalTo(content);
+            make.top.equalTo(content);
+            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+        }];
+        
+        _installPopup = [KLCPopup popupWithContentView:content];
         _installPopup.showType = KLCPopupShowTypeSlideInFromTop;
         _installPopup.dismissType = KLCPopupDismissTypeSlideOutToTop;
+        [_installSummeryView loadData];
     }
     
     [_installPopup show];
@@ -1433,5 +1473,6 @@
         [self updateOrder:@"10"];
     }
 }
+
 
 @end

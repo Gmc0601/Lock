@@ -49,5 +49,6 @@ typedef enum {
 @property(retain,atomic) NSString *added_fee;
 @property(retain,atomic) NSString *express_name;
 @property(retain,atomic) NSString *express_no;
+@property(retain,atomic) NSString *express_status;
 @property(assign,atomic) NSString * wuliu_type;
 @end

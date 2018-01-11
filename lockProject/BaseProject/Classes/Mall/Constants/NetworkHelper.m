@@ -199,9 +199,17 @@ NSMutableDictionary *params = [NSMutableDictionary new];
         
         if ([datadic[@"success"] intValue] == 1) {
             NSDictionary *infoArr = datadic[@"data"];
-            
-            
             OrderModel *info = [OrderModel mj_objectWithKeyValues:infoArr];
+
+            if ([info.wuliu_type isEqualToString:@"0"]) {
+                info.express_no = infoArr[@"express_info"][@"LogisticCode"];
+                NSArray *Traces = infoArr[@"express_info"][@"Traces"];
+                if (Traces != nil && Traces.count > 0) {
+                    info.express_status =Traces[Traces.count - 1][@"AcceptStation"];
+                }else{
+                    info.express_status = @"无法追踪物流信息";
+                }
+            }
             callback(nil,info);
         }else{
             callback(datadic[@"msg"],nil);

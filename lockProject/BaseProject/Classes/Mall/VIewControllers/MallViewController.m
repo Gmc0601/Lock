@@ -86,10 +86,10 @@
     [_scrollView addSubview:_img];
     
     y += SizeHeight(876+149)/2;
-    [self addMsgRef:CGRectMake(SizeWidth(227/2), y, SizeWidth(195/2), SizeHeight(23/2)) withText:@"上拉查看商品详情"];
+    [self addMsgRef:CGRectMake(self.view.centerX - SizeWidth(195/4), y, SizeWidth(195/2), SizeHeight(23/2)) withText:@"上拉查看商品详情"];
     
     y+= SizeHeight(90/2);
-    [self addMsgRef:CGRectMake(SizeWidth(227/2), y, SizeWidth(195/2), SizeHeight(23/2)) withText:@"下拉返回顶部"];
+    [self addMsgRef:CGRectMake(self.view.centerX - SizeWidth(195/4), y, SizeWidth(195/2), SizeHeight(23/2)) withText:@"下拉返回顶部"];
     
     y+= SizeHeight(60)/2;
     _web = [[UIWebView alloc] initWithFrame:CGRectMake(0, y, kScreenW, SizeHeight(996/2))];
