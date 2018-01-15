@@ -532,6 +532,10 @@
         }
     }];
     
+    if (offset < 0) {
+        lblName.textAlignment = NSTextAlignmentRight;
+    }
+    
     return lblName;
 }
 
@@ -809,9 +813,7 @@
         }];
         
         _serviceWebView= [UIWebView new];
-        _serviceWebView.scalesPageToFit = YES;
         _serviceWebView.backgroundColor = [UIColor clearColor];
-        _serviceWebView.opaque = NO;
         _serviceWebView.opaque = NO;
         [content addSubview:_serviceWebView];
         [_serviceWebView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -922,7 +924,7 @@
     }];
     
     UIWebView *webView = [UIWebView new];
-    webView.scalesPageToFit = YES;
+
     [contentView addSubview:webView];
     [webView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(contentView);
@@ -960,16 +962,16 @@
     if (index == 0) {
         title =@"商品金额";
        
-        _lblGooodsPrice = [self addTitleLable:_order.goods_price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+        _lblGooodsPrice = [self addTitleLable:_order.goods_price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(index == 1 && _order.install_fee.floatValue > 0){
         title =@"安装费";
-          _lblInstallPrice = [self addTitleLable:_order.install_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+          _lblInstallPrice = [self addTitleLable:_order.install_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if((index == 1||index == 2)  && _order.added_fee.floatValue > 0){
         title =@"增值服务";
-          _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+          _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(_order.discount_amount.floatValue > 0){
         title =@"分享立减";
-          _lblCoupon = [self addTitleLable:_order.discount_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+          _lblCoupon = [self addTitleLable:_order.discount_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }
     
     if ([title isEqualToString:@""]) {

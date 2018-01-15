@@ -880,7 +880,7 @@
         if (lblValue != nil) {
             lblValue.text = price;
         }else{
-            lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-32/1)];
+            lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
             lblValue.tag = 9002;
             
         }

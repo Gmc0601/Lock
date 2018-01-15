@@ -207,7 +207,7 @@ NSMutableDictionary *params = [NSMutableDictionary new];
                 if (Traces != nil && Traces.count > 0) {
                     info.express_status =Traces[Traces.count - 1][@"AcceptStation"];
                 }else{
-                    info.express_status = @"无法追踪物流信息";
+                    info.express_status = @"快递小哥正在为您飞奔送货中...";
                 }
             }
             callback(nil,info);

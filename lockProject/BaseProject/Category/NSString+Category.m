@@ -54,7 +54,7 @@
                                            options:NSStringDrawingUsesLineFragmentOrigin
                                         attributes:@{ NSFontAttributeName:font }
                                            context:nil];
-    return idealFrame.size.width + SizeWidth(1);
+    return idealFrame.size.width + SizeWidth(10);
 }
 
 /*抹除运费小数末尾的0*/
