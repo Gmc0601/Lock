@@ -148,7 +148,10 @@
      //   MyOrderViewController *newVC = [MyOrderViewController new];
         [self.navigationController pushViewController:newVC animated:YES];
     }
-    
+}
+
+-(void) webViewDidFinishLoad:(UIWebView *)webView{
+    [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '340%'"];
 }
 
 @end
