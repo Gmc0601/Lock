@@ -64,7 +64,7 @@
 }
 
 -(void) reload{
-    [NetworkHelper getOrderListWithCallBack:^(NSString *error, NSArray *orders) {
+    [NetworkHelper getOrderListWithStatus:self.status WithCallBack:^(NSString *error, NSArray *orders) {
         _datasource = orders;
         [_tb reloadData];
     }];

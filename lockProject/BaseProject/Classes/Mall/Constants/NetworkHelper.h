@@ -19,7 +19,7 @@
 +(void) getAddServiceCallBack:(void(^)(NSString *error,NSString *addedValueService)) callback;
 +(void) getInstallCallBack:(void(^)(NSString *error,NSArray *requireInstall, NSArray *unReqiureInstall)) callback;
 +(void) addOrder:(OrderModel *) order withCallBack:(void(^)(NSString *error,OrderResult *result)) callback;
-+(void) getOrderListWithCallBack:(void(^)(NSString *error,NSArray *orders)) callback;
++(void) getOrderListWithStatus:(NSString *)status WithCallBack:(void(^)(NSString *error,NSArray *orders)) callback;
 +(void) getOrderDetailWithId:(NSString *) order_id WithCallBack:(void(^)(NSString *error,OrderModel *order)) callback;
 +(void) loadRegion;
 +(void) modifyOrderWithOrderId:(NSString *) order_id  withStatus:(NSString *) status WithCallBack:(void(^)(NSString *error,NSString *msg)) callback;

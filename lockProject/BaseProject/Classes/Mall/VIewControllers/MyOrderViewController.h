@@ -10,5 +10,5 @@
 #import "CCBaseViewController.h"
 
 @interface MyOrderViewController : CCBaseViewController
-
+@property (atomic, retain) NSString *status;
 @end

@@ -14,6 +14,8 @@
 #import "MyOrderViewController.h"
 #import "LoginViewController.h"
 #import "TBNavigationController.h"
+#import "OrderModel.h"
+
 @interface MeViewController ()<UITableViewDelegate, UITableViewDataSource>{
     NSString *phone;
 }
@@ -200,11 +202,18 @@
             };
             
             head.orderBlock = ^(int num) {
+                NSString *status  = nil;
               //  订单 点击 num 0 - 3
-                if (num == 3) {
-                    MyOrderViewController *newVC = [MyOrderViewController new];
-                    [self.navigationController pushViewController:newVC animated:YES];
+                if (num == 0) {
+                    status = @"0";
+                }else if(num == 1){
+                    status = @"1";
+                }else if(num==2){
+                    status = @"2";
                 }
+                MyOrderViewController *newVC = [MyOrderViewController new];
+                newVC.status = status;
+                [self.navigationController pushViewController:newVC animated:YES];
                 
             };
             self.head = head;

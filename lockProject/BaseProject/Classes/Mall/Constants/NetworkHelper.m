@@ -135,9 +135,15 @@
     }];
 }
 
-+(void) getOrderListWithCallBack:(void(^)(NSString *error,NSArray *orders)) callback{
++(void) getOrderListWithStatus:(NSString *)status WithCallBack:(void(^)(NSString *error,NSArray *orders)) callback{
+    NSMutableDictionary *params = [NSMutableDictionary new];
+    if (status ==nil) {
+        params = nil;
+    }else{
+        [params setValue:status forKey:@"status"];
+    }
     
-    [HttpRequest getPath:@"order/getlist" params:nil resultBlock:^(id responseObject, NSError *error) {
+    [HttpRequest getPath:@"order/getlist" params:params resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {

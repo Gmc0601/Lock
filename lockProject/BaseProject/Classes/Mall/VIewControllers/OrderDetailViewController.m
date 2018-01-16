@@ -82,7 +82,12 @@
             _numberOfSection = 5;
         }
         
-        _countOfFee = 1;
+        if (_order.status == OrderStatus_waitingPay) {
+            _countOfFee = 1;
+        }else{
+            _countOfFee = 2;
+        }
+        
         if (order.status == OrderStatus_complete) {
              _countOfUpdateDate = 4;
         }
@@ -966,12 +971,15 @@
     }else if(index == 1 && _order.install_fee.floatValue > 0){
         title =@"安装费";
           _lblInstallPrice = [self addTitleLable:_order.install_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
-    }else if((index == 1||index == 2)  && _order.added_fee.floatValue > 0){
+    }else if((index == 1 && _order.added_fee.floatValue > 0 && _order.install_fee.floatValue <= 0) || (index == 2 && _order.added_fee.floatValue > 0 && _order.install_fee.floatValue > 0)){
         title =@"增值服务";
           _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(_order.discount_amount.floatValue > 0){
         title =@"分享立减";
           _lblCoupon = [self addTitleLable:_order.discount_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+    }else if(_order.status != OrderStatus_waitingPay){
+        title =@"实付款";
+         [self addTitleLable:_order.order_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }
     
     if ([title isEqualToString:@""]) {
@@ -1358,7 +1366,7 @@
     }else if (status == OrderStatus_RefundComplete){
         strStatus = @"退款成功";
         [self updateStatusImg:@"ddxq_icon_ywc"];
-        [self addTipsTo:_imgStatus.superview withTitle:@"押金已退回原支付账户"];
+        [self addTipsTo:_imgStatus.superview withTitle:@"钱已退回原支付账户"];
     }else{
         strStatus = @"已取消";
 
