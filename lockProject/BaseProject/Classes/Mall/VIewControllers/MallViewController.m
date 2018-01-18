@@ -47,7 +47,9 @@
         NSString *title = [self getTitle:goodsInfo.price];
         [_btn setTitle:title forState:UIControlStateNormal];
         [_img sd_setImageWithURL:[NSURL URLWithString:goodsInfo.adverts_img]];
-        [_web loadHTMLString:goodsInfo.goods_desc baseURL:nil];
+        NSString *strTemplateHTML = [NSString stringWithFormat:@"<html><head><style>img{max-width:100%%;height:auto !important;width:auto !important;};</style></head><body style='margin:0; padding:0;'>%@</body></html>", goodsInfo.goods_desc];
+
+        [_web loadHTMLString:strTemplateHTML baseURL:nil];
         _web.scalesPageToFit = YES;
     }];
 }
@@ -150,9 +152,6 @@
     }
 }
 
--(void) webViewDidFinishLoad:(UIWebView *)webView{
-    [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '340%'"];
-}
 
 @end
 

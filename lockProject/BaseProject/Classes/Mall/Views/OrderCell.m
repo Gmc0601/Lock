@@ -29,7 +29,7 @@
     _lblTitle.text = model.goods_name;
     [_lblTitle sizeToFit];
     _lblAmount.text = model.order_amount;
-    [_img sd_setImageWithURL:[NSURL URLWithString:model.head_img]];
+    [_img sd_setImageWithURL:[NSURL URLWithString:model.head_img ]];
     [self setFooterStyle];
 }
 

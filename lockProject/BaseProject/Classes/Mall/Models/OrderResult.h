@@ -23,4 +23,5 @@
 @property (retain,atomic) NSString  *timeout_express;
 @property (retain,atomic) NSString  *subject;
 @property (retain,atomic) NSString  *total_amount;
+@property (retain,atomic) NSString  *timestamp;
 @end

@@ -295,11 +295,8 @@ NSMutableDictionary *params = [NSMutableDictionary new];
     // 随机编码，为了防止重复的，在后台生成
     req.nonceStr  = result.nonce_str;
     
-    NSDate *datenow = [NSDate date];
-    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
-    UInt32 timeStamp =[timeSp intValue];
     // 这个是时间戳，也是在后台生成的，为了验证支付的
-    req.timeStamp = timeStamp;
+    req.timeStamp = result.timestamp.intValue;
     
     req.sign = result.sign;
     
