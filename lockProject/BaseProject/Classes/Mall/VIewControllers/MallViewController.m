@@ -47,7 +47,7 @@
         NSString *title = [self getTitle:goodsInfo.price];
         [_btn setTitle:title forState:UIControlStateNormal];
         [_img sd_setImageWithURL:[NSURL URLWithString:goodsInfo.adverts_img]];
-        NSString *strTemplateHTML = [NSString stringWithFormat:@"<html><head><style>img{max-width:100%%;height:auto !important;width:auto !important;};</style></head><body style='margin:0; padding:0;'>%@</body></html>", goodsInfo.goods_desc];
+        NSString *strTemplateHTML = [NSString stringWithFormat:@"<html><head><style>img{width:100%%;height:auto !important};</style></head><body style='margin:0; padding:0;'>%@</body></html>", goodsInfo.goods_desc];
 
         [_web loadHTMLString:strTemplateHTML baseURL:nil];
         _web.scalesPageToFit = YES;

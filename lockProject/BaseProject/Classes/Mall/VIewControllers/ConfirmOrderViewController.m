@@ -153,6 +153,7 @@
 }
 
 -(NSString *) getShareString:(NSString *) money{
+    _discountMoney = money;
     return [NSString stringWithFormat:@"分享立减%@元",money];
 }
 
@@ -860,7 +861,7 @@
     }else if(index == 1 && _needInstall){
         title =@"安装费";
         price =  _installPrice;
-    }else if((index == 1 || index == 2) && _needAddedService){
+    }else if(((index == 1 && !_needInstall )|| (index == 2 &&_needInstall)) && _needAddedService){
         title =@"增值服务";
         price = _goodsInfo.added_price;
     }else if(_hasShare){
@@ -1210,7 +1211,7 @@
     }
     
     if (_hasShare) {
-        amount -= _lblShareSaveMoney.text.floatValue;
+        amount -= _discountMoney.floatValue;
     }
     
     _lblAmount.text = [NSString stringWithFormat:@"%.2f",amount];
@@ -1244,7 +1245,8 @@
         
         //分享消息对象设置分享内容对象
         messageObject.shareObject = shareObject;
-        
+        [UMSocialGlobal shareInstance].isUsingHttpsWhenShareContent = NO;
+
         //调用分享接口
         [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
             if (error) {
