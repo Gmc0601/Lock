@@ -154,7 +154,7 @@
 
 -(NSString *) getShareString:(NSString *) money{
     _discountMoney = money;
-    return [NSString stringWithFormat:@"分享立减%@元",money];
+    return [NSString stringWithFormat:@"%@",money];
 }
 
 -(void) ShowHeader{
@@ -881,8 +881,9 @@
         if (lblValue != nil) {
             lblValue.text = price;
         }else{
-            lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+            lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-20)];
             lblValue.tag = 9002;
+            lblValue.textAlignment = NSTextAlignmentRight;
             
         }
     }
@@ -950,7 +951,7 @@
     UILabel *lblTitle = [UILabel new];
     lblTitle.font = PingFangSCMedium(SizeWidth(13));
     lblTitle.textColor = RGBColor(51,51,51);
-    lblTitle.textAlignment = NSTextAlignmentLeft;
+    lblTitle.textAlignment = NSTextAlignmentCenter;
     lblTitle.text = title;
     [superView addSubview:lblTitle];
     
