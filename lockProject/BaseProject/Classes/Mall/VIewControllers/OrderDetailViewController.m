@@ -82,7 +82,7 @@
             _numberOfSection = 5;
         }
         
-        if (_order.status == OrderStatus_waitingPay) {
+        if (_order.status == OrderStatus_waitingPay || _order.status == OrderStatus_Cancel) {
             _countOfFee = 1;
         }else{
             _countOfFee = 2;

@@ -1098,7 +1098,7 @@
     order.added_fee = _needAddedService ? _goodsInfo.added_price:0;
     order.is_install = _needInstall ? 1:0;;
     order.install_fee = _needInstall? _installPrice:0;
-    order.discount_amount = _discountMoney;
+    order.discount_amount = _hasShare? _discountMoney:@"0";
     order.pay_type = _isWechatPay ? 1:0;
     [ConfigModel showHud:self];
     [NetworkHelper addOrder:order withCallBack:^(NSString *error, OrderResult *result) {
