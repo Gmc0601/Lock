@@ -154,7 +154,8 @@
 
 -(NSString *) getShareString:(NSString *) money{
     _discountMoney = money;
-    return [NSString stringWithFormat:@"%@",money];
+    return [NSString stringWithFormat:@"分享立减%@元",money];
+    
 }
 
 -(void) ShowHeader{
@@ -866,7 +867,7 @@
         price = _goodsInfo.added_price;
     }else if(_hasShare){
         title =@"分享立减";
-        price = _lblShareSaveMoney.text;
+        price = [NSString stringWithFormat:@"-%@",_discountMoney];
     }
     if (![title isEqualToString:@""]) {
         UILabel *lblTitle = (UILabel *)[cell viewWithTag:9001];

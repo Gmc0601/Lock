@@ -959,8 +959,8 @@
 }
 
 -(void) addCostDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
-    UILabel *lblTitle = [cell viewWithTag:201];
-   
+    UILabel *lblTitle = [cell viewWithTag:201 + index];
+  
     
     NSString *title = @"";
     UIColor *fontColor = RGBColor(102, 102, 102);
@@ -974,9 +974,10 @@
     }else if((index == 1 && _order.added_fee.floatValue > 0 && _order.install_fee.floatValue <= 0) || (index == 2 && _order.added_fee.floatValue > 0 && _order.install_fee.floatValue > 0)){
         title =@"增值服务";
           _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
-    }else if(_order.discount_amount.floatValue > 0){
+    }else if(_order.discount_amount.floatValue > 0 && ((_order.added_fee.floatValue > 0 && _order.install_fee.floatValue > 0 && index == 3) ||((_order.added_fee.floatValue > 0 || _order.install_fee.floatValue > 0) && index == 2)|| index == 1)){
         title =@"分享立减";
-          _lblCoupon = [self addTitleLable:_order.discount_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+        
+          _lblCoupon = [self addTitleLable:[NSString stringWithFormat:@"-%@",_order.discount_amount] withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(_order.status != OrderStatus_waitingPay){
         title =@"实付款";
          [self addTitleLable:_order.order_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];

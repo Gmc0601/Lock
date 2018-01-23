@@ -11,6 +11,7 @@
 #import "NetworkHelper.h"
 #import "MyOrderViewController.h"
 #import "LoginViewController.h"
+#import "TBNavigationController.h"
 
 @interface MallViewController ()<UIWebViewDelegate>
 @property (retain,atomic) UIScrollView *scrollView;
@@ -140,9 +141,14 @@
 -(void) buy{
     if ([ConfigModel getBoolObjectforKey:IsLogin] == NO) {
         //[ConfigModel mbProgressHUD:@"请先登录" andView:self.view];
-        LoginViewController *newVC = [LoginViewController new];
-        [self.navigationController pushViewController:newVC animated:YES];
+        LoginViewController *vc = [[LoginViewController alloc] init];
+        vc.homeBlocl = ^{
+            self.tabBarController.selectedIndex = 0;
+        };
+        TBNavigationController *na = [[TBNavigationController alloc] initWithRootViewController:vc];
+        [self presentViewController:na animated:YES completion:nil];
         return;
+
     }
     
     if (_goodsId != nil) {
