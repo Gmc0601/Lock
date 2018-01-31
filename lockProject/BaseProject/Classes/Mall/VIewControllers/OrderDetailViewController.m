@@ -51,6 +51,7 @@
 @property(retain,atomic) UILabel* lblOrder;
 @property(retain,atomic) UILabel* lblPayWay;
 @property(retain,atomic) UILabel* lblOrderDate;
+@property(retain,atomic) UILabel* lblOrderNo;
 @property(retain,atomic) UIView *footer;
 @property(retain,atomic) UILabel* lblConfirmReceiveDate;
 @property(retain,atomic) UIButton* btnCancelOrder;
@@ -212,6 +213,7 @@
     self.line.hidden = YES;
     self.titleLab.text = @"订单详情";
     [self.rightBar setTitle:@"客服" forState:UIControlStateNormal];
+     [self.rightBar setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
 }
 
 -(void) addTableView{
@@ -292,7 +294,7 @@
         _lblAmount.font = PingFangSC(SizeWidth(15));
         _lblAmount.textColor = RGBColorAlpha(248,179,23,1);
         _lblAmount.textAlignment = NSTextAlignmentLeft;
-        _lblAmount.text = _order.order_amount;
+        _lblAmount.text = [NSString stringWithFormat:@"￥%@", _order.order_amount];
         [_footer addSubview:_lblAmount];
         
         [_lblAmount mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -575,7 +577,7 @@
         if (leftView == nil) {
             make.left.equalTo(superView.mas_left).offset(SizeWidth(25/2));
         }else{
-            make.left.equalTo(leftView.mas_right).offset(SizeWidth(25/2));
+            make.left.equalTo(leftView.mas_right).offset(SizeWidth(0));
         }
         if (leftView != nil && [leftView.text isEqualToString:@"收货地址:"]) {
             make.height.equalTo(superView);
@@ -787,7 +789,7 @@
             make.left.equalTo(content);
             make.right.equalTo(content);
             make.top.equalTo(content);
-            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+            make.bottom.equalTo(content).offset(-SizeHeight(100/2));
         }];
         
         _installPopup = [KLCPopup popupWithContentView:content];
@@ -825,7 +827,7 @@
             make.left.equalTo(content).offset(SizeWidth(15));
             make.right.equalTo(content).offset(-SizeWidth(15));
             make.top.equalTo(lblTitle.mas_bottom).offset(SizeHeight(20));
-            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+            make.bottom.equalTo(content).offset(-SizeHeight(100/2));
         }];
         
         _serviceDescPopup = [KLCPopup popupWithContentView:content];
@@ -963,24 +965,32 @@
   
     
     NSString *title = @"";
+    NSString *price = @"";
     UIColor *fontColor = RGBColor(102, 102, 102);
     if (index == 0) {
         title =@"商品金额";
-       
-        _lblGooodsPrice = [self addTitleLable:_order.goods_price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+        price = [NSString stringWithFormat:@"￥%@",_order.goods_price];
+        _lblGooodsPrice = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(index == 1 && _order.install_fee.floatValue > 0){
         title =@"安装费";
-          _lblInstallPrice = [self addTitleLable:_order.install_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+        price = [NSString stringWithFormat:@"+￥%@",_order.install_fee];
+
+          _lblInstallPrice = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if((index == 1 && _order.added_fee.floatValue > 0 && _order.install_fee.floatValue <= 0) || (index == 2 && _order.added_fee.floatValue > 0 && _order.install_fee.floatValue > 0)){
         title =@"增值服务";
-          _lblAddedService = [self addTitleLable:_order.added_fee withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+        price = [NSString stringWithFormat:@"+￥%@",_order.added_fee];
+
+          _lblAddedService = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(_order.discount_amount.floatValue > 0 && ((_order.added_fee.floatValue > 0 && _order.install_fee.floatValue > 0 && index == 3) ||((_order.added_fee.floatValue > 0 || _order.install_fee.floatValue > 0) && index == 2)|| index == 1)){
         title =@"分享立减";
-        
-          _lblCoupon = [self addTitleLable:[NSString stringWithFormat:@"-%@",_order.discount_amount] withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+        price = [NSString stringWithFormat:@"-￥%@",_order.discount_amount];
+
+          _lblCoupon = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }else if(_order.status != OrderStatus_waitingPay){
         title =@"实付款";
-         [self addTitleLable:_order.order_amount withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
+        price = [NSString stringWithFormat:@"￥%@",_order.order_amount];
+
+         [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-10)];
     }
     
     if ([title isEqualToString:@""]) {
@@ -994,19 +1004,17 @@
 -(void) addOrderDetail:(UITableViewCell *)cell withIndex:(NSInteger) index{
     UILabel *lbl = [cell viewWithTag:101];
   
-    
     NSString *title = @"";
     UIColor *fontColor = RGBColor(153,153,153);
     if (index == 0) {
-        title = [self getOrderIdText:_order.order_sn];
-
-        if (lbl == nil) {
-            lbl = [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
+            title =@"订单编号:";
+            UILabel *lbl =  [self addTitleLable:title withSuperView:cell withFontColor:fontColor rightOffSet:0];
             lbl.tag = 101;
+            
+            UILabel *txt = [self addLabelTo:cell withLeftView:lbl];
+            txt.textColor = RGBColor(153,153,153);
+            txt.text = _order.order_sn;
             [self addBtnCancelOrderTo:cell];
-        }else{
-            lbl.text = title;
-        }
     }else if(index == 1){
         title =@"支付方式:";
         if(lbl == nil || _lblPayWay == nil){
@@ -1037,6 +1045,11 @@
     if (_order.status != OrderStatus_waitingPay) {
         return;
     }
+    if (_btnCancelOrder!= nil) {
+        [_btnCancelOrder removeFromSuperview];
+        _btnCancelOrder = nil;
+    }
+   
     _btnCancelOrder = [UIButton new];
     [_btnCancelOrder setTitle:@"取消订单" forState:UIControlStateNormal];
     [_btnCancelOrder setTitleColor:RGBColor(51,51,51) forState:UIControlStateNormal];
@@ -1058,7 +1071,7 @@
 }
 
 -(NSString *) getOrderIdText:(NSString *) orderId{
-    return [NSString stringWithFormat:@"订单编号: %@",orderId];
+    return [NSString stringWithFormat:@"订单编号:  %@",orderId];
 }
 
 

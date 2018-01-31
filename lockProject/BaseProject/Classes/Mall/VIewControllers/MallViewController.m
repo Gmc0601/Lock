@@ -27,7 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self resetFather];
-    
     [ConfigModel showHud:self];
     
     [NetworkHelper getGoodsInfoWithcallBack:^(NSString *error, GoodsInfo *goodsInfo) {
@@ -71,7 +70,9 @@
     _scrollView = [UIScrollView new];
     _scrollView.pagingEnabled = YES;
     _scrollView.scrollEnabled= YES;
-    _scrollView.contentSize = CGSizeMake(kScreenW, kScreenH *2);
+    _scrollView.backgroundColor = [UIColor whiteColor];
+
+    _scrollView.contentSize = CGSizeMake(kScreenW, (kScreenH - self.navigationView.frame.size.height -self.tabBarController.tabBar.bounds.size.height)*2);
     
     [self.view addSubview:_scrollView];
     [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -95,12 +96,12 @@
     [self addMsgRef:CGRectMake(self.view.centerX - SizeWidth(195/4), y, SizeWidth(195/2), SizeHeight(23/2)) withText:@"下拉返回顶部"];
     
     y+= SizeHeight(60)/2;
-    _web = [[UIWebView alloc] initWithFrame:CGRectMake(0, y, kScreenW, SizeHeight(996/2))];
+    _web = [[UIWebView alloc] initWithFrame:CGRectMake(0, y, kScreenW, _scrollView.contentSize.height - y )];
     _web.delegate = self;
     [_scrollView addSubview:_web];
-    
+    _web.backgroundColor = [UIColor whiteColor];
+
     [_web loadHTMLString:_goodsInfo.goods_desc baseURL:nil];
-    _web.scalesPageToFit = YES;
     
 }
 

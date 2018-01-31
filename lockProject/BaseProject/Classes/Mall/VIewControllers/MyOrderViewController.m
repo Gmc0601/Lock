@@ -11,7 +11,7 @@
 #import <KLCPopup/KLCPopup.h>
 #import "OrderDetailViewController.h"
 #import "NetworkHelper.h"
-
+#import "UIColor+BGHexColor.h"
 @interface MyOrderViewController ()<UITableViewDelegate,UITableViewDataSource,OrderCellDelegate>
 @property (nonatomic, retain) UITableView *tb;
 @property (atomic, retain) KLCPopup *confirmPopup;
@@ -27,7 +27,7 @@
 
     [self resetFather];
     
-    _tb = [[UITableView alloc] initWithFrame:CGRectMake(0, SizeHeight(64), kScreenW, kScreenH - SizeHeight(64)- SizeHeight(55)) style:UITableViewStyleGrouped];
+    _tb = [[UITableView alloc] initWithFrame:CGRectMake(0, SizeHeight(64), kScreenW, kScreenH - SizeHeight(64)) style:UITableViewStyleGrouped];
     _tb.backgroundColor = RGBColor(239, 240, 241);
     
     _tb.delegate = self;
@@ -74,6 +74,7 @@
     self.line.hidden = YES;
     self.titleLab.text = @"我的订单";
     [self.rightBar setTitle:@"客服" forState:UIControlStateNormal];
+     [self.rightBar setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
 }
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView{

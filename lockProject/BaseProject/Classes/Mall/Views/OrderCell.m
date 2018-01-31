@@ -28,7 +28,7 @@
     _lblOrder.text = model.order_sn;
     _lblTitle.text = model.goods_name;
     [_lblTitle sizeToFit];
-    _lblAmount.text = model.order_amount;
+    _lblAmount.text = [NSString stringWithFormat:@"合计:￥%@",model.order_amount] ;
     [_img sd_setImageWithURL:[NSURL URLWithString:model.head_img ]];
     [self setFooterStyle];
 }

@@ -200,6 +200,7 @@
     self.line.hidden = YES;
     self.titleLab.text = @"确认订单";
     [self.rightBar setTitle:@"客服" forState:UIControlStateNormal];
+    [self.rightBar setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
 }
 
 -(void) addTableView{
@@ -783,7 +784,7 @@
             make.left.equalTo(content);
             make.right.equalTo(content);
             make.top.equalTo(content);
-            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+            make.bottom.equalTo(content).offset(-SizeHeight(110/2));
         }];
         
         _installPopup = [KLCPopup popupWithContentView:content];
@@ -823,7 +824,7 @@
             make.left.equalTo(content).offset(SizeWidth(15));
             make.right.equalTo(content).offset(-SizeWidth(15));
             make.top.equalTo(lblTitle.mas_bottom).offset(SizeHeight(20));
-            make.bottom.equalTo(content).offset(-SizeHeight(80/2));
+            make.bottom.equalTo(content).offset(-SizeHeight(110/2));
         }];
         
         _serviceDescPopup = [KLCPopup popupWithContentView:content];
@@ -859,15 +860,20 @@
     if (index == 0) {
         title =@"商品金额";
         price = _goodsInfo.price;
+        price = [NSString stringWithFormat:@"￥%@",price];
+
     }else if(index == 1 && _needInstall){
         title =@"安装费";
-        price =  _installPrice;
+        price = [NSString stringWithFormat:@"+￥%@",_installPrice];
+
     }else if(((index == 1 && !_needInstall )|| (index == 2 &&_needInstall)) && _needAddedService){
         title =@"增值服务";
-        price = _goodsInfo.added_price;
+        price = [NSString stringWithFormat:@"+￥%@",_goodsInfo.added_price];
+
     }else if(_hasShare){
         title =@"分享立减";
-        price = [NSString stringWithFormat:@"-%@",_discountMoney];
+        price = [NSString stringWithFormat:@"-￥%@",_discountMoney];
+
     }
     if (![title isEqualToString:@""]) {
         UILabel *lblTitle = (UILabel *)[cell viewWithTag:9001];
@@ -885,8 +891,11 @@
             lblValue = [self addTitleLable:price withSuperView:cell withFontColor:fontColor rightOffSet:SizeWidth(-20)];
             lblValue.tag = 9002;
             lblValue.textAlignment = NSTextAlignmentRight;
-            
         }
+        
+        [lblValue mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(@(SizeWidth(200)));
+        }];
     }
     
     
@@ -1216,7 +1225,7 @@
         amount -= _discountMoney.floatValue;
     }
     
-    _lblAmount.text = [NSString stringWithFormat:@"%.2f",amount];
+    _lblAmount.text = [NSString stringWithFormat:@"￥%.2f",amount];
 }
 
 - (void)shareWebPageToPlatformType:(UMSocialPlatformType)platformType
