@@ -17,6 +17,6 @@
 @property (nonatomic , copy) NSString              * comment_count;
 @property (nonatomic , copy) NSString              * img_url;
 
-+(void) findListWithCallBack:(void(^)(NSString *error,NSArray *findArr)) callback;
++(void) findListWithdic:(NSDictionary *)dic CallBack:(void(^)(NSString *error,NSArray *findArr)) callback;
 
 @end

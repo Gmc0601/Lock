@@ -11,7 +11,9 @@
 #import "ConnectionAlter.h"
 #import "CommenAlter.h"
 
-@interface AddLockViewController ()
+@interface AddLockViewController (){
+    int time;
+}
 
 @property (nonatomic, retain) NSMutableArray *dataArr;
 
@@ -21,6 +23,8 @@
 
 @property (nonatomic,retain) NSDictionary *dic;
 
+@property (weak, nonatomic) IBOutlet UIButton *startBtn;
+
 @end
 
 @implementation AddLockViewController
@@ -28,7 +32,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self resetFather];
-    
+    time = 10;
+    [self.startBtn setTitleColor:MainBlue forState:UIControlStateNormal];
+    self.startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15];
     [HttpRequest postPath:@"GateWay/getlist" params:nil resultBlock:^(id responseObject, NSError *error) {
         if([error isEqual:[NSNull null]] || error == nil){
             NSLog(@"success");
@@ -102,14 +108,27 @@
 }
 
 - (void)addLcok {
+    time--;
+    
+    if (time <= 0) {
+        time = 10;
+        [self.timer invalidate];
+        [self.alter dismiss];
+        CommenAlter *finsh = [[CommenAlter alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH) title:@"智能锁添加失败" info:@"" leftBtn:@"重新添加" right:nil];
+        
+                    finsh.leftBlock = ^{
+                        [finsh dismiss];
+                    };
+        [finsh pop];
+        return;
+    }
+    
     [HttpRequest postPath:@"Lock/add" params:self.dic resultBlock:^(id responseObject, NSError *error) {
         if([error isEqual:[NSNull null]] || error == nil){
             NSLog(@"success");
         }
         NSDictionary *datadic = responseObject;
         if ([datadic[@"success"] intValue] == 1) {
-            
-            
             
             [self.timer invalidate];
             [self.alter dismiss];
@@ -127,7 +146,12 @@
             [finsh pop];
             
         }else {
-
+//            [self.timer invalidate];
+//            CommenAlter *finsh = [[CommenAlter alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH) title:@"智能锁添加失败" info:@"" leftBtn:@"重新添加" right:nil];
+//            
+//            finsh.leftBlock = ^{
+//                [finsh dismiss];
+//            };
         }
     }];
 }

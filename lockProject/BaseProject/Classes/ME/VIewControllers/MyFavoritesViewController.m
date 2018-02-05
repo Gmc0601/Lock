@@ -25,7 +25,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self resetFather];
-    [self createDate];
+   
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+     [self createDate];
 }
 
 - (void)createDate {
@@ -45,6 +51,7 @@
                 self.dataArr = [FindModel mj_objectArrayWithKeyValuesArray:data];
             }
             
+            [self.noUseTableView reloadData];
         }else {
             NSString *str = datadic[@"msg"];
             [ConfigModel mbProgressHUD:str andView:nil];
@@ -105,7 +112,12 @@
     FindModel *find = [[FindModel alloc] init];
     find = self.dataArr[indexPath.row];
     FindDetailViewController * detial = [[FindDetailViewController alloc] init];
-    NSString *str = [NSString stringWithFormat:@"http://116.62.142.20/Info/detail/id/%@", find.info_id];
+    NSString *str ;
+    if ([ConfigModel getBoolObjectforKey:IsLogin]) {
+        str = [NSString stringWithFormat:@"http://116.62.142.20/Info/detail/id/%@/user_token/%@", find.info_id, [ConfigModel getStringforKey:UserToken]];
+    }else {
+        str = [NSString stringWithFormat:@"http://116.62.142.20/Info/detail/id/%@", find.info_id];
+    }
     detial.urlStr = str;
     /*
      http://116.62.142.20/Info/detail/id/4

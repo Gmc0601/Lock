@@ -86,6 +86,19 @@ static MainApi *request = nil;
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSLog(@"Response Object:\n%@", responseObject);
             if (resultBlock) {
+                NSDictionary *datadic = responseObject;
+                
+                if ([datadic[@"msg"] isKindOfClass:[NSString class]]) {
+                    if ([datadic[@"msg"] isEqualToString:@"请登录"]) {
+                        
+                        [ConfigModel saveBoolObject:NO forKey:IsLogin];
+                        
+                    }
+                }
+                
+                
+                    
+                
                 resultBlock(responseObject, nil);
             }
             

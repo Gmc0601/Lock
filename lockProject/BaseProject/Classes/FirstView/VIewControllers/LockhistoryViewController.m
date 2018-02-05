@@ -12,6 +12,7 @@
 #import <YYKit.h>
 #import "HIstoryTableViewCell.h"
 #import "CommenAlter.h"
+#import "ChangeInfoViewController.h"
 
 @implementation HistoryModel
 
@@ -33,6 +34,7 @@
     [super viewDidLoad];
     [self resetFather];
     [self createView];
+    [ConfigModel saveBoolObject:NO forKey:HaveMessage];
 }
 
 - (void)createView {
@@ -135,7 +137,14 @@
     
     HIstoryTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
+        WeakSelf(weak);
         cell = [[HIstoryTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellId];
+        cell.nameBlock = ^(NSString *lockId, NSString *user) {
+            ChangeInfoViewController *vc = [[ChangeInfoViewController alloc] init];
+            vc.userName = user;
+            vc.userId = lockId;
+            [weak.navigationController pushViewController:vc animated:YES];
+        };
     }
     LockHistory *model = self.dataArr[indexPath.section][indexPath.row];
     cell.model = model;

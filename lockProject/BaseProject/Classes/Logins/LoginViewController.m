@@ -45,6 +45,36 @@
     }else {
         self.wechatBtn.hidden = YES;
     }
+    self.leftBar.hidden = NO;
+    
+}
+
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+
+{
+    
+    if (textField == self.phoneText) {
+        if (string.length == 0) return YES;
+        NSMutableString *newtxt = [NSMutableString stringWithString:textField.text];
+        
+        [newtxt replaceCharactersInRange:range withString:string];
+        
+        if (newtxt.length > 11) return NO;
+    }
+    
+    if (textField == self.codeText) {
+        if (string.length == 0) return YES;
+        NSMutableString *newtxt = [NSMutableString stringWithString:textField.text];
+        
+        [newtxt replaceCharactersInRange:range withString:string];
+        
+        if (newtxt.length > 4) return NO;
+    }
+    
+    
+    return YES;
+    
 }
 
 - (void)back:(UIButton *)sender {
@@ -52,13 +82,17 @@
         self.homeBlocl();
     }
     
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    });
+   
     
 }
 
 - (void)textchange {
+    
     if (self.phoneText.text.length == 11 && self.codeText.text.length == 4) {
         self.LoginBtn.userInteractionEnabled = YES;
         self.LoginBtn.backgroundColor = RGBColor(102, 143, 218);

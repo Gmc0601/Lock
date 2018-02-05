@@ -14,7 +14,11 @@
 
 @property (nonatomic, retain) UILabel *title;
 
+@property (nonatomic, retain) UILabel *countLab;
+
 @property (nonatomic, retain) UIButton *btn;
+
+@property (nonatomic, copy) NSString *str;
 
 @property (nonatomic, copy) void(^cliclBlock)();
 

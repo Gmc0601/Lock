@@ -11,12 +11,15 @@
 #import "FindDetailViewController.h"
 #import "FindModel.h"
 #import "NODataView.h"
+#import "TBRefresh.h"
 
-@interface FindViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface FindViewController ()<UITableViewDelegate, UITableViewDataSource>{
+    int backNum, page;
+}
 
 @property (nonatomic, retain) UITableView *noUseTableView;
 
-@property (nonatomic, retain) NSArray *dataArr;
+@property (nonatomic, retain) NSMutableArray *dataArr;
 
 @property (nonatomic, retain) NODataView *nodataView;
 
@@ -26,17 +29,39 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    backNum = 0;
+    page = 0;
     [self resetFather];
     [self createdate];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setbadgeLab) name:HaveMessage object:nil];
+}
+- (void)setbadgeLab {
+    [self.rightBar setBadge];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (![ConfigModel getBoolObjectforKey:HaveMessage]) {
+        [self.rightBar hideBadge];
+    }
 }
 
 - (void)createdate {
 
-    
+    NSLog(@"....%d", page);
     WeakSelf(weak);
-    [FindModel findListWithCallBack:^(NSString *error, NSArray *findArr) {
+    NSDictionary *dic = @{
+                          @"page" : @(page)
+                          };
+    
+    [FindModel findListWithdic:dic CallBack:^(NSString *error, NSArray *findArr) {
+        [self.noUseTableView.header endHeadRefresh];
+        [self.noUseTableView.footer endFooterRefreshing];
         if (!error) {
-            self.dataArr = findArr;
+            
+            backNum = findArr.count;
+            [self.dataArr addObjectsFromArray:findArr];
             if (IsNULL(findArr)) {
                 [weak.view addSubview:self.nodataView];
             }else {
@@ -45,6 +70,8 @@
             }
         }
     }];
+    
+    
 }
 
 - (void)resetFather {
@@ -66,7 +93,7 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSString *cellId = [NSString stringWithFormat:@"%lu", indexPath.row];
+    NSString *cellId = [NSString stringWithFormat:@"%lu", (long)indexPath.row];
     
     FindCellTableViewCell *cell = [self.noUseTableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
@@ -90,11 +117,12 @@
 #pragma mark - UITableDelegate
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    return SizeHeight(304);
-    FindModel *find = [FindModel new];
-    find = self.dataArr[indexPath.row];
     if (self.dataArr.count == 0) {
         return 0;
     }
+    FindModel *find = [FindModel new];
+    find = self.dataArr[indexPath.row];
+    
     if ([find.type intValue] == 1 ) {
         return SizeHeight(304);
     }else {
@@ -104,7 +132,6 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     FindModel *find = [[FindModel alloc] init];
     find = self.dataArr[indexPath.row];
     FindDetailViewController * detial = [[FindDetailViewController alloc] init];
@@ -129,6 +156,23 @@
         _noUseTableView.delegate = self;
         _noUseTableView.dataSource = self;
         _noUseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        WeakSelf(weak);
+        [_noUseTableView addRefreshHeaderWithBlock:^{
+            [weak.dataArr removeAllObjects];
+            page = 0; backNum = 0;
+            [weak.noUseTableView.footer ResetNomoreData];
+            [weak createdate];
+        }];
+        
+        [_noUseTableView addRefreshFootWithBlock:^{
+            if (backNum == 10) {
+                page += 1;
+                [weak createdate];
+                
+            }else {
+                [weak.noUseTableView.footer NoMoreData];
+            }
+        }];
         _noUseTableView.tableHeaderView = ({
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 0)];
             view;
@@ -146,9 +190,9 @@
     [super didReceiveMemoryWarning];
 }
 
-- (NSArray *)dataArr {
+- (NSMutableArray *)dataArr {
     if (!_dataArr ) {
-        _dataArr = [NSArray new];
+        _dataArr = [NSMutableArray new];
     }
     return _dataArr;
 }

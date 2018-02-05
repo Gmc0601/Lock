@@ -10,7 +10,7 @@
 #import <Masonry.h>
 #import "NetCellTableViewCell.h"
 
-#define tableViewHeight [UIScreen mainScreen].bounds.size.height - 80 -100
+#define tableViewHeight [UIScreen mainScreen].bounds.size.height - 120
 
 @implementation NetModel
 @end
@@ -41,6 +41,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         //初始化各种控件
+        
+        self.indexpath = [NSIndexPath indexPathForRow:0 inSection:0];
         _backgroundView = [[UIView alloc] initWithFrame:frame];
         _backgroundView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
         [self addSubview:_backgroundView];
@@ -110,9 +112,9 @@
 
 - (void)initUI {
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.mas_top).offset(100);
-        make.left.equalTo(self.mas_left).offset(10);
-        make.right.equalTo(self.mas_right).offset(-10);
+        make.top.equalTo(self.mas_top).offset(60);
+        make.left.equalTo(self.mas_left).offset(15);
+        make.right.equalTo(self.mas_right).offset(-15);
         make.height.mas_equalTo(tableViewHeight);
     }];
     
@@ -202,10 +204,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellId = [NSString stringWithFormat:@"%ld", indexPath.row];
+    NSString *cellId = [NSString stringWithFormat:@"%ld", (long)indexPath.row];
     NetCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (cell == nil) {
         cell = [[NetCellTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    if(indexPath.row == 0){
+        cell.logoImage.image = [UIImage imageNamed:@"icon_xz_pre"];
     }
     cell.model = self.dataArray[indexPath.row];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

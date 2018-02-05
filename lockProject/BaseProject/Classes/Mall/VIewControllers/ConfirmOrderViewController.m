@@ -203,6 +203,11 @@
     [self.rightBar setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
 }
 
+- (void)more:(UIButton *)sender {
+    NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",[ConfigModel getStringforKey:@"phone"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+}
+
 -(void) addTableView{
     _tb = [[UITableView alloc] initWithFrame:CGRectMake(0, SizeHeight(64), kScreenW, kScreenH - SizeHeight(64)- SizeHeight(55)) style:UITableViewStyleGrouped];
     _tb.backgroundColor = RGBColorAlpha(224,224,224,1);

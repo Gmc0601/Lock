@@ -9,6 +9,7 @@
 #import "HIstoryTableViewCell.h"
 #import <YYKit.h>
 #import <Masonry.h>
+#import "PCBClickLabel.h"
 
 @implementation HIstoryTableViewCell
 
@@ -17,17 +18,28 @@
         [self.contentView addSubview:self.line];
         [self.contentView addSubview:self.logo];
         [self.contentView addSubview:self.timeLab];
-        [self.contentView addSubview:self.contentLab];
+//        [self.contentView addSubview:self.contentLab];
     }
     return self;
 }
 
 
 - (void)setModel:(LockHistory *)model {
-    CGSize titleSize = [model.content sizeWithFont:[UIFont systemFontOfSize:20.0f] constrainedToSize:CGSizeMake(kScreenW - self.logo.frame.size.width, 200)];
-    self.contentLab.text = model.content;
+    
+    WeakSelf(weak);
+    NSString *str = [NSString stringWithFormat:@"%@%@", model.user, model.content];
+    CGSize titleSize = [str sizeWithFont:[UIFont systemFontOfSize:20.0f] constrainedToSize:CGSizeMake(kScreenW - self.logo.frame.size.width , 200)];
     self.timeLab.text = model.time;
-    self.contentLab.frame = CGRectMake(self.logo.right + 5, self.timeLab.bottom + 5, titleSize.width, titleSize.height);
+    PCBClickLabel *label = [[PCBClickLabel alloc] initLabelViewWithLab:str clickTextRange:NSMakeRange(0, model.user.length) frame:CGRectMake(self.logo.right + 5, self.timeLab.bottom + 5, titleSize.width, titleSize.height) clickAtion:^{
+        if (weak.nameBlock) {
+            weak.nameBlock(model.unlock_user_id,  model.user);
+        }
+    }];
+    
+    label.layer.masksToBounds = YES;
+    label.layer.cornerRadius = 5;
+    label.frame = CGRectMake(self.logo.right + 5, self.timeLab.bottom + 5, titleSize.width + 20, titleSize.height);
+    [self.contentView addSubview:label];
 }
 
 - (UILabel *)line {

@@ -18,4 +18,6 @@
 
 @property (nonatomic,retain) LockHistory *model;
 
+@property (nonatomic, copy) void (^nameBlock)(NSString * , NSString *);
+
 @end

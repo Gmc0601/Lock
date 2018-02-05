@@ -10,8 +10,8 @@
 
 @interface UILabel (Width)
 //  自适应高度
-+ (CGFloat)getHeightByWidth:(CGFloat)width title:(NSString *)title font:(UIFont*)font;
+- (CGFloat)getHeightByWidth:(CGFloat)width title:(NSString *)title font:(UIFont*)font;
 //  自适应宽度
-+ (CGFloat)getWidthWithTitle:(NSString *)title font:(UIFont *)font;
+- (CGFloat)getWidthWithTitle:(NSString *)title font:(UIFont *)font;
 
 @end

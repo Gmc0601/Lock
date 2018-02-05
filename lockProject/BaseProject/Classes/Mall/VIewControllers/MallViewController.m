@@ -52,8 +52,19 @@
         [_web loadHTMLString:strTemplateHTML baseURL:nil];
         _web.scalesPageToFit = YES;
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setbadgeLab) name:HaveMessage object:nil];
+}
+- (void)setbadgeLab {
+    [self.rightBar setBadge];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (![ConfigModel getBoolObjectforKey:HaveMessage]) {
+        [self.rightBar hideBadge];
+    }
+}
 - (void)resetFather {
     self.line.hidden = YES;
     self.titleLab.text = @"商城";

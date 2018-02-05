@@ -33,14 +33,20 @@
                                           appKey:@"wxca2816298afcf527"
                                        appSecret:@"1fd22df350beff66bb55c3a1478ae077"
                                      redirectURL:nil];
+    
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ
-                                          appKey:@"1106464264"
-                                       appSecret:@"FeYxsPRwBOIaPw4t"
-                                     redirectURL:@"http://mobile.umeng.com/social"];
+                                          appKey:@"1106531057"
+                                       appSecret:@"ZfdAQRkvA1VXIR8O"
+                                     redirectURL:nil];
     [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Qzone
-                                          appKey:@"1106464264"
-                                       appSecret:@"FeYxsPRwBOIaPw4t"
-                                     redirectURL:@"http://mobile.umeng.com/social"];
+                                          appKey:@"1106531057"
+                                       appSecret:@"ZfdAQRkvA1VXIR8O"
+                                     redirectURL:nil];
+    
+    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Tim
+                                          appKey:@"1106531057"
+                                       appSecret:@"ZfdAQRkvA1VXIR8O"
+                                     redirectURL:nil];
     
 }
 

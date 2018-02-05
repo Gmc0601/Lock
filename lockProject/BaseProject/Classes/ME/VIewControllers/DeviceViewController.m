@@ -8,7 +8,7 @@
 
 #import "DeviceViewController.h"
 
-@interface DeviceViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface DeviceViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 @property (nonatomic, retain) UITableView *noUseTableView;
 @property (nonatomic, retain) UITextField *text1, *text2, *text3;
 @property (nonatomic, retain) NSArray *arr, *pleaceArr;
@@ -27,26 +27,34 @@
 
 - (void)more:(UIButton *)sender {
     //  删除
-    
-    NSDictionary *dic = @{
-                          @"lock_id" : self.model.lock_id
-                          };
-    
-    [HttpRequest postPath:@"Lock/del" params:dic resultBlock:^(id responseObject, NSError *error) {
-        if([error isEqual:[NSNull null]] || error == nil){
-            NSLog(@"success");
-        }
-        NSDictionary *datadic = responseObject;
-        if ([datadic[@"success"] intValue] == 1) {
-            
-            [ConfigModel mbProgressHUD:@"删除成功" andView:nil];
-            [self.navigationController popViewControllerAnimated:YES];
-            
-        }else {
-            NSString *str = datadic[@"msg"];
-            [ConfigModel mbProgressHUD:str andView:nil];
-        }
-    }];
+    UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否删除智能锁" delegate:self
+                                          cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alter show];
+  
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSDictionary *dic = @{
+                              @"lock_id" : self.model.lock_id
+                              };
+        
+        [HttpRequest postPath:@"Lock/del" params:dic resultBlock:^(id responseObject, NSError *error) {
+            if([error isEqual:[NSNull null]] || error == nil){
+                NSLog(@"success");
+            }
+            NSDictionary *datadic = responseObject;
+            if ([datadic[@"success"] intValue] == 1) {
+                
+                [ConfigModel mbProgressHUD:@"删除成功" andView:nil];
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }else {
+                NSString *str = datadic[@"msg"];
+                [ConfigModel mbProgressHUD:str andView:nil];
+            }
+        }];
+    }
 }
 
 - (void)save {

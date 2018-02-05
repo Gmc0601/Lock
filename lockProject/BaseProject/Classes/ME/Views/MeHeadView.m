@@ -30,6 +30,7 @@
     [self addOrderBtn];
 }
 
+
 - (void)update {
     [self.headImg sd_setImageWithURL:[NSURL URLWithString:[ConfigModel getStringforKey:User_headimage]] placeholderImage:[UIImage imageNamed:@"-s-xq_bg_tx"]];
     self.nicknameLab.text = [ConfigModel getStringforKey:User_nickname];
@@ -40,7 +41,10 @@
     
     for (int i = 0; i < 4; i++) {
         CCButton *btn = [[CCButton alloc] init];
-        btn.frame = FRAME(SizeWidth(20) + i * SizeWidth(90), self.backView.bottom + SizeHeight(10), SizeWidth(50), SizeHeight(60));
+        btn.frame = FRAME(SizeWidth(20) + i * SizeWidth(90), self.backView.bottom + SizeHeight(10),SizeWidth(50), SizeHeight(60));
+//        btn.str = count;
+        btn.tag = 100 + i;
+        btn.btn.size = CGSizeMake(btn.frame.size.width, btn.frame.size.height);
         btn.backgroundColor = [UIColor clearColor];
 
         [btn setPic:picArr[i] title:titleArr[i]];
@@ -49,6 +53,14 @@
             [weak orderClick:i];
         };
         [self addSubview:btn];
+        if (i ==0) {
+            self.btn1 = btn;
+        }else if (i == 1){
+            self.btn2 = btn;
+        }else if (i == 2){
+            self.btn3 = btn;
+        }
+        
     }
 }
 
@@ -116,7 +128,9 @@
 }
 
 - (void)messageClick:(UIButton *)sender {
-    NSLog(@"message");
+    if (self.messageBlock) {
+        self.messageBlock();
+    }
 }
 
 @end

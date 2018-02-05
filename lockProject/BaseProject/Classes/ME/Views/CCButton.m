@@ -7,6 +7,7 @@
 //
 
 #import "CCButton.h"
+#import <YYKit.h>
 #define C3  [UIColor colorWithRed:(((0x577dbc & 0xFF0000) >> 16))/255.0 green:(((0x577dbc &0xFF00) >>8))/255.0 blue:((0x577dbc &0xFF))/255.0 alpha:1.0]
 @implementation CCButton
 
@@ -22,8 +23,18 @@
     self.title.text = title;
 }
 
+- (void)setStr:(NSString *)str {
+    if ([str intValue] == 0) {
+        self.countLab.hidden = YES;
+    }else {
+        self.countLab.hidden = NO;
+        self.countLab.text = str;
+    }
+}
+
 - (void)createView {
     [self addSubview:self.pic];
+    [self addSubview:self.countLab];
     [self addSubview:self.title];
     [self addSubview:self.btn];
 }
@@ -54,6 +65,20 @@
         [_btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _btn;
+}
+
+- (UILabel *)countLab {
+    if (!_countLab) {
+        _countLab = [[UILabel alloc] initWithFrame:FRAME(self.pic.right - 10, 5, 15, 15)];
+        _countLab.backgroundColor = [UIColor redColor];
+        _countLab.font = [UIFont systemFontOfSize:10];
+        _countLab.textColor = [UIColor whiteColor];
+        _countLab.textAlignment = NSTextAlignmentCenter;
+        _countLab.layer.masksToBounds = YES;
+        _countLab.hidden = YES;
+        _countLab.layer.cornerRadius = 15/2;
+    }
+    return _countLab;
 }
 
 - (void)click:(id)sender {

@@ -31,7 +31,6 @@
     self.whitView.transform = CGAffineTransformMakeScale(0.2, 0.2);
     [UIView animateWithDuration:.35 animations:^{
         self.whitView.transform = CGAffineTransformMakeScale(1.0, 1.0);
-        
     }];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(animationAction) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
@@ -52,7 +51,10 @@
     [self.moreView addSubview:circleView1];
     
     if (time == 0) {
-        
+        if (self.failBloc) {
+            self.failBloc();
+        }
+        [self dismiss];
     }
     
 }
@@ -81,6 +83,7 @@
 
 - (void)dismiss {
      [self.timer invalidate];
+    time = 60;
     [UIView animateWithDuration:.35 animations:^{
         self.whitView.transform = CGAffineTransformMakeScale(0.2, 0.2);
     } completion:^(BOOL finished) {

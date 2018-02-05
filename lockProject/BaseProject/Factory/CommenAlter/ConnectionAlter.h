@@ -24,6 +24,8 @@
 
 @property (nonatomic)BOOL lock;
 
+@property (nonatomic, copy) void(^failBloc)();
+
 - (instancetype)initWithFrame:(CGRect)frame lock:(BOOL)lock;
 
 - (void)pop;

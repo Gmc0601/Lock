@@ -16,6 +16,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddLockViewController">
             <connections>
+                <outlet property="startBtn" destination="2wL-1j-uex" id="CaJ-6d-azI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -36,7 +37,8 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="112" id="gam-JL-3bj"/>
                     </constraints>
-                    <string key="text">1. 安装电池，在锁体菜单找到“锁体绑定”，按“#”键确认，使门锁进入匹配状态2.点击下方“开始匹配”进行APP与锁体匹配</string>
+                    <string key="text">1. 安装电池，在锁体菜单找到“锁体绑定”，按“#”键确认，使门锁进入匹配状态
+2.点击下方“开始匹配”进行APP与锁体匹配</string>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" red="0.79587405919999998" green="0.79999309780000005" blue="0.80403131250000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -65,7 +67,7 @@
                 <constraint firstItem="2wL-1j-uex" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="o2o-5C-N6D"/>
                 <constraint firstItem="aX2-Fe-LYj" firstAttribute="top" secondItem="AK6-86-aVc" secondAttribute="bottom" constant="36" id="xre-Md-zNl"/>
             </constraints>
-            <point key="canvasLocation" x="-184.5" y="46.5"/>
+            <point key="canvasLocation" x="-377" y="22"/>
         </view>
     </objects>
     <resources>

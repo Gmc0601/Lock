@@ -10,6 +10,8 @@
 #import "ConnectionAlter.h"
 #import "CommenAlter.h"
 #import "AddLockViewController.h"
+#import "FeailView.h"
+#import "AddDeviceViewController.h"
 
 @interface AddGateWayViewController (){
     
@@ -35,6 +37,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.startBtn setTitleColor:MainBlue forState:UIControlStateNormal];
+    self.startBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15];
+    [self.pwdBtn setImage:[UIImage imageNamed:@"srma_icon_camm"] forState:UIControlStateSelected];
+    [self.pwdBtn setImage:[UIImage imageNamed:@"srma_icon_camm_pre"] forState:UIControlStateNormal];
+    self.WIFIText.clearButtonMode = UITextFieldViewModeAlways;
     [self resetFather];
     [self showWifiSsid];
     [self linkSmart];
@@ -106,7 +113,7 @@
 //  显示密文
 - (IBAction)showPwdClick:(UIButton *)sender {
     sender.selected = !sender.selected;
-    self.WIFIText.secureTextEntry = sender.selected;
+    self.WIFIText.secureTextEntry = !sender.selected;
 }
 //  开始匹配
 - (IBAction)startClick:(id)sender {
@@ -116,6 +123,7 @@
     
     if (self.WIFIText.text.length < 8 ) {
         [ConfigModel mbProgressHUD:@"请输入正确wifi密码" andView:nil];
+        return;
     }
     
 #if SIMULATOR_TEST
@@ -145,16 +153,24 @@
                             
                             NSString *gateId = msg[@"gateway_id"];
                             
+                             [self.startBtn setTitle:@"已连接" forState:UIControlStateNormal];
                             [weak.alter dismiss];
                             [weak.startBtn setTitle:@"匹配成功" forState:UIControlStateNormal];
                             CommenAlter *finsh = [[CommenAlter alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH) title:@"网关匹配成功" info:@"是否要继续匹配智能锁？" leftBtn:@"暂不匹配" right:@"立即匹配"];
-                            
                             finsh.leftBlock = ^{
                                 [finsh dismiss];
+                                
+                                for (UIViewController *controller in self.navigationController.viewControllers) {
+                                    if ([controller isKindOfClass:[AddDeviceViewController class]]) {
+                                        [weak.navigationController popToViewController:controller animated:YES];
+                                    }
+                                }
+                                
                             };
                             
                             finsh.rightBlock = ^{
                               //  跳转匹配锁
+                                [finsh dismiss];
                                 AddLockViewController *vc = [[AddLockViewController alloc] init];
                                 vc.netId = gateId;
                                 [self.navigationController pushViewController:vc animated:YES];
@@ -165,7 +181,7 @@
                             NSString *str = datadic[@"msg"];
                             [ConfigModel mbProgressHUD:str andView:nil];
                         }
-                    }];
+                    }];  
                     
                 } failBlock:^(NSString *failmsg) {
 //                    [self  showAlertWithMsg:failmsg title:@"error"];
@@ -173,11 +189,12 @@
                 } endBlock:^(NSDictionary *deviceDic) {
                     //   连接完成
                     self.isconnecting  = false;
-                    [self.startBtn setTitle:@"已连接" forState:UIControlStateNormal];
+//                    [self.startBtn setTitle:@"已连接" forState:UIControlStateNormal];
                     NSLog(@"finish");
                 }];
         //  弹出动画
         [self.alter pop];
+//        self.startBtn.userInteractionEnabled = NO;
     }else{
         //  连接状态
         
@@ -190,6 +207,7 @@
 //                [self showAlertWithMsg:stopMsg title:@"error"];
 //            }
 //        }];
+        
     }
 #else
 #endif
@@ -231,7 +249,14 @@
     if (!_alter) {
         _alter = [[ConnectionAlter alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH) lock:NO];
     }
+    //  错误提示
+    _alter.failBloc = ^{
+        FeailView *view = [[FeailView alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH)];
+        [view pop];
+    };
     return _alter;
 }
+
+
 
 @end

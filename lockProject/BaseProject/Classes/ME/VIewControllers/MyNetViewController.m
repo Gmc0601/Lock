@@ -11,7 +11,9 @@
 #import "NetAlter.h"
 #import "NODataView.h"
 
-@interface MyNetViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface MyNetViewController ()<UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>{
+    int click;
+}
 
 @property (nonatomic, retain) UITableView *noUseTableView;
 
@@ -98,27 +100,37 @@
 }
 
 - (void)del:(UIButton *)sender {
-    int i = (int)sender.tag - 100;
-    NetModel *model = self.dataArr[i];
+    click = (int)sender.tag - 100;
+    UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示" message:@"删除网关，会同时删除网关对应的门锁，确定删除吗？" delegate:self
+cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alter show];
     
-    NSDictionary *dic = @{
-                          @"gateway_id" : model.gateway_id
-                          };
     
-    [HttpRequest postPath:@"GateWay/del" params:dic resultBlock:^(id responseObject, NSError *error) {
-        if([error isEqual:[NSNull null]] || error == nil){
-            NSLog(@"success");
-        }
-        NSDictionary *datadic = responseObject;
-        if ([datadic[@"success"] intValue] == 1) {
-            [self create];
-            
-        }else {
-            NSString *str = datadic[@"msg"];
-            [ConfigModel mbProgressHUD:str andView:nil];
-        }
-    }];
-    
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        
+        NetModel *model = self.dataArr[click];
+        
+        NSDictionary *dic = @{
+                              @"gateway_id" : model.gateway_id
+                              };
+        
+        [HttpRequest postPath:@"GateWay/del" params:dic resultBlock:^(id responseObject, NSError *error) {
+            if([error isEqual:[NSNull null]] || error == nil){
+                NSLog(@"success");
+            }
+            NSDictionary *datadic = responseObject;
+            if ([datadic[@"success"] intValue] == 1) {
+                [self create];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"delnet" object:nil];
+            }else {
+                NSString *str = datadic[@"msg"];
+                [ConfigModel mbProgressHUD:str andView:nil];
+            }
+        }];
+    }
 }
 
 #pragma mark - UITableDelegate

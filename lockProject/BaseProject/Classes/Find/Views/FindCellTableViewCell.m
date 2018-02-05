@@ -43,7 +43,7 @@
     self.logoImg.frame = FRAME(0, 0, kScreenW - SizeWidth(30), SizeHeight(200));
     [self.logoImg addSubview:self.smalLogo];
     self.titlLab.frame = FRAME(SizeWidth(15), self.logoImg.bottom + SizeHeight(15), kScreenW - SizeWidth(60), SizeHeight(40));
-    self.timeLab.frame = FRAME(SizeWidth(15),self.titlLab.bottom + SizeHeight(10), SizeWidth(60), SizeHeight(15));
+    self.timeLab.frame = FRAME(SizeWidth(15),self.titlLab.bottom + SizeHeight(10), SizeWidth(100), SizeHeight(15));
     self.commenLab.frame = FRAME(self.timeLab.right + SizeWidth(15), self.titlLab.bottom + SizeHeight(10), SizeWidth(80), SizeHeight(15));
 }
 
@@ -70,7 +70,7 @@
 - (UILabel *)titlLab {
     if (!_titlLab) {
         _titlLab = [[UILabel alloc] initWithFrame:FRAME(self.logoImg.right + SizeWidth(15), SizeHeight(25), SizeWidth(190), SizeHeight(40))];
-        _titlLab.font = ArialFont(17);
+        _titlLab.font = ArialFont(SizeHeight(13));
         _titlLab.numberOfLines = 2;
         _titlLab.text = @"adsfasdfasdfasdfasd4654654654654654654";
     }
@@ -79,7 +79,7 @@
 
 - (UILabel *)timeLab {
     if (!_timeLab) {
-        _timeLab = [[UILabel alloc] initWithFrame:FRAME(self.logoImg.right+ SizeWidth(15), self.titlLab.bottom + SizeHeight(10), SizeWidth(60), SizeHeight(15))];
+        _timeLab = [[UILabel alloc] initWithFrame:FRAME(self.logoImg.right+ SizeWidth(15), self.titlLab.bottom + SizeHeight(10), SizeWidth(100), SizeHeight(15))];
         _timeLab.text = @"3分钟前";
         _timeLab.font = ArialFont(12);
         _timeLab.textColor = UIColorFromHex(0xe0e0e0);

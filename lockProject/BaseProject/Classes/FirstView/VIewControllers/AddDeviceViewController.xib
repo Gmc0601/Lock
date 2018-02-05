@@ -35,7 +35,7 @@
                         <constraint firstAttribute="height" constant="158" id="Aj5-uz-uah"/>
                         <constraint firstAttribute="width" constant="158" id="g1d-Ej-wSd"/>
                     </constraints>
-                    <state key="normal" image="tj_icon_wg"/>
+                    <state key="normal" image="-s-tj_icon_wg"/>
                     <connections>
                         <action selector="addNet:" destination="-1" eventType="touchUpInside" id="yy0-7E-xWc"/>
                     </connections>
@@ -89,7 +89,7 @@
         </view>
     </objects>
     <resources>
+        <image name="-s-tj_icon_wg" width="115" height="115"/>
         <image name="-s-tj_icon_zns" width="115" height="115"/>
-        <image name="tj_icon_wg" width="158" height="158"/>
     </resources>
 </document>

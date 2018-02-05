@@ -8,28 +8,28 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, SSImagePositionType) {
-    SSImagePositionTypeLeft,   //图片在左，标题在右，默认风格
-    SSImagePositionTypeRight,  //图片在右，标题在左
-    SSImagePositionTypeTop,    //图片在上，标题在下
-    SSImagePositionTypeBottom  //图片在下，标题在上
-};
-
-typedef NS_ENUM(NSInteger, SSEdgeInsetsType) {
-    SSEdgeInsetsTypeTitle,//标题
-    SSEdgeInsetsTypeImage//图片
-};
-
-typedef NS_ENUM(NSInteger, SSMarginType) {
-    SSMarginTypeTop         ,
-    SSMarginTypeBottom      ,
-    SSMarginTypeLeft        ,
-    SSMarginTypeRight       ,
-    SSMarginTypeTopLeft     ,
-    SSMarginTypeTopRight    ,
-    SSMarginTypeBottomLeft  ,
-    SSMarginTypeBottomRight
-};
+//typedef NS_ENUM(NSInteger, SSImagePositionType) {
+//    SSImagePositionTypeLeft,   //图片在左，标题在右，默认风格
+//    SSImagePositionTypeRight,  //图片在右，标题在左
+//    SSImagePositionTypeTop,    //图片在上，标题在下
+//    SSImagePositionTypeBottom  //图片在下，标题在上
+//};
+//
+//typedef NS_ENUM(NSInteger, SSEdgeInsetsType) {
+//    SSEdgeInsetsTypeTitle,//标题
+//    SSEdgeInsetsTypeImage//图片
+//};
+//
+//typedef NS_ENUM(NSInteger, SSMarginType) {
+//    SSMarginTypeTop         ,
+//    SSMarginTypeBottom      ,
+//    SSMarginTypeLeft        ,
+//    SSMarginTypeRight       ,
+//    SSMarginTypeTopLeft     ,
+//    SSMarginTypeTopRight    ,
+//    SSMarginTypeBottomLeft  ,
+//    SSMarginTypeBottomRight
+//};
 
 /**
  默认情况下，imageEdgeInsets和titleEdgeInsets都是0。先不考虑height,

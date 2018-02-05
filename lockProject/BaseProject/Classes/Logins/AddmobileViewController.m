@@ -31,6 +31,7 @@
     
 }
 - (void)textchange {
+    
     if (self.phoneText.text.length == 11 && self.codetext.text.length == 4) {
         self.LoginBtn.userInteractionEnabled = YES;
         self.LoginBtn.backgroundColor = RGBColor(102, 143, 218);

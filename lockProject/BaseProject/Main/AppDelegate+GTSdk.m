@@ -144,7 +144,12 @@
     NSString *msg = [NSString stringWithFormat:@"taskId=%@,messageId:%@,payloadMsg:%@%@",taskId,msgId, payloadMsg,offLine ? @"<离线消息>" : @""];
     NSLog(@"\n>>>[GexinSdk ReceivePayload]:%@\n\n", msg);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"LockOpen" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:HaveMessage object:nil];
+    [ConfigModel saveBoolObject:YES forKey:HaveMessage];
+    
+    if ([ConfigModel getBoolObjectforKey:SelfOpen]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"LockOpen" object:nil];
+    }
 }
 /** APP已经接收到“远程”通知(推送) - 透传推送消息  */
 

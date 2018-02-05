@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CCButton.h"
 
 @interface MeHeadView : UIView
 
@@ -21,6 +22,10 @@
 @property (nonatomic, copy) void(^messageBlock)();
 
 @property (nonatomic, copy) void(^headImgBlock)();
+
+@property (nonatomic, retain) NSArray *countArr;;
+
+@property (nonatomic, retain)CCButton *btn1, *btn2, *btn3;
 
 - (void)update;
 

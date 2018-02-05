@@ -56,5 +56,7 @@
 
 #define User_State @"state"
 
+#define HaveMessage @"havemesssage"
+
 
 #endif /* CCUrl_h */

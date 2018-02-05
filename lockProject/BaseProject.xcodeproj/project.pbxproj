@@ -17,6 +17,13 @@
 		4212D4301FF4C6F800BABC6B /* JHCustomMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 4212D42F1FF4C6F800BABC6B /* JHCustomMenu.m */; };
 		421A7E461FEA599900AB8592 /* AppDelegate+GTSdk.m in Sources */ = {isa = PBXBuildFile; fileRef = 421A7E451FEA599900AB8592 /* AppDelegate+GTSdk.m */; };
 		421A7E4A1FEA6D5400AB8592 /* AppDelegate+UmengSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = 421A7E491FEA6D5400AB8592 /* AppDelegate+UmengSDK.m */; };
+		42399AA0201198EE009263E5 /* UIWebView+TS_JavaScriptContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 42399A9E201198ED009263E5 /* UIWebView+TS_JavaScriptContext.m */; };
+		425E976520034F5C006A5707 /* PCBClickLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 425E976420034F5C006A5707 /* PCBClickLabel.m */; };
+		425E977420049F32006A5707 /* UITabBarItem+PPBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 425E976C20049F32006A5707 /* UITabBarItem+PPBadgeView.m */; };
+		425E977520049F32006A5707 /* PPBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 425E977020049F32006A5707 /* PPBadgeLabel.m */; };
+		425E977620049F32006A5707 /* UIBarButtonItem+PPBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 425E977220049F32006A5707 /* UIBarButtonItem+PPBadgeView.m */; };
+		425E977720049F32006A5707 /* UIView+PPBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 425E977320049F32006A5707 /* UIView+PPBadgeView.m */; };
+		425E977A2008A4A3006A5707 /* FeailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 425E97792008A4A3006A5707 /* FeailView.m */; };
 		426AC0B11FDE268D00797C4F /* FindCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0B01FDE268D00797C4F /* FindCellTableViewCell.m */; };
 		426AC0B91FDE660000797C4F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 426AC0B81FDE65FF00797C4F /* JavaScriptCore.framework */; };
 		426AC0BC1FDE66BD00797C4F /* FindDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 426AC0BB1FDE66BD00797C4F /* FindDetailViewController.m */; };
@@ -50,6 +57,8 @@
 		428708A71FEBC04E00A6DA42 /* SHPlacePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 428708A21FEBC04E00A6DA42 /* SHPlacePickerView.m */; };
 		428708A81FEBC04E00A6DA42 /* PlaceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 428708A41FEBC04E00A6DA42 /* PlaceModel.m */; };
 		428708A91FEBC04E00A6DA42 /* Place.plist in Resources */ = {isa = PBXBuildFile; fileRef = 428708A61FEBC04E00A6DA42 /* Place.plist */; };
+		4295A9332023075600AAD908 /* UILabel+StringFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 4295A9312023075600AAD908 /* UILabel+StringFrame.m */; };
+		4295A93620231A2800AAD908 /* UIButton+SSEdgeInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 4295A93520231A2800AAD908 /* UIButton+SSEdgeInsets.m */; };
 		42A4443B1EF133E000F90791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42A444391EF133E000F90791 /* Main.storyboard */; };
 		42A4443E1EF133E000F90791 /* BaseProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42A4443C1EF133E000F90791 /* BaseProject.xcdatamodeld */; };
 		42A444401EF133E000F90791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A4443F1EF133E000F90791 /* Assets.xcassets */; };
@@ -196,6 +205,21 @@
 		421A7E471FEA6C3600AB8592 /* BaseProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BaseProject.entitlements; sourceTree = "<group>"; };
 		421A7E481FEA6D5400AB8592 /* AppDelegate+UmengSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+UmengSDK.h"; sourceTree = "<group>"; };
 		421A7E491FEA6D5400AB8592 /* AppDelegate+UmengSDK.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+UmengSDK.m"; sourceTree = "<group>"; };
+		42399A9E201198ED009263E5 /* UIWebView+TS_JavaScriptContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+TS_JavaScriptContext.m"; sourceTree = "<group>"; };
+		42399A9F201198EE009263E5 /* UIWebView+TS_JavaScriptContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+TS_JavaScriptContext.h"; sourceTree = "<group>"; };
+		425E976320034F5C006A5707 /* PCBClickLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCBClickLabel.h; sourceTree = "<group>"; };
+		425E976420034F5C006A5707 /* PCBClickLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PCBClickLabel.m; sourceTree = "<group>"; };
+		425E976B20049F32006A5707 /* PPBadgeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPBadgeLabel.h; sourceTree = "<group>"; };
+		425E976C20049F32006A5707 /* UITabBarItem+PPBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBarItem+PPBadgeView.m"; sourceTree = "<group>"; };
+		425E976D20049F32006A5707 /* PPBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPBadgeView.h; sourceTree = "<group>"; };
+		425E976E20049F32006A5707 /* UIView+PPBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PPBadgeView.h"; sourceTree = "<group>"; };
+		425E976F20049F32006A5707 /* UIBarButtonItem+PPBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+PPBadgeView.h"; sourceTree = "<group>"; };
+		425E977020049F32006A5707 /* PPBadgeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PPBadgeLabel.m; sourceTree = "<group>"; };
+		425E977120049F32006A5707 /* UITabBarItem+PPBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBarItem+PPBadgeView.h"; sourceTree = "<group>"; };
+		425E977220049F32006A5707 /* UIBarButtonItem+PPBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+PPBadgeView.m"; sourceTree = "<group>"; };
+		425E977320049F32006A5707 /* UIView+PPBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PPBadgeView.m"; sourceTree = "<group>"; };
+		425E97782008A4A3006A5707 /* FeailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeailView.h; sourceTree = "<group>"; };
+		425E97792008A4A3006A5707 /* FeailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeailView.m; sourceTree = "<group>"; };
 		426AC0AF1FDE268D00797C4F /* FindCellTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FindCellTableViewCell.h; sourceTree = "<group>"; };
 		426AC0B01FDE268D00797C4F /* FindCellTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FindCellTableViewCell.m; sourceTree = "<group>"; };
 		426AC0B81FDE65FF00797C4F /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -330,6 +354,10 @@
 		428708A41FEBC04E00A6DA42 /* PlaceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceModel.m; sourceTree = "<group>"; };
 		428708A51FEBC04E00A6DA42 /* PlaceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceModel.h; sourceTree = "<group>"; };
 		428708A61FEBC04E00A6DA42 /* Place.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Place.plist; sourceTree = "<group>"; };
+		4295A9312023075600AAD908 /* UILabel+StringFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+StringFrame.m"; sourceTree = "<group>"; };
+		4295A9322023075600AAD908 /* UILabel+StringFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+StringFrame.h"; sourceTree = "<group>"; };
+		4295A93420231A2800AAD908 /* UIButton+SSEdgeInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SSEdgeInsets.h"; sourceTree = "<group>"; };
+		4295A93520231A2800AAD908 /* UIButton+SSEdgeInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SSEdgeInsets.m"; sourceTree = "<group>"; };
 		42A4442D1EF133E000F90791 /* BaseProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BaseProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42A4443A1EF133E000F90791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		42A4443D1EF133E000F90791 /* BaseProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = BaseProject.xcdatamodel; sourceTree = "<group>"; };
@@ -592,6 +620,22 @@
 			path = JHCustomMenu;
 			sourceTree = "<group>";
 		};
+		425E976A20049F32006A5707 /* LableCount */ = {
+			isa = PBXGroup;
+			children = (
+				425E976B20049F32006A5707 /* PPBadgeLabel.h */,
+				425E976C20049F32006A5707 /* UITabBarItem+PPBadgeView.m */,
+				425E976D20049F32006A5707 /* PPBadgeView.h */,
+				425E976E20049F32006A5707 /* UIView+PPBadgeView.h */,
+				425E976F20049F32006A5707 /* UIBarButtonItem+PPBadgeView.h */,
+				425E977020049F32006A5707 /* PPBadgeLabel.m */,
+				425E977120049F32006A5707 /* UITabBarItem+PPBadgeView.h */,
+				425E977220049F32006A5707 /* UIBarButtonItem+PPBadgeView.m */,
+				425E977320049F32006A5707 /* UIView+PPBadgeView.m */,
+			);
+			path = LableCount;
+			sourceTree = "<group>";
+		};
 		426AC0CC1FDF83AB00797C4F /* Logins */ = {
 			isa = PBXGroup;
 			children = (
@@ -847,6 +891,8 @@
 				42AC051C1FFCBB4B00BDCDE3 /* NetCellTableViewCell.m */,
 				42AC053C1FFD10CC00BDCDE3 /* OpenView.h */,
 				42AC053D1FFD10CC00BDCDE3 /* OpenView.m */,
+				425E97782008A4A3006A5707 /* FeailView.h */,
+				425E97792008A4A3006A5707 /* FeailView.m */,
 			);
 			path = CommenAlter;
 			sourceTree = "<group>";
@@ -991,6 +1037,7 @@
 		42C84EA91EF2DB060008189D /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				425E976A20049F32006A5707 /* LableCount */,
 				420F71BD1FFE098200C78157 /* VCPage */,
 				42AC05251FFCEA4300BDCDE3 /* LrdPasswordAlertView */,
 				4212D42D1FF4C6F800BABC6B /* JHCustomMenu */,
@@ -1252,6 +1299,10 @@
 		42D0D7361FBEB6DB0092CAD1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4295A9322023075600AAD908 /* UILabel+StringFrame.h */,
+				4295A9312023075600AAD908 /* UILabel+StringFrame.m */,
+				425E976320034F5C006A5707 /* PCBClickLabel.h */,
+				425E976420034F5C006A5707 /* PCBClickLabel.m */,
 				420F71D01FFE303A00C78157 /* HIstoryTableViewCell.h */,
 				420F71D11FFE303A00C78157 /* HIstoryTableViewCell.m */,
 			);
@@ -1308,6 +1359,8 @@
 		42F795AC1F00C8B200A11A69 /* BaseViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				42399A9F201198EE009263E5 /* UIWebView+TS_JavaScriptContext.h */,
+				42399A9E201198ED009263E5 /* UIWebView+TS_JavaScriptContext.m */,
 				42D0D73C1FBEB8880092CAD1 /* CCBaseViewController.h */,
 				42D0D73F1FBEB8880092CAD1 /* CCBaseViewController.m */,
 				42D0D73D1FBEB8880092CAD1 /* CCWebViewViewController.h */,
@@ -1334,6 +1387,8 @@
 		42F795B61F00C8B200A11A69 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4295A93420231A2800AAD908 /* UIButton+SSEdgeInsets.h */,
+				4295A93520231A2800AAD908 /* UIButton+SSEdgeInsets.m */,
 				42F795B71F00C8B200A11A69 /* TBTabBar.h */,
 				42F795B81F00C8B200A11A69 /* TBTabBar.m */,
 				42F795B91F00C8B200A11A69 /* UINavigationBar+Awesome.h */,
@@ -1626,6 +1681,7 @@
 				6BE66E641FE5214100FCEF3E /* InstallCell.m in Sources */,
 				42D0D74D1FBEB9990092CAD1 /* MeViewController.m in Sources */,
 				42C84F101EF2E97D0008189D /* UIView+Category.m in Sources */,
+				425E977620049F32006A5707 /* UIBarButtonItem+PPBadgeView.m in Sources */,
 				42F795BC1F00C8B200A11A69 /* BaseViewController.m in Sources */,
 				42C84F0C1EF2E97D0008189D /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				42C84F061EF2E97D0008189D /* NSTimer+Category.m in Sources */,
@@ -1654,6 +1710,9 @@
 				426AC0C81FDE833E00797C4F /* DeviceCommandViewController.m in Sources */,
 				42F795BF1F00C8B200A11A69 /* TBTabBar.m in Sources */,
 				42F795BB1F00C8B200A11A69 /* BaseTableView.m in Sources */,
+				425E977720049F32006A5707 /* UIView+PPBadgeView.m in Sources */,
+				425E977420049F32006A5707 /* UITabBarItem+PPBadgeView.m in Sources */,
+				425E977A2008A4A3006A5707 /* FeailView.m in Sources */,
 				42C84F081EF2E97D0008189D /* UIColor+BGHexColor.m in Sources */,
 				426AC0D01FDF83C800797C4F /* LoginViewController.m in Sources */,
 				428708931FEBBBFD00A6DA42 /* base64.m in Sources */,
@@ -1661,6 +1720,7 @@
 				42C84F131EF2EA140008189D /* UITextView+placeholder.m in Sources */,
 				42C84F091EF2E97D0008189D /* UIControl+ResponseTime.m in Sources */,
 				42AC05111FFCB56E00BDCDE3 /* AddLockViewController.m in Sources */,
+				425E977520049F32006A5707 /* PPBadgeLabel.m in Sources */,
 				42AC05151FFCB8CB00BDCDE3 /* NetAlter.m in Sources */,
 				420F71C61FFE0A5D00C78157 /* MyLockViewController.m in Sources */,
 				6BDB2F3A1FCC4B6200F60802 /* ConfirmOrderViewController.m in Sources */,
@@ -1681,6 +1741,7 @@
 				6BC5FB7A1FE0109D007E7D49 /* AddressModel.m in Sources */,
 				42C064BE1FD67CC300CACD76 /* AddDeviceViewController.m in Sources */,
 				6BDB2F4A1FCC6A0C00F60802 /* UILabel+Width.m in Sources */,
+				42399AA0201198EE009263E5 /* UIWebView+TS_JavaScriptContext.m in Sources */,
 				42F795C01F00C8B200A11A69 /* UINavigationBar+Awesome.m in Sources */,
 				42AC05361FFCF9CA00BDCDE3 /* MemberViewController.m in Sources */,
 				6BE66E611FE51FA800FCEF3E /* InstallSummeryView.m in Sources */,
@@ -1688,6 +1749,7 @@
 				42C84EFC1EF2E97D0008189D /* NSData+Category.m in Sources */,
 				42C84EFB1EF2E97D0008189D /* NSAttributedString+Category.m in Sources */,
 				42C84EAF1EF2DB060008189D /* ViewController.m in Sources */,
+				4295A93620231A2800AAD908 /* UIButton+SSEdgeInsets.m in Sources */,
 				42AC05201FFCDBE800BDCDE3 /* LockModel.m in Sources */,
 				420F71C91FFE16F400C78157 /* DeviceViewController.m in Sources */,
 				42C84EB91EF2DCD90008189D /* MainApi.m in Sources */,
@@ -1703,6 +1765,7 @@
 				4287088D1FEBBBFD00A6DA42 /* Order.m in Sources */,
 				42C84F1C1EF2EB650008189D /* NSObject+SBJSON.m in Sources */,
 				42C84F0D1EF2E97D0008189D /* UITableViewCell+CellAnimation.m in Sources */,
+				425E976520034F5C006A5707 /* PCBClickLabel.m in Sources */,
 				6BDB2F4B1FCC6A0C00F60802 /* UIButton+SSEdgeInsets.m in Sources */,
 				42AC05301FFCEA4400BDCDE3 /* LrdPasswordAlertView.m in Sources */,
 				42A4443E1EF133E000F90791 /* BaseProject.xcdatamodeld in Sources */,
@@ -1719,6 +1782,7 @@
 				42AC053E1FFD10CC00BDCDE3 /* OpenView.m in Sources */,
 				6B3C0BC51FE953FA00153615 /* Utils.m in Sources */,
 				6B8FD9851FDD70CD006A9965 /* GoodsInfo.m in Sources */,
+				4295A9332023075600AAD908 /* UILabel+StringFrame.m in Sources */,
 				420F71C31FFE0A4C00C78157 /* MyNetViewController.m in Sources */,
 				420F71B01FFDDE4D00C78157 /* JXCircleView.m in Sources */,
 				42C84EB61EF2DCBC0008189D /* ConfigModel.m in Sources */,

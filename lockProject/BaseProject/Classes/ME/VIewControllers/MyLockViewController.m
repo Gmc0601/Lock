@@ -11,7 +11,9 @@
 #import "NODataView.h"
 #import "DeviceViewController.h"
 
-@interface MyLockViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface MyLockViewController ()<UITableViewDelegate, UITableViewDataSource>{
+    int click;
+}
 
 @property (nonatomic, retain) UITableView *noUseTableView;
 
@@ -26,10 +28,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationView.hidden = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loaddate) name:@"delnet" object:nil];
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)loaddate {
+    self.dataArr = nil;
+    self.nameArr = nil;
     self.leftBar.hidden = NO;
     self.navigationController.navigationBar.hidden = YES;
     [[UIApplication sharedApplication] setStatusBarStyle: UIStatusBarStyleDefault animated:YES];
@@ -47,6 +52,10 @@
             }
         }
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self loaddate];
 }
 
 - (void)didReceiveMemoryWarning {

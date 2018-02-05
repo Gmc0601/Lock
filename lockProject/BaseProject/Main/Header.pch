@@ -12,6 +12,7 @@
 #import "CCUrl.h"
 #import "ConfigModel.h"
 #import "MainApi.h"
+#import "UIButton+SSEdgeInsets.h"
 
 #if TARGET_IPHONE_SIMULATOR
 #define SIMULATOR_TEST  0
@@ -92,6 +93,8 @@
 #define RGBColor(r,g,b)              [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
 #define RGBColorAlpha(r,g,b,a)       [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
+#define MainBlue RGBColor(90, 142, 218)
+
 /**
  * App基本信息
  */
@@ -119,6 +122,7 @@
 
 #define UserToken @"userTOken"
 
+#define SelfOpen  @"selfopen"
 
 
 #endif /* Header_pch */

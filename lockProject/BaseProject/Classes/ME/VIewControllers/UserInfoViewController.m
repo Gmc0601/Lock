@@ -113,12 +113,13 @@
      cell.textLabel.text = @"昵称";
     if (indexPath.row==0) {
      cell.textLabel.text = @"头像";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell.contentView addSubview:self.headImage];
     }else {
         [cell.contentView addSubview:self.nickName];
     }
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }

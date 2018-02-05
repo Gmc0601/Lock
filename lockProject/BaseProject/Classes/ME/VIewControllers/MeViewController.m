@@ -21,7 +21,7 @@
 }
 
 @property (nonatomic, retain) UITableView *noUseTableView;
-@property (nonatomic, retain) NSArray *titleArr;
+@property (nonatomic, retain) NSArray *titleArr, *countArr;
 @property (nonatomic, retain) MeHeadView *head;
 @property (nonatomic, retain) UILabel *phoneLab;
 
@@ -33,9 +33,6 @@
     [super viewDidLoad];
     [self resetFather];
     
-    UIView *view = [[UIView alloc] initWithFrame:FRAME(0, 0, kScreenW, 100)];
-    view.backgroundColor = [UIColor yellowColor];
-    [self.view addSubview:view];
     
     [self.view addSubview:self.noUseTableView];
     
@@ -47,11 +44,16 @@
     }
     self.noUseTableView.scrollIndicatorInsets = self.noUseTableView.contentInset;
     
-
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setbadgeLab) name:HaveMessage object:nil];
     
 }
 
 
+- (void)setbadgeLab {
+    [self.rightBar setBadge];
+}
+
+    
 -(void)viewWillAppear:(BOOL)animated {
     if (![ConfigModel getBoolObjectforKey:IsLogin]) {
         LoginViewController *vc = [[LoginViewController alloc] init];
@@ -62,6 +64,10 @@
         [self presentViewController:na animated:YES completion:nil];
         return;
     }
+    if (![ConfigModel getBoolObjectforKey:HaveMessage]) {
+        [self.rightBar hideBadge];
+    }
+    
     [self getData];
 }
 
@@ -121,6 +127,28 @@
         }
     }];
     
+    [HttpRequest postPath:@"Order/getUserOrder" params:nil resultBlock:^(id responseObject, NSError *error) {
+        if([error isEqual:[NSNull null]] || error == nil){
+            NSLog(@"success");
+        }
+        NSDictionary *datadic = responseObject;
+        if ([datadic[@"success"] intValue] == 1) {
+            
+            NSDictionary *data = datadic[@"data"];
+            
+            NSString *str0 = data[@"daifukuan"];
+            NSString *str1 = data[@"daifahuo"];
+            NSString *str2 = data[@"daishouhuo"];
+            self.head.btn1.str = str0;
+            self.head.btn2.str = str1;
+            self.head.btn3.str = str2;
+            
+        }else {
+            NSString *str = datadic[@"msg"];
+            [ConfigModel mbProgressHUD:str andView:nil];
+        }
+    }];
+    
 }
 
 - (void)resetFather {
@@ -174,7 +202,6 @@
     }
     if (indexPath.row == 2) {
         NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",phone];
-         NSLog(@"str======%@",str);
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
         
     }
@@ -191,13 +218,12 @@
             WeakSelf(weak);
             head.messageBlock = ^{
             //  消息点击
-                UnloginReturn
-                JumpHistory
+                if (![ConfigModel haveLogin:weak]) {return;}
+                [ConfigModel jumptolockHistory:weak];
             };
             
             head.headImgBlock = ^{
               // 头像点击
-                
                 [weak.navigationController pushViewController:[UserInfoViewController new] animated:YES];
             };
             

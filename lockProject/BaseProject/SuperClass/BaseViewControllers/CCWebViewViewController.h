@@ -9,10 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "CCBaseViewController.h"
 #import <JavaScriptCore/JavaScriptCore.h>
+#import "UIWebView+TS_JavaScriptContext.h"
 
 @protocol JSObjcDelegate <JSExport>
 
-- (void)getUser_token;
+- (void)getUserToken;
+
+- (void)toLogin;
+
+- (void)reload;
+
+//public void showShare(String title, String content, String url,String imgUrl)
+
+- (void)showShare:(NSString *)title :(NSString *)content :(NSString *)url :(NSString *)imgUrl;
+
 
 @end
 

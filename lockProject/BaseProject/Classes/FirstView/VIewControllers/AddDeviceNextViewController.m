@@ -21,13 +21,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self resetFather];
+    [self.NextBtn setTitleColor:MainBlue forState:UIControlStateNormal];
+    self.NextBtn.titleLabel.font = [UIFont boldSystemFontOfSize:15];
 }
 
 - (void)resetFather {
     self.rightBar.hidden = YES;
     if (self.type == AddNetWork) {
         self.titleLab.text = @"添加网关";
-        NSString *text1 = @"1. 手机连接家庭WiFi(暂不支持5G频段WiFi)；\n2. 接通电源，按下网关匹配键，听到“等待连接WiFi”并看到指示灯闪烁即表示网关已进入匹配模式；";
+        NSString *text1 = @"接通电源，长按网关背后匹配键3秒后松开，当最外侧绿灯和最外侧红点闪烁时，表示网关进入匹配状态，点击“下一步”开始进行匹配";
         self.infoLab.text = text1;
     }else {
         self.titleLab.text = @"添加智能锁";

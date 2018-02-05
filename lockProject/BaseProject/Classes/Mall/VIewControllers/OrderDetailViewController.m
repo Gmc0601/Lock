@@ -216,6 +216,11 @@
      [self.rightBar setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
 }
 
+- (void)more:(UIButton *)sender {
+    NSMutableString* str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",[ConfigModel getStringforKey:@"phone"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+}
+
 -(void) addTableView{
     if(_tb != nil){
         [_tb removeFromSuperview];

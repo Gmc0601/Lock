@@ -10,9 +10,9 @@
 #import <MJExtension.h>
 @implementation FindModel
 
-+(void) findListWithCallBack:(void(^)(NSString *error,NSArray *findArr)) callback{
++(void) findListWithdic:(NSDictionary *)dic CallBack:(void(^)(NSString *error,NSArray *findArr)) callback{
     
-    [HttpRequest getPath:@"Info/getlist" params:nil resultBlock:^(id responseObject, NSError *error) {
+    [HttpRequest getPath:@"Info/getlist" params:dic resultBlock:^(id responseObject, NSError *error) {
         NSDictionary *datadic = responseObject;
         
         if ([datadic[@"success"] intValue] == 1) {

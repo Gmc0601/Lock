@@ -23,11 +23,17 @@
             self.infoLab.text = infoStr;
         }
         if (!rightStr) {
-            self.leftBtn.centerX = self.whitView.centerX;
+            [self.titleLab setTop:SizeHeight(15)];
+            self.titleLab.font = [UIFont systemFontOfSize:15];
+            [self.leftBtn setCenterX:self.whitView.centerX - SizeWidth(12)];
+            self.leftBtn.backgroundColor = MainBlue;
+            [self.leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [self.leftBtn setTitle:leftStr forState:UIControlStateNormal];
             [self.whitView addSubview:self.leftBtn];
         }else {
             [self.leftBtn setTitle:leftStr forState:UIControlStateNormal];
+            [self.rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            self.rightBtn.backgroundColor = MainBlue;
             [self.rightBtn setTitle:rightStr forState:UIControlStateNormal];
             [self.whitView addSubview:self.leftBtn];
             [self.whitView addSubview:self.rightBtn];
@@ -57,7 +63,7 @@
 
 - (UIButton *)leftBtn {
     if (!_leftBtn) {
-        _leftBtn = [[UIButton alloc] initWithFrame:FRAME(10, self.infoLab.bottom + 30, SizeWidth(150), SizeHeight(44))];
+        _leftBtn = [[UIButton alloc] initWithFrame:FRAME(10, self.whitView.frame.size.height - SizeHeight(49), SizeWidth(150), SizeHeight(44))];
         _leftBtn.backgroundColor =UIColorFromHex(0xf1f2f2);
         [_leftBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_leftBtn addTarget:self action:@selector(leftClick) forControlEvents:UIControlEventTouchUpInside];
@@ -75,7 +81,7 @@
 
 - (UIButton *)rightBtn {
     if (!_rightBtn) {
-        _rightBtn = [[UIButton alloc] initWithFrame:FRAME(self.whitView.width - SizeWidth(170), self.infoLab.bottom + 30, SizeWidth(150), SizeHeight(44))];
+        _rightBtn = [[UIButton alloc] initWithFrame:FRAME(self.whitView.width - SizeWidth(170), self.whitView.frame.size.height - SizeHeight(49), SizeWidth(150), SizeHeight(44))];
         _rightBtn.backgroundColor = UIColorFromHex(0x638edc);
         _rightBtn.layer.masksToBounds = YES;
         [_rightBtn addTarget:self action:@selector(rightClick) forControlEvents:UIControlEventTouchUpInside];
