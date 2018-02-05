@@ -931,13 +931,15 @@
     }];
     
     UIWebView *webView = [UIWebView new];
+    webView.opaque = NO;
 
     [contentView addSubview:webView];
+    
     [webView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(contentView);
-        make.right.equalTo(contentView);
-        make.bottom.equalTo(btnCancel.mas_top).offset(-SizeHeight(10));
-        make.top.equalTo(contentView).offset(SizeHeight(60));
+        make.left.equalTo(contentView).offset(SizeWidth(15));
+        make.right.equalTo(contentView).offset(-SizeWidth(15));
+        make.top.equalTo(lblTitle.mas_bottom).offset(SizeHeight(20));
+        make.bottom.equalTo(contentView).offset(-SizeHeight(100/2));
     }];
     
     [ConfigModel showHud:self];
