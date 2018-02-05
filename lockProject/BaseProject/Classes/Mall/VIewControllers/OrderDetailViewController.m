@@ -77,6 +77,8 @@
     }];
     
     [NetworkHelper getOrderDetailWithId:_orderId WithCallBack:^(NSString *error, OrderModel *order) {
+        order.status = OrderStatus_padyed;
+
         _order = order;
 
         if ([order.wuliu_type isEqualToString:@"0"] && (order.status == OrderStatus_complete || _order.status == OrderStatus_hasSend)) {
@@ -111,7 +113,7 @@
             _footer = nil;
         }
         if (_order.added_fee.floatValue > 0) {
-            if (_order.status != OrderStatus_RefundComplete) {
+            if (_order.status != OrderStatus_RefundComplete && _order.status != OrderStatus_Cancel) {
                 [self addFooter];
                 if (_order.status == OrderStatus_hasSend ) {
                     [self addRefundTips];
@@ -911,9 +913,9 @@
     [contentView addSubview:btnTuikuan];
     [btnTuikuan mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(contentView.mas_left).offset(SizeWidth(40/2));
-        make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(30/2));
+        make.bottom.equalTo(contentView.mas_bottom).offset(-SizeHeight(28/2));
         make.width.equalTo(@(SizeWidth(289/2)));
-        make.height.equalTo(@(SizeHeight(88/2)));
+        make.height.equalTo(@(SizeHeight(50/2)));
     }];
     
     UIButton *btnCancel = [UIButton new];
@@ -946,7 +948,7 @@
         make.top.equalTo(lblTitle.mas_bottom).offset(SizeHeight(20));
         make.bottom.equalTo(contentView).offset(-SizeHeight(100/2));
     }];
-    
+    webView.backgroundColor = [UIColor whiteColor];
     [ConfigModel showHud:self];
     [NetworkHelper getRefundCallBack:^(NSString *error, NSString *addedValueService) {
         [ConfigModel hideHud:self];
