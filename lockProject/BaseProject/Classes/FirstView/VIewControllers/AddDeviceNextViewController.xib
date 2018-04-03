@@ -21,13 +21,6 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="-s-tj_icon_wg" translatesAutoresizingMaskIntoConstraints="NO" id="NHJ-Rx-B6m">
-                    <rect key="frame" x="109" y="134" width="150" height="150"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="150" id="Gwd-xj-O8j"/>
-                        <constraint firstAttribute="width" constant="150" id="LfF-mq-f8M"/>
-                    </constraints>
-                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2U7-Yv-Nfa">
                     <rect key="frame" x="16" y="294" width="343" height="129"/>
                     <constraints>
@@ -48,21 +41,28 @@
                         <action selector="nextBtnClick:" destination="-1" eventType="touchUpInside" id="ubW-Pc-J3d"/>
                     </connections>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tj_icon_wg-1" translatesAutoresizingMaskIntoConstraints="NO" id="NHJ-Rx-B6m">
+                    <rect key="frame" x="145" y="132" width="85" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="Gwd-xj-O8j"/>
+                        <constraint firstAttribute="width" constant="85" id="LfF-mq-f8M"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="pey-vZ-ASK" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="1r3-9X-kmM"/>
                 <constraint firstItem="2U7-Yv-Nfa" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="2Kt-1Q-3TH"/>
-                <constraint firstItem="2U7-Yv-Nfa" firstAttribute="top" secondItem="NHJ-Rx-B6m" secondAttribute="bottom" constant="10" id="2lf-9H-td0"/>
+                <constraint firstItem="2U7-Yv-Nfa" firstAttribute="top" secondItem="NHJ-Rx-B6m" secondAttribute="bottom" constant="82" id="2lf-9H-td0"/>
                 <constraint firstItem="pey-vZ-ASK" firstAttribute="top" secondItem="2U7-Yv-Nfa" secondAttribute="bottom" constant="49" id="UoA-yL-Ujj"/>
                 <constraint firstItem="2U7-Yv-Nfa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="brX-Yb-Fnw"/>
-                <constraint firstItem="NHJ-Rx-B6m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="134" id="fsf-Bm-yWk"/>
-                <constraint firstItem="NHJ-Rx-B6m" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-3.5" id="qvp-y6-fdM"/>
+                <constraint firstItem="NHJ-Rx-B6m" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="132" id="fsf-Bm-yWk"/>
+                <constraint firstItem="NHJ-Rx-B6m" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qvp-y6-fdM"/>
             </constraints>
             <point key="canvasLocation" x="-202.5" y="-183.5"/>
         </view>
     </objects>
     <resources>
-        <image name="-s-tj_icon_wg" width="115" height="115"/>
+        <image name="tj_icon_wg-1" width="95" height="81"/>
     </resources>
 </document>

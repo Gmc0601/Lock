@@ -28,9 +28,9 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_dl" translatesAutoresizingMaskIntoConstraints="NO" id="c7o-UQ-drN">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="irz-Ou-VL4">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1024" translatesAutoresizingMaskIntoConstraints="NO" id="irz-Ou-VL4">
                     <rect key="frame" x="137" y="75" width="100" height="100"/>
-                    <color key="backgroundColor" red="0.79587405919999998" green="0.79999309780000005" blue="0.80403131250000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="ilx-56-kjp"/>
                         <constraint firstAttribute="height" constant="100" id="uIm-OX-XL2"/>
@@ -188,6 +188,7 @@
         </view>
     </objects>
     <resources>
+        <image name="1024" width="512" height="512"/>
         <image name="bg_dl" width="375" height="667"/>
     </resources>
 </document>

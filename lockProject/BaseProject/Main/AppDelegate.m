@@ -15,6 +15,7 @@
 #import <UMSocialCore/UMSocialCore.h>
 #import "WXApi.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import "ViewController.h"
 
 @interface AppDelegate ()<WXApiDelegate>
 @property (nonatomic, retain) TBTabBarController *tabbar;
@@ -28,13 +29,13 @@
     [self configUSharePlatforms];
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.tabbar = [[TBTabBarController alloc] init];
-    self.window.rootViewController = self.tabbar;
+    UINavigationController *na = [[UINavigationController alloc] initWithRootViewController:[ViewController new]];
+    self.window.rootViewController = na;
     self.window.backgroundColor = [UIColor whiteColor];
     [IQKeyboardManager sharedManager].enable = YES;
     [IQKeyboardManager sharedManager].enableAutoToolbar = YES;
 
-    [self initGTPush];
+    [self initGTPushoptions:launchOptions];
     
     [self initUmeng];
 

@@ -39,9 +39,9 @@
     time--;
     NSString *str;
     if (self.lock) {
-        str = [NSString stringWithFormat:@"正在匹配智能锁...（%d）", time];
+        str = [NSString stringWithFormat:@"正在匹配智能锁...（%ds）", time];
     }else {
-        str = [NSString stringWithFormat:@"正在连接网关...（%d）", time];
+        str = [NSString stringWithFormat:@"正在连接网关...（%ds）", time];
     }
     self.infolab.text = str;
     JXCircleView *circleView1 = [[JXCircleView alloc]init];
@@ -106,7 +106,7 @@
 - (UIImageView *)logoImage {
     if (!_logoImage) {
         _logoImage = [[UIImageView alloc] init];
-        _logoImage.size = CGSizeMake(SizeWidth(110), SizeWidth(110));
+        _logoImage.size = CGSizeMake(SizeWidth(150), SizeWidth(150));
         _logoImage.backgroundColor = [UIColor clearColor];
         if (self.lock) {
             _logoImage.image = [UIImage imageNamed:@"-s-tj_icon_zns_pre"];
@@ -115,7 +115,8 @@
         }
         
         _logoImage.centerX = self.centerX;
-        _logoImage.centerY = self.centerX;
+//        _logoImage.centerY = self.centerX;
+        [_logoImage setCenterY:self.centerY - 20];
         
     }
     return _logoImage;
@@ -124,10 +125,10 @@
 - (UIView *)moreView {
     if (!_moreView) {
         _moreView = [[UIView alloc] init];
-        _moreView.size = CGSizeMake(SizeWidth(110), SizeWidth(110));
+        _moreView.size = CGSizeMake(SizeWidth(150), SizeWidth(150));
         _moreView.backgroundColor = [UIColor clearColor];
         _moreView.centerX = self.centerX;
-        _moreView.centerY = self.centerX;
+        _moreView.centerY = self.centerY - 20;
     }
     return _moreView;
 }

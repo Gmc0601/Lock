@@ -34,7 +34,7 @@
     [super viewDidLoad];
     [self resetFather];
     [self createView];
-    [ConfigModel saveBoolObject:NO forKey:HaveMessage];
+   
 }
 
 - (void)createView {
@@ -60,7 +60,18 @@
     }];
     
     
+    if ([self.textstr isEqualToString:@"1"]) {
+        UILabel *lab = [[UILabel alloc] initWithFrame:FRAME(0, 0, kScreenW, 30)];
+        lab.backgroundColor =  [UIColor blackColor];
+        [self.view addSubview:lab];
+    }
     
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+     [ConfigModel saveBoolObject:NO forKey:HaveMessage];
 }
 
 - (void)resetFather {
@@ -79,6 +90,7 @@
     finsh.rightBlock = ^{
         //  跳转匹配锁
         [self del];
+        [finsh dismiss];
     };
     [finsh pop];
 }
@@ -146,8 +158,14 @@
             [weak.navigationController pushViewController:vc animated:YES];
         };
     }
-    LockHistory *model = self.dataArr[indexPath.section][indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    
+    
+    LockHistory *model = [[LockHistory alloc] init];
+    model = self.dataArr[indexPath.section][indexPath.row];
     cell.model = model;
+    [cell update];
     
     
     return cell;
@@ -174,7 +192,7 @@
 
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
 }
 - (UITableView *)noUseTableView {

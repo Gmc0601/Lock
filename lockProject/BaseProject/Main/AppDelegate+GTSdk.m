@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate+GTSdk.h"
+#import "LockhistoryViewController.h"
 
 @implementation AppDelegate (GTSdk)
 
@@ -24,10 +25,33 @@
  MasterSecret：
  i44nfBNRA47lPOCFZTznu
  */
-- (void)initGTPush {
+- (void)initGTPushoptions:(NSDictionary *)launchOptions {
     [GeTuiSdk startSdkWithAppId:kGtAppId appKey:kGtAppKey appSecret:kGtAppSecret delegate:self];
     // 注册 APNs
     [self registerRemoteNotification];
+    //   关闭状态跳转
+    
+    
+}
+
+#pragma mark —页面跳转
+- (void)jumpViewController:(NSDictionary*)tfdic
+{
+    NSDictionary *remoteNotification = [tfdic objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    
+    if ([ConfigModel getBoolObjectforKey:IsLogin])
+    {
+        for (NSString *tfStr in remoteNotification)
+        {
+            if ([tfStr isEqualToString:@"careline"])
+            {
+                LockhistoryViewController *vv = [[LockhistoryViewController alloc] init];
+//                vv.textstr = @"1";
+                UINavigationController *nav= (UINavigationController *)self.window.rootViewController;
+                [nav pushViewController:vv animated:YES];
+            }
+        }
+    }
 }
 
 /*
@@ -101,6 +125,14 @@
     //静默推送收到消息后也需要将APNs信息传给个推统计
     [GeTuiSdk handleRemoteNotification:userInfo];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            LockhistoryViewController *vv = [[LockhistoryViewController alloc] init];
+            UINavigationController *nav= (UINavigationController *)self.window.rootViewController;
+            [nav pushViewController:vv animated:YES];
+        });
+    });
+    
     completionHandler(UIBackgroundFetchResultNewData);
 }
 
@@ -119,6 +151,15 @@
     NSLog(@"didReceiveNotification：%@", response.notification.request.content.userInfo);
     
     // [ GTSdk ]：将收到的APNs信息传给个推统计
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            LockhistoryViewController *vv = [[LockhistoryViewController alloc] init];
+            UINavigationController *nav= (UINavigationController *)self.window.rootViewController;
+            [nav pushViewController:vv animated:YES];
+        });
+    });
+    
     [GeTuiSdk handleRemoteNotification:response.notification.request.content.userInfo];
     
     completionHandler();
@@ -143,13 +184,13 @@
     
     NSString *msg = [NSString stringWithFormat:@"taskId=%@,messageId:%@,payloadMsg:%@%@",taskId,msgId, payloadMsg,offLine ? @"<离线消息>" : @""];
     NSLog(@"\n>>>[GexinSdk ReceivePayload]:%@\n\n", msg);
-    
+    //  发送通知
     [[NSNotificationCenter defaultCenter] postNotificationName:HaveMessage object:nil];
     [ConfigModel saveBoolObject:YES forKey:HaveMessage];
     
-    if ([ConfigModel getBoolObjectforKey:SelfOpen]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"LockOpen" object:nil];
-    }
+//    if ([ConfigModel getBoolObjectforKey:SelfOpen]) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"LockOpen" object:nil];
+//    }
 }
 /** APP已经接收到“远程”通知(推送) - 透传推送消息  */
 

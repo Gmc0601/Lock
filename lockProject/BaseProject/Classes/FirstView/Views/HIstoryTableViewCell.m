@@ -10,6 +10,7 @@
 #import <YYKit.h>
 #import <Masonry.h>
 #import "PCBClickLabel.h"
+#import "UILabel+Width.h"
 
 @implementation HIstoryTableViewCell
 
@@ -18,28 +19,62 @@
         [self.contentView addSubview:self.line];
         [self.contentView addSubview:self.logo];
         [self.contentView addSubview:self.timeLab];
-//        [self.contentView addSubview:self.contentLab];
+        [self.contentView addSubview:self.contentLab];
     }
     return self;
 }
 
 
-- (void)setModel:(LockHistory *)model {
+- (void)update {
     
-    WeakSelf(weak);
-    NSString *str = [NSString stringWithFormat:@"%@%@", model.user, model.content];
-    CGSize titleSize = [str sizeWithFont:[UIFont systemFontOfSize:20.0f] constrainedToSize:CGSizeMake(kScreenW - self.logo.frame.size.width , 200)];
+    
+    LockHistory *model = [[LockHistory alloc] init];
+    model = self.model;
+    NSString *str = [NSString stringWithFormat:@"  %@%@", model.user, model.content];
+    UILabel *lab = [[UILabel alloc] init];
+    float width = kScreenW - self.logo.frame.size.width - SizeWidth(30);
+    CGFloat labwidth = [UILabel getWidthWithTitle:str font:[UIFont systemFontOfSize:14]];
+    
+    CGFloat labheight;
+    if (labwidth > width) {
+        labwidth = width;
+        labheight = [UILabel getHeightByWidth:width title:str font:[UIFont systemFontOfSize:14]] ;
+    }else {
+        labheight = SizeHeight(20);
+    }
+    self.contentLab.size = CGSizeMake(labwidth, labheight);
+    
+    NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:str];
+    [noteStr addAttribute:NSForegroundColorAttributeName value:[UIColor clearColor] range:NSMakeRange(0, model.user.length + 2)];
+    [self.contentLab setAttributedText:noteStr];
+    
+    UILabel *clickLabel = [[UILabel alloc] initWithFrame:FRAME(self.logo.right + 8, self.timeLab.bottom + SizeHeight(12), [UILabel getWidthWithTitle:model.user font:[UIFont systemFontOfSize:14]], SizeHeight(13))];
+    clickLabel.backgroundColor = [UIColor clearColor];
+    clickLabel.font = [UIFont systemFontOfSize:14];
+    clickLabel.textColor = MainBlue;
+    clickLabel.text = model.user;
+    
+    UILabel *line = [[UILabel alloc] initWithFrame:FRAME(self.logo.right + 8, self.timeLab.bottom + SizeHeight(25), [UILabel getWidthWithTitle:model.user font:[UIFont systemFontOfSize:14]], 1)];
+    line.backgroundColor = MainBlue;
+    [self.contentView addSubview:line];
+    
+    [self.contentView addSubview:clickLabel];
+    
+    UIButton *btn = [[UIButton alloc] initWithFrame:clickLabel.frame];
+    btn.backgroundColor = [UIColor clearColor];
+    [btn addTarget:self action:@selector(labClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:btn];
+    
     self.timeLab.text = model.time;
-    PCBClickLabel *label = [[PCBClickLabel alloc] initLabelViewWithLab:str clickTextRange:NSMakeRange(0, model.user.length) frame:CGRectMake(self.logo.right + 5, self.timeLab.bottom + 5, titleSize.width, titleSize.height) clickAtion:^{
-        if (weak.nameBlock) {
-            weak.nameBlock(model.unlock_user_id,  model.user);
-        }
-    }];
     
-    label.layer.masksToBounds = YES;
-    label.layer.cornerRadius = 5;
-    label.frame = CGRectMake(self.logo.right + 5, self.timeLab.bottom + 5, titleSize.width + 20, titleSize.height);
-    [self.contentView addSubview:label];
+}
+
+
+- (void)labClick {
+    NSLog(@"//////dianjia");
+    if (self.nameBlock) {
+        self.nameBlock(self.model.unlock_user_id,  self.model.user);
+    }
 }
 
 - (UILabel *)line {
@@ -75,10 +110,10 @@
 
 - (UILabel *)contentLab {
     if (!_contentLab) {
-        _contentLab = [[UILabel alloc] initWithFrame:FRAME(self.logo.right + 5, self.timeLab.bottom + 5, 100, 30)];
+        _contentLab = [[UILabel alloc] initWithFrame:FRAME(self.logo.right + 5, self.timeLab.bottom + SizeHeight(10), 100, 30)];
         _contentLab.backgroundColor = UIColorFromHex(0xF1F2F2);
         _contentLab.layer.masksToBounds = YES;
-        _contentLab.layer.cornerRadius = 5;
+        _contentLab.layer.cornerRadius = SizeHeight(5);
         _contentLab.numberOfLines = 0;
         _contentLab.font = [UIFont systemFontOfSize:14];
         _contentLab.textColor = UIColorFromHex(0x999999);

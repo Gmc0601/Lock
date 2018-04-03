@@ -28,7 +28,11 @@
                 
                 NSString  *data = datadic[@"data"];
                 
-                self.content.text = data;
+                
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[data dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+                self.content.attributedText = attributedString;
+                
+//                self.content.text = data;
                 
             }else {
                 NSString *str = datadic[@"msg"];
@@ -75,7 +79,7 @@
 
 - (UIButton *)clickBtn {
     if (!_clickBtn) {
-        _clickBtn = [[UIButton alloc] initWithFrame:FRAME(0, SizeHeight(270), self.whitView.width, SizeHeight(30))];
+        _clickBtn = [[UIButton alloc] initWithFrame:FRAME(0, SizeHeight(250), self.whitView.width, SizeHeight(30))];
         [_clickBtn setTitle:@"重新匹配" forState:UIControlStateNormal];
         [_clickBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_clickBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];

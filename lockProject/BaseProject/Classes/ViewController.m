@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "TBTabBarController.h"
 
 @interface ViewController ()
 
@@ -16,45 +17,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    TBTabBarController *tab = [[TBTabBarController alloc] init];
+    [self addChildViewController:tab];
+    [self.view addSubview:tab.view];
     
-    NSDictionary *logindic = @{
-                          @"username": @"17682318061",
-                          @"loginPass": @"123456",
-                          };
-    [HttpRequest postPath:LoginURL params:logindic resultBlock:^(id responseObject, NSError *error) {
-        
-        if([error isEqual:[NSNull null]] || error == nil){
-            NSLog(@"success");
-        }
-        
-        NSLog(@"login>>>>>>%@", responseObject);
-        NSDictionary *datadic = responseObject;
-        if ([datadic[@"error"] intValue] == 0) {
-            NSDictionary *infoDic = datadic[@"info"];
-            NSString *usertoken = infoDic[@"userToken"];
-            [ConfigModel saveBoolObject:YES forKey:IsLogin];
-            [ConfigModel saveString:usertoken forKey:UserToken];
-        }else {
-            NSString *info = datadic[@"info"];
-            [ConfigModel mbProgressHUD:info andView:nil];
-        }
-        NSLog(@"error>>>>%@", error);
-    }];
     
-    [HttpRequest postPath:BrandList params:nil resultBlock:^(id responseObject, NSError *error) {
-        NSLog(@"List>>>>>>%@", responseObject);
-        NSDictionary *datadic = responseObject;
+    
+}
 
-        if ([datadic[@"error"] intValue] == 0) {
-           
-        }else {
-            NSString *info = datadic[@"info"];
-            [ConfigModel mbProgressHUD:info andView:nil];
-        }
-        NSLog(@"error>>>>%@", error);
-    }];
-    
-    
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 

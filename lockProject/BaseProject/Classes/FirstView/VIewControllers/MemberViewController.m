@@ -93,6 +93,8 @@
         cell.detailTextLabel.text = @"APP";
     }else if ([model.type intValue] == 1) {
         cell.detailTextLabel.text = @"密码";
+    }else if ([model.type intValue] == 4){
+        cell.detailTextLabel.text = @"卡片";
     }else {
         cell.detailTextLabel.text = @"指纹";
     }

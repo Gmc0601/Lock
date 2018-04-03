@@ -16,7 +16,7 @@ static int  const kDefaultCircleCount = 1;
 - (void)drawRect:(CGRect)rect {
 
     
-    CGFloat radius = 10;
+    CGFloat radius = 15;
     
     NSArray *alpha = @[@1.0,@.6,@.4,@.2];
     
@@ -164,7 +164,7 @@ static int  const kDefaultCircleCount = 1;
     CGContextAddPath(ctx, path0.CGPath);
     
     
-    UIColor *color = [UIColor blueColor];
+    UIColor *color = MainBlue;
     
     //4.设置颜色
     [color setFill];
@@ -172,9 +172,9 @@ static int  const kDefaultCircleCount = 1;
     
     
     //5.显示上下文 显示一个实心圆
-//    CGContextFillPath(ctx);
+    CGContextFillPath(ctx);
     //显示一个空心圆，描边
-        CGContextStrokePath(ctx);
+//        CGContextStrokePath(ctx);
 }
 
 

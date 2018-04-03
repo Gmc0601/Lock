@@ -16,4 +16,6 @@
 
 @property (nonatomic,copy) NSString *lock_id;
 
+@property (nonatomic, copy) NSString *textstr;
+
 @end

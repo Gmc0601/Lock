@@ -93,8 +93,8 @@
         make.bottom.equalTo(self.view).offset(-self.tabBarController.tabBar.bounds.size.height);
     }];
     
-    CGFloat y = SizeHeight(30/2);
-    _img = [[UIImageView alloc] initWithFrame:CGRectMake(SizeWidth(52), y, kScreenW - SizeWidth(104), SizeHeight(876/2))];
+    CGFloat y = 0;
+    _img = [[UIImageView alloc] initWithFrame:CGRectMake(0, y, kScreenW , SizeHeight(876/2))];
     _img.contentMode = UIViewContentModeScaleAspectFit;
 //    _img.image = [UIImage imageNamed:@"ddxq_icon_shz"];
 //    _img.backgroundColor = [UIColor blueColor];

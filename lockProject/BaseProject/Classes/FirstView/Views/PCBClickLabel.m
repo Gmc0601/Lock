@@ -42,13 +42,17 @@
             commonText = [text substringWithRange:NSMakeRange(clickText.length, text.length-clickText.length)];
             
             //label的位置
-            clickLabel.frame = CGRectMake(0, 0, [[self class] calculateRowWidth:clickText], fram.size.height);
+            clickLabel.frame = CGRectMake( 5, 0, [[self class] calculateRowWidth:clickText], fram.size.height);
             commonLabel.numberOfLines = 0;
             commonLabel.textColor =UIColorFromHex(0x999999);
             commonLabel.font = [UIFont systemFontOfSize:14];
             clickLabel.font = [UIFont systemFontOfSize:14];
             clickLabel.textColor = [UIColor blueColor];
-            commonLabel.frame = CGRectMake(clickLabel.frame.size.width+clickLabel.frame.origin.x, 0, [[self class] calculateRowWidth:commonText], fram.size.height);
+            
+            float width  = fram.size.width > [[self class] calculateRowWidth:commonText] ? [[self class] calculateRowWidth:commonText] : fram.size.width;
+
+            
+            commonLabel.frame = CGRectMake(clickLabel.frame.size.width+clickLabel.frame.origin.x, 0, width, fram.size.height);
         }else { //可点击文字在整段文字中间
             clickText = [text substringWithRange:clickTextRange];
             commonText = [text substringToIndex:clickTextRange.location];
@@ -81,7 +85,6 @@
         self.backgroundColor = UIColorFromHex(0xF1F2F2);
         self.frame = CGRectMake(([UIScreen mainScreen].bounds.size.width-(clickLabel.frame.size.width+commonLabel.frame.size.width+commonLabel2.frame.size.width))/2, originY, [[self class] calculateRowWidth:text], 30);
         self.clickBlock = clickAtion;
-//        self.clickLab = clickLabel;
         [self addSubview:commonLabel];
         [self addSubview:clickLabel];
 
@@ -91,7 +94,7 @@
 }
 
 + (CGFloat)calculateRowWidth:(NSString *)string {
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};  //指定字号
+    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:14]};  //指定字号
     CGRect rect = [string boundingRectWithSize:CGSizeMake(0, 30)/*计算宽度时要确定高度*/ options:NSStringDrawingUsesLineFragmentOrigin |
                    NSStringDrawingUsesFontLeading attributes:dic context:nil];
     return rect.size.width;

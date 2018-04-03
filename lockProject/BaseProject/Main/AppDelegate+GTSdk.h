@@ -15,6 +15,6 @@
 #endif
 @interface AppDelegate (GTSdk)<UIApplicationDelegate, GeTuiSdkDelegate, UNUserNotificationCenterDelegate> 
 
-- (void)initGTPush;
+- (void)initGTPushoptions:(NSDictionary *)launchOptions;
 
 @end

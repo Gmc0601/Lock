@@ -151,7 +151,7 @@ sizeWithAttributes:@{NSFontAttributeName:font}] : CGSizeZero;
     [self addSubview:badgeLable];
 }
 - (void)setBadge {
-    CGFloat badgeW   = SizeWidth(5);
+    CGFloat badgeW   = SizeWidth(12);
     CGSize imageSize = self.imageView.frame.size;
     CGFloat imageX   = self.imageView.frame.origin.x;
     CGFloat imageY   = self.imageView.frame.origin.y;
@@ -163,7 +163,7 @@ sizeWithAttributes:@{NSFontAttributeName:font}] : CGSizeZero;
     CGFloat badgeY = imageY - badgeW*0.25;
     badgeLable.frame = CGRectMake(badgeX, badgeY, badgeW, badgeW);
     badgeLable.layer.masksToBounds = YES;
-    badgeLable.layer.cornerRadius = SizeWidth(2.5);
+    badgeLable.layer.cornerRadius = SizeWidth(6);
     [self addSubview:badgeLable];
 }
 

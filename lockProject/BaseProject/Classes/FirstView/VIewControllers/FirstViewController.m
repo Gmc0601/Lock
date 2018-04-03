@@ -23,9 +23,11 @@
 #import "OpenView.h"
 #import "JXCircleView.h"
 #import "UILabel+Width.h"
+#import "CommenAlter.h"
 
 @interface FirstViewController ()<JHCustomMenuDelegate, CAAnimationDelegate>{
     int num;
+    int i ;
 }
 
 @property (nonatomic, retain) NODataView *nodataView;
@@ -36,6 +38,8 @@
 @property (nonatomic, retain) CCButton *leftBtn, *rightBtn;
 @property (nonatomic, retain) NSTimer *timer;
 @property (nonatomic, retain) UIView *moreView;
+@property (nonatomic, retain) LockModel *model;
+@property (nonatomic, strong) UILabel *timeLab;
 
 @end
 
@@ -43,7 +47,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    i= 30;
     [self resetFather];
+    //  推送开锁 取消
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lockOpen) name:@"LockOpen" object:nil];
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setbadgeLab) name:HaveMessage object:nil];
 }
@@ -52,8 +58,13 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (![ConfigModel getBoolObjectforKey:HaveMessage]) {
+    if ([ConfigModel getBoolObjectforKey:HaveMessage]) {
         [self.rightBar hideBadge];
+//        [self.rightBar setBadge];
+    }else {
+//        [self.rightBar setBadge];
+        [self.rightBar hideBadge];
+        
     }
     self.leftBar.hidden = NO;
     self.navigationController.navigationBar.hidden = YES;
@@ -88,9 +99,8 @@
             }else {
                 [self.nodataView removeFromSuperview];
                 num = 0;
-                
-                self.titleLab.size = CGSizeMake([self.titleLab getWidthWithTitle:self.nameArr[0] font:[UIFont systemFontOfSize:18]], 30);
-                [self.titleLab setLeft:(kScreenW - [self.titleLab getWidthWithTitle:self.nameArr[0] font:[UIFont systemFontOfSize:18]])/2];
+                self.titleLab.size = CGSizeMake([UILabel getWidthWithTitle:self.nameArr[0] font:[UIFont systemFontOfSize:18]], 30);
+                [self.titleLab setLeft:(kScreenW - [UILabel getWidthWithTitle:self.nameArr[0] font:[UIFont systemFontOfSize:18]])/2];
                 self.titleLab.text = self.nameArr[0];
                 [self.logo setLeft:self.titleLab.right + SizeWidth(5)];
                 [self.navigationView addSubview:self.logo];
@@ -157,6 +167,7 @@
 - (void)createView {
     [self.view addSubview:self.moreView];
     [self.view addSubview:self.openBtn];
+    [self.view addSubview:self.timeLab];
     [self.view addSubview:self.leftBtn];
     [self.view addSubview:self.rightBtn];
     
@@ -173,83 +184,112 @@
     
     CABasicAnimation *animation1 = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
     
-    animation1.fromValue = @1;
+    animation1.fromValue = @5;
     animation1.toValue = @7;
     
     CABasicAnimation *animation2 = [CABasicAnimation animationWithKeyPath:@"opacity"];
     animation2.fromValue = @1;
     animation2.toValue = @0;
     
-    
     CAAnimationGroup *groupAnima = [CAAnimationGroup animation];
     groupAnima.animations = @[animation1,animation2];
-    groupAnima.duration = 4;
+    groupAnima.duration = 3;
     groupAnima.fillMode = kCAFillModeForwards;
     groupAnima.removedOnCompletion = NO;
     groupAnima.repeatCount = 1;
-    
     groupAnima.delegate = self;
     return groupAnima;
 }
     
-
+//   去开锁
 - (void)openlock {
     
     __weak typeof(self) weakSelf = self;
     self.openBtn.userInteractionEnabled = NO;
-    LrdPasswordAlertView *testView = [[LrdPasswordAlertView alloc] initWithFrame:self.view.bounds];
+    
     LockModel *model = [[LockModel alloc] init];
     model = self.dateArr[num];
-    testView.block = ^(NSString *text){
+    self.model = model;
+    WeakSelf(weak);
+    CommenAlter *alter = [[CommenAlter alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH) title:@"请验证管理员密码" info:@"请验证管理员密码" leftBtn:@"取消" right:@"确定"];
+    alter.leftBlock = ^{
+        self.openBtn.userInteractionEnabled = YES;;
+    };
+    alter.textBlock = ^(NSString *pwd) {
         [ConfigModel saveBoolObject:YES forKey:SelfOpen];
+        
         NSDictionary *dic = @{
                               @"lock_id" : model.lock_id,
-                              @"pwd" : text
+                              @"pwd" : pwd
                               };
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakSelf selector:@selector(animationAction) userInfo:nil repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
         [HttpRequest postPath:@"Lock/remoteUnlock" params:dic resultBlock:^(id responseObject, NSError *error) {
             if([error isEqual:[NSNull null]] || error == nil){
                 NSLog(@"success");
             }
+
             
             NSDictionary *datadic = responseObject;
             if ([datadic[@"success"] intValue] == 1) {
                 
-                [self.openBtn setImage:[UIImage imageNamed:@"组7"] forState:UIControlStateNormal];
-//                self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakSelf selector:@selector(animationAction) userInfo:nil repeats:YES];
-//                 [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSDefaultRunLoopMode];
+                
+                weak.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakSelf selector:@selector(animationAction) userInfo:nil repeats:YES];
+                [[NSRunLoop mainRunLoop] addTimer:weak.timer forMode:NSDefaultRunLoopMode];
+                self.timeLab.text = @"开锁中...(30s)";
+                self.timeLab.hidden = NO;
+                [weak.openBtn setImage:[UIImage imageNamed:@"131.1"] forState:UIControlStateNormal];
                 
             }else {
-                 self.openBtn.userInteractionEnabled = YES;
+                [self.openBtn setImage:[UIImage imageNamed:@"sy_icon_msgb"] forState:UIControlStateNormal];
+                self.openBtn.userInteractionEnabled = YES;
                 NSString *str = datadic[@"msg"];
                 [ConfigModel mbProgressHUD:str andView:nil];
-                 [self.timer invalidate];
-            }
-        }];
+                [self.timer invalidate];
+            }}];
     };
-    [testView pop];
+    [alter pop];
+
 }
 
 - (void)animationAction {
-    int i = 0;
-    i++;
-    if (i == 15) {
+    i--;
+    NSString * time = [NSString stringWithFormat:@"开锁中...(%ds)", i];
+    NSLog(@"%@", time);
+    self.timeLab.text = time;
+    if (i == 0) {
+        [self.openBtn setImage:[UIImage imageNamed:@"sy_icon_msgb"] forState:UIControlStateNormal];
         self.openBtn.userInteractionEnabled = YES;
         [self.timer invalidate];
+        self.timeLab.hidden = YES;
+        [ConfigModel saveBoolObject:NO forKey:SelfOpen];
+        i= 30;
+        [ConfigModel mbProgressHUD:@"开锁失败" andView:nil];
     }
-    
     JXCircleView *circleView1 = [[JXCircleView alloc]init];
-    circleView1.frame = FRAME(0, 0, self.openBtn.frame.size.width, self.openBtn.frame.size.height);
+    circleView1.frame = FRAME(0, 0, self.openBtn.frame.size.width , self.openBtn.frame.size.height);
     circleView1.backgroundColor = [UIColor clearColor];
-    
     [circleView1.layer addAnimation:[self addGroupAnimation] forKey:@"groupAnimation2"];
     [self.moreView addSubview:circleView1];
+    
+    NSDictionary *dict = @{
+                           @"lock_id" : self.model.lock_id
+                           };
+    [HttpRequest postPath:@"Lock/remoteUnlockStatus" params:dict resultBlock:^(id responseObject, NSError *error) {
+        if([error isEqual:[NSNull null]] || error == nil){
+            NSLog(@"success");
+        }
+        NSDictionary *datadic = responseObject;
+        if ([datadic[@"success"] intValue] == 1) {
+            [self lockOpen];
+        }
+    }];
+    
 }
-
+//  已开锁
 - (void)lockOpen {
     [ConfigModel saveBoolObject:NO forKey:SelfOpen];
     self.openBtn.userInteractionEnabled = YES;
+    i = 30;
+    self.timeLab.hidden = YES;
     [self.timer invalidate];
     [self.openBtn setImage:[UIImage imageNamed:@"sy_icon_msgb"] forState:UIControlStateNormal];
     OpenView *view = [[OpenView alloc] initWithFrame:FRAME(0, 0, kScreenW, kScreenH)];
@@ -340,8 +380,11 @@
         _openBtn = [[UIButton alloc] init];
         UIImage *image = [UIImage imageNamed:@"sy_icon_msgb"];
         _openBtn.size = image.size;
+        self.timeLab.size = CGSizeMake(image.size.width, 15);
         _openBtn.centerX = self.view.centerX;
         _openBtn.centerY = self.view.centerY + 20;
+        self.timeLab.centerX = self.view.centerX;
+        self.timeLab.centerY =  self.view.centerY + 60;
         [_openBtn setImage:image forState:UIControlStateNormal];
         [_openBtn addTarget:self action:@selector(openlock) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -353,12 +396,26 @@
     if (!_moreView) {
         _moreView = [[UIView alloc] init];
         UIImage *image = [UIImage imageNamed:@"sy_icon_msgb"];
-        _moreView.size = image.size;
+        _moreView.size = self.openBtn.size;
         _moreView.centerX = self.view.centerX;
         _moreView.centerY = self.view.centerY + 20;
     }
     return _moreView;
 }
+
+
+- (UILabel *)timeLab {
+    if (!_timeLab) {
+        _timeLab = [[UILabel alloc] init];
+        _timeLab.hidden = YES;
+        _timeLab.font = [UIFont systemFontOfSize:13];
+        _timeLab.textAlignment =  NSTextAlignmentCenter;
+        _timeLab.textColor = UIColorFromHex(0xcccccc);
+        _timeLab.backgroundColor = [UIColor clearColor];
+    }
+    return _timeLab;
+}
+
 
 - (NSArray *)dateArr {
     if (!_dateArr) {

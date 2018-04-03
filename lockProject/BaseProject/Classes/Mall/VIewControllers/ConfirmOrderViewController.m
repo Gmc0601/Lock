@@ -57,7 +57,7 @@
 @property(retain,atomic)  NSArray *unReqiureInstall;
 @property(retain,atomic)  NSString *strSevice;
 @property(assign,atomic)  int countOfFee;
-@property(assign,atomic)  NSString *installPrice;
+@property(copy,atomic)  NSString *installPrice;
 @property(assign,atomic)  BOOL needAddedService;
 @property(assign,atomic)  BOOL hasShare;
 @property(retain,atomic)  NSString *city;
@@ -1219,7 +1219,9 @@
 -(void) setPrice{
     float amount = _goodsInfo.price.floatValue;
     if (_needInstall) {
-        amount += _installPrice.floatValue;
+        if (self.installPrice.length > 0) {
+           amount += _installPrice.floatValue;
+        }
     }
     
     if (_needAddedService) {

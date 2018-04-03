@@ -163,7 +163,6 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([ConfigModel getBoolObjectforKey:IsLogin]) {
-//            [ConfigModel mbProgressHUD:[ConfigModel getStringforKey:UserToken] andView:nil];
             JSValue *picCallBack = self.context[@"getUserTokenCallBack"];
             [picCallBack callWithArguments:@[[ConfigModel getStringforKey:UserToken]]];
         }

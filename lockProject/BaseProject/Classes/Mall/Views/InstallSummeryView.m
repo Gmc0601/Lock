@@ -181,7 +181,6 @@
     [_tb reloadData];
 }
 
-
 -(void) addConstraintsForHightlight:(UIView *) center{
     _blueBorder.center = CGPointMake(center.center.x, SizeHeight(213/2));
 }
@@ -193,9 +192,15 @@
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     InstallCell *cell = (InstallCell *) [tableView dequeueReusableCellWithIdentifier:@"cell"];
     cell.value = _datasource[indexPath.row];
-    
     return  cell;
 }
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    InstallCell *cell = (InstallCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.frame.size.height ;
+}
+
+
 
 
 @end

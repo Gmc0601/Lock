@@ -19,11 +19,7 @@
 
 - (void)reload;
 
-//public void showShare(String title, String content, String url,String imgUrl)
-
 - (void)showShare:(NSString *)title :(NSString *)content :(NSString *)url :(NSString *)imgUrl;
-
-
 @end
 
 @interface CCWebViewViewController : CCBaseViewController

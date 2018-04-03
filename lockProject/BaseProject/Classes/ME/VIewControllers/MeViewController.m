@@ -50,7 +50,7 @@
 
 
 - (void)setbadgeLab {
-    [self.rightBar setBadge];
+    [self.head.messageBtn setBadge];
 }
 
     
@@ -65,7 +65,7 @@
         return;
     }
     if (![ConfigModel getBoolObjectforKey:HaveMessage]) {
-        [self.rightBar hideBadge];
+        [self.head.messageBtn hideBadge];
     }
     
     [self getData];
