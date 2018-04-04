@@ -214,7 +214,6 @@
     _tb.backgroundColor = RGBColor(239, 240, 241);
     _tb.delegate = self;
     _tb.dataSource = self;
-    
     [_tb setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     _tb.tableHeaderView = ({
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenW, 0)];
@@ -773,8 +772,7 @@
     if (_hasShare) {
         _countOfFee += 1;
     }
-    
-    [_tb reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+ [_tb reloadData];
     [self setPrice];
 }
 
