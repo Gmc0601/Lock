@@ -9,8 +9,9 @@
 #import "InstallSummeryView.h"
 #import "InstallCell.h"
 #import <Masonry/Masonry.h>
+#import "UILabel+Width.h"
 
-@interface InstallSummeryView()<UITableViewDataSource>
+@interface InstallSummeryView()<UITableViewDataSource,UITableViewDelegate>
 @property(retain,atomic) UITableView *tb;
 @property(retain,atomic)  UIButton *btnUnRequire;
 @property(retain,atomic)  UIButton *btnRequire;
@@ -113,7 +114,8 @@
     [_tb registerClass:[InstallCell class] forCellReuseIdentifier:@"cell"];
     _tb.dataSource = self;
     _tb.hidden = YES;
-    _tb.rowHeight = SizeHeight(70);
+    _tb.delegate = self;
+    _tb.allowsSelection = NO;
     _tb.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self addSubview:_tb];
     
@@ -196,8 +198,11 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    InstallCell *cell = (InstallCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.frame.size.height ;
+    NSString *text = _datasource[indexPath.row];
+    
+    float height = [UILabel getHeightByWidth:_tb.frame.size.width  title:text font:PingFangSCBOLD(SizeWidth(15))];
+    
+    return  height + SizeHeight(50);
 }
 
 

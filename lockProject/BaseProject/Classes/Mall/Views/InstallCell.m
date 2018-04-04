@@ -24,15 +24,7 @@
     NSArray *arr = [value componentsSeparatedByString:@":"];
     _lblCity.text = arr[0];
     _lblDistrict.text = arr[1];
-    
-    float height = [UILabel getHeightByWidth:(kScreenW - SizeWidth(70)) title:arr[1] font:PingFangSCBOLD(SizeWidth(15))];
-    [_lblDistrict mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(_lblCity);
-        make.top.equalTo(_lblCity.mas_bottom).offset(SizeHeight(15));
-        make.width.equalTo(@(kScreenW - SizeWidth(70)));
-        make.height.equalTo(@(height));
-    }];
-    self.contentView.height = _lblDistrict.bottom + SizeHeight(20);
+   
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier {
@@ -64,12 +56,12 @@
     _lblDistrict.textAlignment = NSTextAlignmentLeft;
     [self addSubview:_lblDistrict];
     
-//    [_lblDistrict mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(_lblCity);
-//        make.top.equalTo(_lblCity.mas_bottom).offset(SizeHeight(15));
-//        make.width.equalTo(self);
-//        make.height.equalTo(@(SizeHeight(17)));
-//    }];
+    [_lblDistrict mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_lblCity);
+        make.top.equalTo(_lblCity.mas_bottom).offset(SizeHeight(15));
+        make.width.equalTo(self);
+        make.bottom.equalTo(self);
+    }];
 }
 
 @end
