@@ -77,7 +77,7 @@
     }];
     
     [NetworkHelper getOrderDetailWithId:_orderId WithCallBack:^(NSString *error, OrderModel *order) {
-        order.status = OrderStatus_padyed;
+//        order.status = OrderStatus_padyed;
 
         _order = order;
 

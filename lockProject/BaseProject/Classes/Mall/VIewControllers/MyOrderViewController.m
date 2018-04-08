@@ -112,7 +112,8 @@
 }
 
 -(void) confirmReceive{
-    [KLCPopup dismissAllPopups];
+    [self tapPopoverOkButton];
+//    [KLCPopup dismissAllPopups];
 }
 
 -(void) showConfirmView:(OrderModel *) model{
@@ -180,7 +181,6 @@
     KLCPopup *popup = [KLCPopup popupWithContentView:contentView];
     popup.showType = KLCPopupShowTypeSlideInFromTop;
     popup.dismissType = KLCPopupDismissTypeSlideOutToTop;
-    
     return popup;
 }
 
@@ -188,7 +188,8 @@
     UIView* contentView = [[UIView alloc] init];
     contentView.frame = CGRectMake(self.view.centerX, self.view.centerY, size.width, size.height);
     contentView.layer.cornerRadius = 5;
-    
+    contentView.backgroundColor = [UIColor colorWithHexString:@"#ffffff"];
+
     return contentView;
 }
 
@@ -199,6 +200,8 @@
         [self updateOrder:@"10"];
     }else if (_selectedModel.status == OrderStatus_padyed || _selectedModel.status == OrderStatus_complete){
         [self updateOrder:@"4"];
+    }else{
+        [KLCPopup dismissAllPopups];
     }
 }
 

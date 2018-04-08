@@ -683,7 +683,7 @@
     }
     NSString *title = @"需要上门安装";
     if (index==2) {
-        title = @"增值服务";
+        title = @"免费使用一年增值服务";
     }else{
         [self addBorder:cell];
     }
